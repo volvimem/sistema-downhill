@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Downhill PE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
+        body { 
+            background: linear-gradient(rgba(0, 51, 153, 0.7), rgba(0, 0, 0, 0.8)), 
+                        url('https://images.unsplash.com/photo-1544191161-50f6652c0d46?q=80&w=2070&auto=format&fit=crop'); 
+            background-size: cover; 
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-menu {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header-menu h1 { font-size: 32px; font-weight: 900; letter-spacing: 2px; }
+        .header-menu p { color: #ffcc00; font-weight: bold; text-transform: uppercase; font-size: 14px; }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .menu-item {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px 10px;
+            border-radius: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #003399;
+            font-weight: bold;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border-bottom: 4px solid #ffcc00;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            background: #ffcc00;
+            color: #003399;
+            border-bottom-color: #003399;
+        }
+
+        .menu-item i {
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .menu-item span {
+            font-size: 12px;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .highlight {
+            background: #fffdf0;
+            border-left: 2px solid #ffcc00;
+        }
+
+        /* ESTILO DA ÁREA DO ORGANIZADOR */
+        .admin-item {
+            background: #e63946;
+            color: white;
+            border-bottom-color: #9b1c2e;
+        }
+        
+        .admin-item:hover {
+            background: #c12a36;
+            color: white;
+            border-bottom-color: white;
+        }
+
+        .admin-item i { color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="header-menu">
+        <h1 id="boas-vindas">DOWNHILL PE</h1>
+        <p>Painel do Piloto</p>
+    </div>
+
+    <div class="menu-grid">
+        <a href="#" class="menu-item highlight">
+            <i class="fas fa-file-signature"></i>
+            <span>Inscrições</span>
+        </a>
+
+        <a href="#" class="menu-item highlight">
+            <i class="fas fa-calendar-check"></i>
+            <span>Mensalidade</span>
+        </a>
+
+        <a href="dashboard.html" class="menu-item">
+            <i class="fas fa-id-card"></i>
+            <span>Minha Carteira</span>
+        </a>
+
+        <a href="#" class="menu-item">
+            <i class="fas fa-trophy"></i>
+            <span>Ranking</span>
+        </a>
+
+        <a href="#" class="menu-item">
+            <i class="fas fa-stopwatch"></i>
+            <span>Tempos</span>
+        </a>
+
+        <a href="#" class="menu-item">
+            <i class="fas fa-hospital-user"></i>
+            <span>Plano Cirurgia</span>
+        </a>
+
+        <a href="#" class="menu-item">
+            <i class="fas fa-truck-pickup"></i>
+            <span>Transporte</span>
+        </a>
+
+        <a href="#" class="menu-item">
+            <i class="fas fa-user-check"></i>
+            <span>Afiliação</span>
+        </a>
+
+        <a href="#" class="menu-item">
+            <i class="fas fa-handshake"></i>
+            <span>Parcerias</span>
+        </a>
+
+        <a href="#" class="menu-item admin-item">
+            <i class="fas fa-user-shield"></i>
+            <span>Área Organizador</span>
+        </a>
+    </div>
+
+    <script>
+        const piloto = JSON.parse(localStorage.getItem('usuarioPiloto'));
+        if(piloto && piloto.nome) {
+            const primeiroNome = piloto.nome.split(' ')[0];
+            document.getElementById('boas-vindas').innerText = `ATLETA: ${primeiroNome.toUpperCase()}`;
+        }
+    </script>
+</body>
+</html>

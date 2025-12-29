@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADM DH PE 2026 - Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #f4f4f4; color: #333; padding-bottom: 50px; }
+
+        .admin-nav { 
+            background: #001233; color: white; padding: 15px 20px; border-bottom: 4px solid #ffcc00;
+            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
+        }
+
+        .container { max-width: 600px; margin: 30px auto; padding: 0 20px; }
+
+        /* Card de Controles */
+        .controls-card { 
+            background: white; padding: 30px; border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 40px; 
+        }
+        
+        h3 { margin-bottom: 15px; color: #003399; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        select { width: 100%; padding: 15px; border-radius: 10px; border: 2px solid #003399; font-weight: bold; margin-bottom: 20px; font-size: 16px; background: #f9fbfd; }
+
+        /* Área de Preview (Fundo Escuro) */
+        .preview-area {
+            display: flex; justify-content: center; align-items: flex-start;
+            background: #000a1a; padding: 40px 20px; border-radius: 20px;
+            overflow: hidden; 
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+            min-height: 850px; /* Altura para acomodar o card */
+        }
+
+        /* CARD REAL (1080x1920) */
+        #area-print {
+            width: 1080px; height: 1920px; 
+            background: #001233; border: 15px solid #ffcc00;
+            display: flex; flex-direction: column; padding: 60px;
+            
+            /* Truque para mostrar pequeno na tela mas ser grande na realidade */
+            transform: scale(0.35); 
+            transform-origin: top center;
+            margin-bottom: -1100px; /* Compensa o espaço vazio do scale */
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        /* Conteúdo do Card */
+        .header-print { text-align: center; margin-bottom: 40px; }
+        .header-print h1 { font-size: 140px; color: white; font-weight: 900; line-height: 0.9; }
+        .header-print p { font-size: 45px; color: #ffcc00; font-weight: 700; letter-spacing: 10px; }
+        
+        .cat-faixa { background: #ffcc00; color: #001233; font-size: 50px; font-weight: 900; text-align: center; padding: 20px; margin: 20px 0 40px 0; border-radius: 10px; text-transform: uppercase; }
+        
+        /* Lista preenche o espaço disponível */
+        #ranking-lista { flex: 1; display: flex; flex-direction: column; gap: 15px; }
+
+        .linha { display: flex; align-items: center; background: rgba(255,255,255,0.05); padding: 25px; border-radius: 15px; border-left: 12px solid #ffcc00; }
+        .pos { font-size: 60px; font-weight: 900; color: #ffcc00; width: 130px; }
+        .atleta { flex: 1; }
+        .atleta .n { font-size: 48px; font-weight: 800; color: white; display: block; text-transform: uppercase; line-height: 1.1; }
+        .atleta .e { font-size: 30px; color: #aaa; text-transform: uppercase; }
+        .tempo { font-size: 55px; font-weight: 900; color: #27ae60; font-family: monospace; }
+        
+        /* Rodapé fixado no fluxo (Flexbox) para não cortar */
+        .footer-print { 
+            margin-top: auto; /* Empurra para o final */
+            text-align: center; 
+            border-top: 3px solid rgba(255,255,255,0.1); 
+            padding-top: 40px; 
+            padding-bottom: 20px;
+        }
+        .footer-print b { font-size: 45px; color: #ffcc00; display: block; }
+        .footer-print span { font-size: 38px; color: white; margin-top: 15px; display: inline-block; }
+
+        /* Botões */
+        .btn { width: 100%; padding: 20px; border: none; border-radius: 12px; font-weight: 900; cursor: pointer; margin-top: 10px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 16px; transition: 0.3s; text-decoration: none; }
+        .btn-insta { background: #c13584; color: white; }
+        .btn-whats { background: #25d366; color: white; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+
+    <div class="admin-nav">
+        <span><i class="fas fa-stopwatch"></i> ADM DH PE 2026</span>
+        <button onclick="location.reload()" style="background:none; border:none; color:white; cursor:pointer;"><i class="fas fa-sync"></i></button>
+    </div>
+
+    <div class="container">
+        
+        <div class="controls-card">
+            <h3>1. Configurar Categoria</h3>
+            <select id="cat-select" onchange="atualizarCard()">
+                <option value="">-- SELECIONE --</option>
+                <optgroup label="PRO">
+                    <option value="ELITE (Livre)">ELITE (Livre)</option>
+                    <option value="RÍGIDA PRO (Livre)">RÍGIDA PRO (Livre)</option>
+                    <option value="SUB-30 (19 a 29 anos)">SUB-30 (19 a 29 anos)</option>
+                </optgroup>
+                <optgroup label="MASTER">
+                    <option value="MASTER A1 (30 a 34 anos)">MASTER A1 (30 a 34 anos)</option>
+                    <option value="MASTER A2 (35 a 39 anos)">MASTER A2 (35 a 39 anos)</option>
+                    <option value="MASTER B1 (40 a 44 anos)">MASTER B1 (40 a 44 anos)</option>
+                    <option value="MASTER B2 (45 a 49 anos)">MASTER B2 (45 a 49 anos)</option>
+                    <option value="MASTER C (50 anos +)">MASTER C (50 anos +)</option>
+                </optgroup>
+                <optgroup label="BASE">
+                    <option value="JUVENIL (15 e 16 anos)">JUVENIL (15 e 16 anos)</option>
+                    <option value="INFANTO (12 a 14 anos)">INFANTO (12 a 14 anos)</option>
+                    <option value="JÚNIOR (17 e 18 anos)">JÚNIOR (17 e 18 anos)</option>
+                </optgroup>
+                <optgroup label="OUTROS">
+                    <option value="FEMININO (Livre)">FEMININO (Livre)</option>
+                    <option value="ESTREANTE (Livre)">ESTREANTE (Livre)</option>
+                </optgroup>
+            </select>
+
+            <h3>2. Ações</h3>
+            <button class="btn btn-insta" onclick="baixarImagem()">
+                <i class="fab fa-instagram"></i> Baixar Imagem (PNG)
+            </button>
+            <a id="btn-whats-link" href="#" target="_blank" class="btn btn-whats">
+                <i class="fab fa-whatsapp"></i> Enviar no WhatsApp
+            </a>
+        </div>
+
+        <div class="preview-area">
+            <div id="area-print">
+                <div class="header-print">
+                    <p>RANKING 2026</p>
+                    <h1>DH PE</h1>
+                </div>
+                <div class="cat-faixa" id="print-cat">SELECIONE</div>
+                
+                <div id="ranking-lista">
+                    </div>
+
+                <div class="footer-print">
+                    <b>DOWNHILL PERNAMBUCANO</b>
+                    <span><i class="fab fa-instagram"></i> @Downhill_Pernambuco</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Dados de Exemplo
+        const listaExemplo = [
+            { p: "1º", n: "Bruno Rocha", e: "Sertão DH • Ouricuri-PE", t: "2:45.120" },
+            { p: "2º", n: "Lucas Silva", e: "Agreste Racing • Surubim-PE", t: "2:48.345" },
+            { p: "3º", n: "Diego Santos", e: "Caruaru Team • Caruaru-PE", t: "2:50.010" },
+            { p: "4º", n: "Tiago Melo", e: "Recife DH • Recife-PE", t: "2:52.400" },
+            { p: "5º", n: "Felipe Góes", e: "Bike Shop • Garanhuns-PE", t: "2:55.150" }
+        ];
+
+        function atualizarCard() {
+            const cat = document.getElementById('cat-select').value;
+            if(!cat) return;
+
+            document.getElementById('print-cat').innerText = cat;
+            const container = document.getElementById('ranking-lista');
+            container.innerHTML = "";
+
+            listaExemplo.forEach(item => {
+                container.innerHTML += `
+                    <div class="linha">
+                        <div class="pos">${item.p}</div>
+                        <div class="atleta">
+                            <span class="n">${item.n}</span>
+                            <span class="e">${item.e}</span>
+                        </div>
+                        <div class="tempo">${item.t}</div>
+                    </div>
+                `;
+            });
+
+            const msg = encodeURIComponent(`*RANKING DH PE 2026*\nCategoria: ${cat}\n\n1º ${listaExemplo[0].n} - ${listaExemplo[0].t}`);
+            document.getElementById('btn-whats-link').href = "https://wa.me/?text=" + msg;
+        }
+
+        function baixarImagem() {
+            const elementoOriginal = document.getElementById('area-print');
+            const nomeArquivo = `Ranking-${document.getElementById('cat-select').value || 'Geral'}.png`;
+
+            // 1. Clona o elemento para não mexer na visualização da tela
+            const clone = elementoOriginal.cloneNode(true);
+            
+            // 2. Configura o clone para ser invisível mas renderizável em tamanho real
+            clone.style.transform = "none"; 
+            clone.style.margin = "0";
+            clone.style.position = "fixed";
+            clone.style.top = "0";
+            clone.style.left = "-9999px"; // Joga para fora da tela
+            clone.style.zIndex = "-1";
+            document.body.appendChild(clone);
+
+            // 3. Gera a imagem a partir do clone (sem cortes!)
+            html2canvas(clone, {
+                scale: 1, 
+                width: 1080,
+                height: 1920,
+                backgroundColor: "#001233",
+                windowWidth: 1080,
+                windowHeight: 1920
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = nomeArquivo;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                // 4. Remove o clone da memória
+                document.body.removeChild(clone);
+            }).catch(err => {
+                console.error("Erro ao gerar imagem:", err);
+                alert("Erro ao gerar imagem. Tente novamente.");
+            });
+        }
+
+        atualizarCard();
+    </script>
+</body>
+</html>

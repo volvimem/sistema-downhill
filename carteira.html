@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carteirinha - Downhill PE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #f0f2f5; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; }
+        
+        .card { background: white; width: 100%; max-width: 380px; border-radius: 25px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 2px solid #003399; }
+        .card-header { background: #003399; color: white; padding: 25px; text-align: center; border-bottom: 6px solid #ffcc00; }
+        
+        .profile-box { width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; background: #eee; margin: 0 auto 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        #view-foto { width: 100%; height: 100%; object-fit: cover; }
+        
+        h2 { text-transform: uppercase; font-size: 18px; font-weight: 800; }
+        .card-body { padding: 20px; }
+
+        .info { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .info label { display: block; font-size: 9px; color: #888; text-transform: uppercase; font-weight: 700; }
+        .info p { font-weight: bold; color: #333; font-size: 14px; }
+
+        .highlight-box { background: #f8f9fa; padding: 10px; border-radius: 10px; border-left: 4px solid #003399; grid-column: span 2; margin-top: 5px; }
+        .emergency-box { background: #fff3f3; padding: 10px; border-radius: 10px; border-left: 4px solid #e63946; grid-column: span 2; }
+        
+        .qrcode-box { display: flex; justify-content: center; padding: 10px; background: white; margin-top: 5px; }
+        .btn-print { margin-top: 20px; padding: 15px 30px; background: #003399; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; max-width: 380px; }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="printArea">
+        <div class="card-header">
+            <div class="profile-box">
+                <img id="view-foto" src="" style="display:none;">
+                <i id="foto-padrao" class="fas fa-user-ninja" style="font-size: 40px; color: #999;"></i>
+            </div>
+            <h2 id="view-nome">CARREGANDO...</h2>
+        </div>
+
+        <div class="card-body">
+            <div class="info">
+                <div><label>CPF</label><p id="view-cpf">---</p></div>
+                <div><label>Sangue</label><p id="view-sangue" style="color:#e63946">---</p></div>
+                
+                <div class="highlight-box">
+                    <label>Cartão SUS</label>
+                    <p id="view-sus" style="color: #003399; font-size: 16px;">---</p>
+                </div>
+
+                <div class="emergency-box">
+                    <label style="color: #e63946;">Emergência Familiar</label>
+                    <p id="view-emergencia" style="font-size: 16px;">---</p>
+                </div>
+            </div>
+
+            <div class="qrcode-box" id="qrcode"></div>
+            <p style="text-align: center; font-size: 8px; color: #aaa; margin-top: 5px;">SCAN PARA DADOS DE RESGATE</p>
+        </div>
+    </div>
+
+    <button class="btn-print" onclick="window.print()">IMPRIMIR CARTEIRA</button>
+
+    <script>
+        const piloto = JSON.parse(localStorage.getItem('usuarioPiloto'));
+
+        if(piloto) {
+            document.getElementById('view-nome').innerText = piloto.nome;
+            document.getElementById('view-cpf').innerText = piloto.cpf;
+            document.getElementById('view-sangue').innerText = piloto.sangue;
+            document.getElementById('view-sus').innerText = piloto.sus || "NÃO INFORMADO";
+            document.getElementById('view-emergencia').innerText = piloto.emergencia || "NÃO INFORMADO";
+            
+            if(piloto.foto){
+                document.getElementById('view-foto').src = piloto.foto;
+                document.getElementById('view-foto').style.display = "block";
+                document.getElementById('foto-padrao').style.display = "none";
+            }
+
+            // Gerando QR Code com todas as informações, incluindo emergência
+            new QRCode(document.getElementById("qrcode"), { 
+                text: `PILOTO: ${piloto.nome}\nSANGUE: ${piloto.sangue}\nSUS: ${piloto.sus}\nEMERGÊNCIA: ${piloto.emergencia}`, 
+                width: 100, 
+                height: 100,
+                colorDark : "#003399"
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscrições e Calendário 2026 - Downhill PE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
+        body {
+            background: linear-gradient(rgba(0, 51, 153, 0.8), rgba(0, 0, 0, 0.9)), 
+                        url('https://images.unsplash.com/photo-1544191161-50f6652c0d46?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-attachment: fixed;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 28px; color: #ffcc00; font-weight: 900; }
+        .header p { font-size: 14px; color: #fff; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+
+        .lista-etapas {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .etapa-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            color: #333;
+            cursor: pointer;
+            transition: 0.3s;
+            border-left: 10px solid #003399;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .etapa-card:hover { transform: scale(1.03); background: #ffcc00; }
+        .etapa-card.cbc { border-left-color: #27ae60; }
+
+        .etapa-info h2 { font-size: 18px; color: #003399; margin-bottom: 5px; }
+        .etapa-info p { font-size: 13px; color: #555; font-weight: 600; }
+        
+        .badge-cbc {
+            background: #27ae60;
+            color: white;
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .icon-click { color: #003399; font-size: 20px; opacity: 0.5; }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            color: #333;
+            padding: 30px;
+            border-radius: 25px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+        }
+
+        .btn-acao {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 15px;
+            margin-top: 12px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-inscricao { background: #003399; color: white; }
+        .btn-pagamento { background: #27ae60; color: white; }
+        .btn-fechar { color: #888; text-decoration: none; font-size: 13px; display: inline-block; margin-top: 20px; }
+
+        .btn-voltar-home {
+            margin-top: 30px;
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>INSCRIÇÕES E CALENDÁRIO 2026</h1>
+        <p>Downhill Pernambucano</p>
+    </div>
+
+    <div class="lista-etapas">
+        <div class="etapa-card" onclick="abrirDetalhes('1ª ETAPA - OURICURI', '25 e 26 de Abril de 2026', 'Pista do Tambor', 'Válida pelo Pernambucano')">
+            <div class="etapa-info">
+                <h2>OURICURI</h2>
+                <p><i class="far fa-calendar-alt"></i> 25 e 26 de Abril</p>
+            </div>
+            <i class="fas fa-chevron-right icon-click"></i>
+        </div>
+
+        <div class="etapa-card" onclick="abrirDetalhes('2ª ETAPA - CARUARU', '16 e 17 de Maio de 2026', 'Morro do Bom Jesus', 'Válida pelo Pernambucano')">
+            <div class="etapa-info">
+                <h2>CARUARU</h2>
+                <p><i class="far fa-calendar-alt"></i> 16 e 17 de Maio</p>
+            </div>
+            <i class="fas fa-chevron-right icon-click"></i>
+        </div>
+
+        <div class="etapa-card cbc" onclick="abrirDetalhes('3ª ETAPA - SANTA CRUZ', '28 e 29 de Agosto de 2026', 'Serra do Pará', 'Válida pelo Pernambucano e Nacional CBC')">
+            <div class="etapa-info">
+                <h2>SANTA CRUZ <span class="badge-cbc">CBC</span></h2>
+                <p><i class="far fa-calendar-alt"></i> 28 e 29 de Agosto</p>
+            </div>
+            <i class="fas fa-chevron-right icon-click"></i>
+        </div>
+
+        <div class="etapa-card" onclick="abrirDetalhes('4ª ETAPA - GRAVATÁ', '19 e 20 de Setembro de 2026', 'Pista da Serra', 'Grande Final do Campeonato')">
+            <div class="etapa-info">
+                <h2>GRAVATÁ</h2>
+                <p><i class="far fa-calendar-alt"></i> 19 e 20 de Setembro</p>
+            </div>
+            <i class="fas fa-chevron-right icon-click"></i>
+        </div>
+    </div>
+
+    <a href="index.html" class="btn-voltar-home"><i class="fas fa-arrow-left"></i> VOLTAR AO PAINEL</a>
+
+    <div id="modalDetalhes" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitulo" style="color: #003399; font-size: 22px;"></h2>
+            <p id="modalData" style="font-weight: bold; margin-top: 10px; color: #e67e22;"></p>
+            <p id="modalLocal" style="margin-bottom: 20px; color: #666; font-size: 14px; white-space: pre-line;"></p>
+            
+            <hr style="opacity: 0.2;">
+
+            <a href="form-inscricao.html" class="btn-acao btn-inscricao">
+                <i class="fas fa-file-signature"></i> FAZER INSCRIÇÃO
+            </a>
+            <a href="pagamento.html" class="btn-acao btn-pagamento">
+                <i class="fas fa-pix"></i> PAGAR INSCRIÇÃO
+            </a>
+            
+            <a href="javascript:void(0)" class="btn-fechar" onclick="fecharModal()">FECHAR JANELA</a>
+        </div>
+    </div>
+
+    <script>
+        function abrirDetalhes(titulo, data, local, detalhes) {
+            document.getElementById('modalTitulo').innerText = titulo;
+            document.getElementById('modalData').innerText = data;
+            document.getElementById('modalLocal').innerText = local + "\n" + detalhes;
+            document.getElementById('modalDetalhes').style.display = 'flex';
+            
+            // Opcional: Salva a etapa escolhida para usar no formulário depois
+            localStorage.setItem('etapaSelecionada', titulo);
+        }
+
+        function fecharModal() {
+            document.getElementById('modalDetalhes').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('modalDetalhes');
+            if (event.target == modal) {
+                fecharModal();
+            }
+        }
+    </script>
+</body>
+</html>

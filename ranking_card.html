@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Top 10 - DH PE 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #111; color: white; display: flex; flex-direction: column; align-items: center; padding: 10px; }
+
+        .controles {
+            background: #222; padding: 15px; border-radius: 12px; margin-bottom: 10px;
+            width: 100%; max-width: 400px; text-align: center;
+        }
+        select { width: 100%; padding: 12px; border-radius: 8px; margin-bottom: 10px; font-weight: bold; background: #fff; color: #000; }
+        .btn-print { background: #27ae60; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
+
+        #card-instagram {
+            width: 1080px; height: 1920px; background: #001233;
+            border: 15px solid #ffcc00; display: flex; flex-direction: column;
+            position: relative; transform: scale(0.32); transform-origin: top center;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .controles { display: none; }
+            #card-instagram { transform: scale(1); border: none; }
+        }
+
+        .header-card {
+            background: #ffcc00; height: 250px; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; color: #001233;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+        }
+        .header-card h1 { font-size: 80px; font-weight: 900; line-height: 0.8; }
+        .header-card p { font-size: 30px; font-weight: 700; letter-spacing: 5px; }
+
+        .categoria-faixa {
+            background: #003399; color: white; font-size: 40px; font-weight: 900;
+            text-align: center; padding: 15px; margin: 20px 80px;
+            text-transform: uppercase; border-radius: 10px;
+        }
+
+        .lista-ranking { flex: 1; padding: 0 80px; display: flex; flex-direction: column; justify-content: center; }
+
+        .linha-piloto {
+            display: flex; align-items: center; background: rgba(255,255,255,0.06);
+            margin-bottom: 12px; padding: 20px 35px; border-radius: 15px;
+            border-bottom: 4px solid rgba(0,0,0,0.2);
+        }
+        
+        .rank-1 { background: rgba(255, 204, 0, 0.15); border: 2px solid #ffcc00; }
+        .posicao { font-size: 45px; font-weight: 900; color: #ffcc00; width: 90px; }
+        .info { flex: 1; }
+        .info .nome { font-size: 38px; font-weight: 800; color: white; display: block; text-transform: uppercase; }
+        .info .cidade-equipe { font-size: 22px; color: #aaa; font-weight: 600; }
+        .pontos { font-size: 38px; font-weight: 900; color: white; background: #27ae60; padding: 10px 20px; border-radius: 12px; }
+
+        .footer-social { background: #ffcc00; padding: 35px; text-align: center; color: #001233; margin-top: 20px; }
+        .footer-social h2 { font-size: 35px; font-weight: 900; }
+        .footer-social .insta-tag { font-size: 32px; font-weight: 700; margin-top: 5px; display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="controles">
+        <select id="selectCat" onchange="atualizarCard()">
+            <optgroup label="PRO">
+                <option value="ELITE (Livre)">ELITE (Livre)</option>
+                <option value="RÍGIDA PRO (Livre)">RÍGIDA PRO (Livre)</option>
+                <option value="SUB-30 (19 a 29 anos)">SUB-30 (19 a 29 anos)</option>
+            </optgroup>
+            <optgroup label="MASTER">
+                <option value="MASTER A1 (30 a 34 anos)">MASTER A1 (30 a 34 anos)</option>
+                <option value="MASTER A2 (35 a 39 anos)">MASTER A2 (35 a 39 anos)</option>
+                <option value="MASTER B1 (40 a 44 anos)">MASTER B1 (40 a 44 anos)</option>
+                <option value="MASTER B2 (45 a 49 anos)">MASTER B2 (45 a 49 anos)</option>
+                <option value="MASTER C (50 anos +)">MASTER C (50 anos +)</option>
+            </optgroup>
+            <optgroup label="BASE">
+                <option value="JUVENIL (15 e 16 anos)">JUVENIL (15 e 16 anos)</option>
+                <option value="INFANTO (12 a 14 anos)">INFANTO (12 a 14 anos)</option>
+                <option value="JÚNIOR (17 e 18 anos)">JÚNIOR (17 e 18 anos)</option>
+            </optgroup>
+            <optgroup label="OUTROS">
+                <option value="FEMININO (Livre)">FEMININO (Livre)</option>
+                <option value="ESTREANTE (Livre)">ESTREANTE (Livre)</option>
+            </optgroup>
+        </select>
+        <button class="btn-print" onclick="window.print()">GERAR IMAGEM</button>
+    </div>
+
+    <div id="card-instagram">
+        <div class="header-card">
+            <p>RANKING 2026</p>
+            <h1>DH PE</h1>
+        </div>
+
+        <div class="categoria-faixa" id="titulo-categoria">TOP 10 ELITE (Livre)</div>
+
+        <div class="lista-ranking" id="ranking-container"></div>
+
+        <div class="footer-social">
+            <h2>DOWNHILL PERNAMBUCANO</h2>
+            <span class="insta-tag"><i class="fab fa-instagram"></i> @Downhill_Pernambuco</span>
+        </div>
+    </div>
+
+    <script>
+        const dadosRanking = {
+            "ELITE (Livre)": [
+                { nome: "Bruno Rocha", cidade: "Ouricuri-PE", equipe: "Sertão DH", pts: 150 },
+                { nome: "Lucas Silva", cidade: "Surubim-PE", equipe: "Agreste Racing", pts: 135 }
+            ],
+            "RÍGIDA PRO (Livre)": [],
+            "SUB-30 (19 a 29 anos)": [],
+            "MASTER A1 (30 a 34 anos)": [],
+            "MASTER A2 (35 a 39 anos)": [],
+            "MASTER B1 (40 a 44 anos)": [],
+            "MASTER B2 (45 a 49 anos)": [],
+            "MASTER C (50 anos +)": [],
+            "JUVENIL (15 e 16 anos)": [],
+            "INFANTO (12 a 14 anos)": [],
+            "JÚNIOR (17 e 18 anos)": [],
+            "FEMININO (Livre)": [],
+            "ESTREANTE (Livre)": []
+        };
+
+        function atualizarCard() {
+            const cat = document.getElementById('selectCat').value;
+            document.getElementById('titulo-categoria').innerText = "TOP 10 " + cat;
+            const container = document.getElementById('ranking-container');
+            container.innerHTML = "";
+
+            const atletas = (dadosRanking[cat] || []);
+
+            if (atletas.length === 0) {
+                container.innerHTML = "<p style='text-align:center; font-size:30px; color:#aaa;'>Aguardando dados desta categoria...</p>";
+                return;
+            }
+
+            atletas.slice(0, 10).forEach((a, index) => {
+                const pos = index + 1;
+                container.innerHTML += `
+                    <div class="linha-piloto ${pos === 1 ? 'rank-1' : ''}">
+                        <div class="posicao">${pos}º</div>
+                        <div class="info">
+                            <span class="nome">${a.nome}</span>
+                            <span class="cidade-equipe">${a.cidade} • ${a.equipe}</span>
+                        </div>
+                        <div class="pontos">${a.pts}</div>
+                    </div>`;
+            });
+        }
+
+        atualizarCard();
+    </script>
+</body>
+</html>

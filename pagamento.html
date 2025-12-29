@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscrição Ouricuri 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #f0f2f5; color: #333; padding-bottom: 100px; }
+
+        .header-etapa {
+            background: #003399;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 5px solid #ffcc00;
+        }
+
+        .valor-inscricao {
+            background: #ffcc00;
+            color: #003399;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 900;
+            font-size: 24px;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .container { max-width: 500px; margin: 20px auto; padding: 0 15px; }
+
+        .card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .card h3 { color: #003399; margin-bottom: 15px; font-size: 18px; border-left: 4px solid #ffcc00; padding-left: 10px; }
+
+        /* Estilo das Categorias */
+        .grid-categorias { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .categoria-item {
+            background: #fff;
+            border: 2px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .categoria-item:hover { border-color: #ffcc00; background: #fffdf0; }
+        .categoria-item.selected { border-color: #003399; background: #003399; color: white; }
+
+        /* Avisos Obrigatórios */
+        .alerta { background: #fff5f5; border-left: 4px solid #e74c3c; padding: 15px; border-radius: 8px; }
+        .alerta li { font-size: 13px; color: #c0392b; margin-left: 20px; margin-bottom: 5px; }
+
+        /* Botão Flutuante */
+        .footer-action {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .btn-pagar {
+            background: #27ae60;
+            color: white;
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            display: none; /* Só aparece ao selecionar categoria */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-etapa">
+        <p>1ª ETAPA - PERNAMBUCANO 2026</p>
+        <h1>OURICURI - PE</h1>
+        <div class="valor-inscricao">R$ 120,00</div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h3>Selecione sua Categoria</h3>
+            <div class="grid-categorias" id="listaCategorias">
+                <div class="categoria-item" onclick="selecionar(this, 'Iniciante')">Iniciante</div>
+                <div class="categoria-item" onclick="selecionar(this, 'Junior')">Junior</div>
+                <div class="categoria-item" onclick="selecionar(this, 'Rígida')">Rígida</div>
+                <div class="categoria-item" onclick="selecionar(this, 'Master A')">Master A</div>
+                <div class="categoria-item" onclick="selecionar(this, 'Master B')">Master B</div>
+                <div class="categoria-item" onclick="selecionar(this, 'Sub-30')">Sub-30</div>
+                <div class="categoria-item" onclick="selecionar(this, 'Elite')">Elite</div>
+                <div class="categoria-item" onclick="selecionar(this, 'Feminina')">Feminina</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Lembretes Obrigatórios</h3>
+            <div class="alerta">
+                <p style="font-weight: bold; margin-bottom: 10px;">Equipamentos de Segurança:</p>
+                <ul>
+                    <li>Capacete Integral (Full Face) com trava.</li>
+                    <li>Protetor de coluna ou Colete.</li>
+                    <li>Joelheiras e luvas.</li>
+                    <li>Calçado fechado resistente.</li>
+                </ul>
+                <p style="margin-top: 10px; font-size: 12px; font-weight: bold; color: #e74c3c;">
+                    <i class="fas fa-exclamation-triangle"></i> O descumprimento ocasionará punição ou desclassificação imediata.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-action">
+        <a href="pagamento.html" class="btn-pagar" id="botaoPagar">
+            IR PARA O PAGAMENTO <i class="fas fa-chevron-right"></i>
+        </a>
+    </div>
+
+    <script>
+        let categoriaEscolhida = "";
+
+        function selecionar(elemento, categoria) {
+            // Remove seleção dos outros
+            const itens = document.querySelectorAll('.categoria-item');
+            itens.forEach(i => i.classList.remove('selected'));
+
+            // Adiciona seleção ao clicado
+            elemento.classList.add('selected');
+            categoriaEscolhida = categoria;
+
+            // Salva para o sistema usar depois
+            localStorage.setItem('categoriaInscricao', categoria);
+            localStorage.setItem('valorEtapa', '120.00'); // Valor para o financeiro
+            
+            // Mostra o botão de pagamento
+            document.getElementById('botaoPagar').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
