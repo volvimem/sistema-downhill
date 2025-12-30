@@ -26,11 +26,7 @@
 </head>
 <body>
     <div class="login-card">
-        <div class="logo-area">
-            <i class="fas fa-user-shield"></i>
-            <h2>DH PE 2026</h2>
-            <p>Painel de Controle do Administrador</p>
-        </div>
+        <div class="logo-area"><i class="fas fa-user-shield"></i><h2>DH PE 2026</h2><p>Painel de Controle do Administrador</p></div>
         <div class="input-group"><label>CPF do Administrador</label><input type="text" id="admin-cpf" placeholder="000.000.000-00" maxlength="14"></div>
         <div class="input-group"><label>Senha de Acesso</label><input type="password" id="admin-senha" placeholder="••••••••"></div>
         <div id="error-msg">Acesso negado: CPF ou Senha inválidos.</div>
@@ -45,11 +41,9 @@
             const cpf = document.getElementById('admin-cpf').value;
             const pass = document.getElementById('admin-senha').value;
             const error = document.getElementById('error-msg');
-            const CPF_CORRETO = "000.000.000-00"; 
-            const SENHA_CORRETA = "admin2026";    
-            if (cpf === CPF_CORRETO && pass === SENHA_CORRETA) {
+            if (cpf === "000.000.000-00" && pass === "admin2026") {
                 localStorage.setItem("admin_auth", "true");
-                window.location.href = "admin.html"; // GARANTA QUE O ARQUIVO NO GITHUB SE CHAMA admin.html
+                window.location.href = "admin.html";
             } else {
                 error.style.display = "block";
                 setTimeout(() => error.style.display = "none", 3000);
