@@ -22,27 +22,59 @@
         .btn-entrar { width: 100%; padding: 15px; background: #003399; color: white; border: none; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,51,153,0.3); }
         .btn-entrar:hover { background: #ffcc00; color: #001d4d; transform: translateY(-2px); }
         #error-msg { color: #d32f2f; font-size: 13px; margin-top: 15px; font-weight: 600; display: none; }
+        
+        /* Botão Voltar para Pilotos */
+        .btn-voltar { display: block; margin-top: 20px; color: #888; text-decoration: none; font-size: 12px; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="login-card">
-        <div class="logo-area"><i class="fas fa-user-shield"></i><h2>DH PE 2026</h2><p>Painel de Controle do Administrador</p></div>
-        <div class="input-group"><label>CPF do Administrador</label><input type="text" id="admin-cpf" placeholder="000.000.000-00" maxlength="14"></div>
-        <div class="input-group"><label>Senha de Acesso</label><input type="password" id="admin-senha" placeholder="••••••••"></div>
+        <div class="logo-area">
+            <i class="fas fa-user-shield"></i>
+            <h2>DH PE 2026</h2>
+            <p>Painel de Controle do Administrador</p>
+        </div>
+
+        <div class="input-group">
+            <label>CPF do Administrador</label>
+            <input type="text" id="admin-cpf" placeholder="000.000.000-00" maxlength="14">
+        </div>
+
+        <div class="input-group">
+            <label>Senha de Acesso</label>
+            <input type="password" id="admin-senha" placeholder="••••••••">
+        </div>
+
         <div id="error-msg">Acesso negado: CPF ou Senha inválidos.</div>
+
         <button class="btn-entrar" onclick="validarAcesso()">ENTRAR NO SISTEMA</button>
+        
+        <a href="index.html" class="btn-voltar">← Voltar para Login de Piloto</a>
     </div>
+
     <script>
+        // Máscara automática de CPF
         document.getElementById('admin-cpf').addEventListener('input', function(e) {
-            let v = e.target.value.replace(/\D/g, "").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+            let v = e.target.value.replace(/\D/g, "");
+            v = v.replace(/(\d{3})(\d)/, "$1.$2");
+            v = v.replace(/(\d{3})(\d)/, "$1.$2");
+            v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
             e.target.value = v;
         });
+
         function validarAcesso() {
             const cpf = document.getElementById('admin-cpf').value;
             const pass = document.getElementById('admin-senha').value;
             const error = document.getElementById('error-msg');
-            if (cpf === "000.000.000-00" && pass === "admin2026") {
+
+            // --- CREDENCIAIS DO ADMINISTRADOR ---
+            const CPF_CORRETO = "083.276.324-18"; // Seu CPF
+            const SENHA_CORRETA = "Dh0800";       // Sua Senha
+
+            if (cpf === CPF_CORRETO && pass === SENHA_CORRETA) {
+                // Salva que o admin está logado
                 localStorage.setItem("admin_auth", "true");
+                // Redireciona para o painel
                 window.location.href = "admin.html";
             } else {
                 error.style.display = "block";
