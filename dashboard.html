@@ -33,6 +33,8 @@
         .menu-item i { font-size: 30px; margin-bottom: 12px; }
         .menu-item span { font-size: 12px; text-transform: uppercase; line-height: 1.2; }
         .highlight { background: #fffdf0; border-left: 2px solid #ffcc00; }
+        
+        /* Botão Admin Especial */
         .admin-item { background: #e63946; color: white; border-bottom-color: #9b1c2e; }
         .admin-item:hover { background: #c12a36; color: white; border-bottom-color: white; }
         .admin-item i { color: white; }
@@ -43,6 +45,7 @@
         <h1 id="boas-vindas">DOWNHILL PE</h1>
         <p>Painel do Piloto</p>
     </div>
+
     <div class="menu-grid">
         <a href="inscricoes.html" class="menu-item highlight"><i class="fas fa-file-signature"></i><span>Inscrições</span></a>
         <a href="cirurgia.html" class="menu-item highlight"><i class="fas fa-calendar-check"></i><span>Plano Cirurgia</span></a>
@@ -50,9 +53,10 @@
         <a href="ranking_card.html" class="menu-item"><i class="fas fa-trophy"></i><span>Card Ranking</span></a>
         <a href="#" class="menu-item"><i class="fas fa-stopwatch"></i><span>Tempos</span></a>
         <a href="#" class="menu-item"><i class="fas fa-truck-pickup"></i><span>Transporte</span></a>
-        <a href="#" class="menu-item"><i class="fas fa-handshake"></i><span>Parcerias</span></a>
-        <a href="admin_login.html" class="menu-item admin-item"><i class="fas fa-user-shield"></i><span>Área Organizador</span></a>
+        
+        <a href="admin_login.html" class="menu-item admin-item"><i class="fas fa-clipboard-list"></i><span>Área Organizador</span></a>
     </div>
+
     <script>
         const piloto = JSON.parse(localStorage.getItem('usuarioPiloto'));
         if(piloto && piloto.nome) {
