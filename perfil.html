@@ -3,79 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil - Downhill PE</title>
+    <title>Mudar Senha - Downhill PE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: #003399; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .container { background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        h2 { color: #003399; margin-bottom: 20px; text-align: center; }
-        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #eee; border-radius: 10px; font-size: 16px; outline: none; }
-        input:focus { border-color: #003399; }
-        .btn-salvar { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; }
-        .btn-voltar { display: block; text-align: center; margin-top: 15px; color: #666; text-decoration: none; font-size: 14px; }
+        .card { background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        h2 { color: #003399; text-align: center; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #eee; border-radius: 10px; outline: none; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        .btn-verde { background: #27ae60; color: white; }
+        .btn-cinza { background: #eee; color: #333; margin-top: 10px; display: block; text-align: center; text-decoration: none; }
     </style>
 </head>
 <body>
-<div class="container">
-    <h2><i class="fas fa-lock"></i> Nova Senha</h2>
-    
-    <label style="font-size: 12px; font-weight: bold;">Senha Atual:</label>
-    <input type="password" id="senhaAtual">
+    <div class="card">
+        <h2>Alterar Senha</h2>
+        <input type="password" id="senhaAtual" placeholder="Senha Atual">
+        <input type="password" id="novaSenha" placeholder="Nova Senha">
+        <input type="password" id="confirmaSenha" placeholder="Repita a Nova Senha">
+        <button class="btn btn-verde" onclick="mudar()">SALVAR NOVA SENHA</button>
+        <a href="dashboard.html" class="btn btn-cinza">VOLTAR</a>
+    </div>
 
-    <label style="font-size: 12px; font-weight: bold;">Nova Senha:</label>
-    <input type="password" id="novaSenha">
+    <script>
+        function mudar() {
+            const atual = document.getElementById('senhaAtual').value;
+            const nova = document.getElementById('novaSenha').value;
+            const confirma = document.getElementById('confirmaSenha').value;
+            let dados = JSON.parse(localStorage.getItem('usuarioPiloto'));
 
-    <label style="font-size: 12px; font-weight: bold;">Confirmar Nova Senha:</label>
-    <input type="password" id="confirmaSenha">
+            if (!dados) { alert("Cadastro não encontrado!"); return; }
+            if (atual !== dados.senha) { alert("A senha atual está incorreta!"); return; }
+            if (nova !== confirma) { alert("As senhas novas não coincidem!"); return; }
+            if (nova.length < 3) { alert("Senha muito curta!"); return; }
 
-    <button class="btn-salvar" onclick="atualizarSenha()">ATUALIZAR SENHA</button>
-    <a href="dashboard.html" class="btn-voltar">Voltar ao Painel</a>
-</div>
-
-<script>
-    function atualizarSenha() {
-        const atual = document.getElementById('senhaAtual').value;
-        const nova = document.getElementById('novaSenha').value;
-        const confirma = document.getElementById('confirmaSenha').value;
-        
-        // Pega os dados do piloto
-        let dadosRaw = localStorage.getItem('usuarioPiloto');
-        
-        if (!dadosRaw) {
-            alert("Erro crítico: Nenhum cadastro encontrado neste celular. Por favor, faça o cadastro novamente.");
-            window.location.href = "cadastro.html";
-            return;
+            dados.senha = nova;
+            localStorage.setItem('usuarioPiloto', JSON.stringify(dados));
+            alert("Senha alterada com sucesso!");
+            window.location.href = "dashboard.html";
         }
-
-        let dadosPiloto = JSON.parse(dadosRaw);
-
-        // LOG DE TESTE (Aparece no console do navegador)
-        console.log("Senha no sistema:", dadosPiloto.senha);
-        console.log("Senha digitada:", atual);
-
-        if (atual !== dadosPiloto.senha) {
-            alert("A 'Senha Atual' está incorreta! Verifique se você não errou letras maiúsculas ou minúsculas.");
-            return;
-        }
-
-        if (nova !== confirma) {
-            alert("A nova senha e a confirmação são diferentes!");
-            return;
-        }
-
-        if (nova.length < 3) {
-            alert("A nova senha é muito curta!");
-            return;
-        }
-
-        // SALVAMENTO REAL
-        dadosPiloto.senha = nova;
-        localStorage.setItem('usuarioPiloto', JSON.stringify(dadosPiloto));
-
-        alert("Senha alterada com sucesso! Você será deslogado para testar a nova senha.");
-        window.location.href = "index.html"; // Manda para o login para testar
-    }
-</script>
+    </script>
 </body>
 </html>
