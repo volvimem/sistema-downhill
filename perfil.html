@@ -3,89 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Perfil - Downhill PE</title>
+    <title>Perfil - Downhill PE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=8');}</script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: #f0f2f5; padding: 20px; }
-        .container { max-width: 400px; margin: 0 auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        h2 { color: #003399; margin-bottom: 20px; text-align: center; }
-        
+        body { background: #003399; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .container { background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        h2 { color: #003399; margin-bottom: 20px; text-align: center; text-transform: uppercase; }
         .campo { margin-bottom: 15px; }
         label { display: block; font-size: 12px; font-weight: bold; color: #666; margin-bottom: 5px; }
         input { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-size: 16px; outline: none; }
         input:focus { border-color: #003399; }
-
-        .btn-salvar { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-salvar { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; font-size: 16px; }
         .btn-voltar { width: 100%; padding: 15px; background: #666; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; text-decoration: none; display: block; text-align: center; }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <h2><i class="fas fa-user-cog"></i> Alterar Senha</h2>
-    
+    <h2><i class="fas fa-key"></i> Alterar Senha</h2>
     <div class="campo">
         <label>Senha Atual:</label>
         <input type="password" id="senhaAtual" placeholder="Digite a senha atual">
     </div>
-
     <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-
     <div class="campo">
         <label>Nova Senha:</label>
         <input type="password" id="novaSenha" placeholder="Mínimo 4 dígitos">
     </div>
-
     <div class="campo">
         <label>Confirmar Nova Senha:</label>
         <input type="password" id="confirmaSenha" placeholder="Repita a nova senha">
     </div>
-
     <button class="btn-salvar" onclick="atualizarSenha()">SALVAR NOVA SENHA</button>
-    <a href="dashboard.html" class="btn-voltar">VOLTAR</a>
+    <a href="dashboard.html" class="btn-voltar">CANCELAR</a>
 </div>
-
 <script>
     function atualizarSenha() {
         const atual = document.getElementById('senhaAtual').value;
         const nova = document.getElementById('novaSenha').value;
         const confirma = document.getElementById('confirmaSenha').value;
-        
-        // Pega os dados atuais do piloto
         let dadosPiloto = JSON.parse(localStorage.getItem('usuarioPiloto'));
 
-        if (!dadosPiloto) {
-            alert("Erro: Cadastro não encontrado neste aparelho.");
-            return;
-        }
+        if (!dadosPiloto) { alert("Erro: Cadastro não encontrado."); return; }
+        if (atual !== dadosPiloto.senha) { alert("A senha atual está incorreta!"); return; }
+        if (nova.length < 4) { alert("A nova senha deve ter pelo menos 4 dígitos."); return; }
+        if (nova !== confirma) { alert("As senhas não coincidem!"); return; }
 
-        // 1. Verifica se a senha atual está correta
-        if (atual !== dadosPiloto.senha) {
-            alert("A senha atual está incorreta!");
-            return;
-        }
-
-        // 2. Verifica se a nova senha tem tamanho mínimo
-        if (nova.length < 4) {
-            alert("A nova senha deve ter pelo menos 4 dígitos.");
-            return;
-        }
-
-        // 3. Verifica se as senhas coincidem
-        if (nova !== confirma) {
-            alert("A nova senha e a confirmação não são iguais!");
-            return;
-        }
-
-        // 4. Salva a nova senha
         dadosPiloto.senha = nova;
         localStorage.setItem('usuarioPiloto', JSON.stringify(dadosPiloto));
-
-        alert("Senha alterada com sucesso! Use a nova senha no próximo login.");
+        alert("Senha alterada com sucesso!");
         window.location.href = "dashboard.html";
     }
 </script>
-
 </body>
 </html>
