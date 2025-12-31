@@ -1,4 +1,4 @@
-const VERSAO = 'v5'; // <--- MUDE ESSE NÚMERO SEMPRE QUE FIZER ATUALIZAÇÃO NO SITE
+const VERSAO = 'v7'; // <--- MUDE ESSE NÚMERO SEMPRE QUE FIZER ATUALIZAÇÃO NO SITE
 
 self.addEventListener('install', (event) => {
   // O comando abaixo força o novo "motor" a instalar imediatamente
