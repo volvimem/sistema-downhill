@@ -7,9 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#003399">
-    <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=6');}</script>
+    <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=7');}</script>
     <style>
-        /* ESTILO PARA TELA */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: #f0f2f5; color: #1a1a1a; }
         
@@ -18,7 +17,6 @@
 
         .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
 
-        /* Cards de Resumo */
         .resumo-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
         .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; border-bottom: 4px solid #ddd; }
         .card i { font-size: 24px; color: #003399; margin-bottom: 10px; }
@@ -26,37 +24,33 @@
         .card p { font-size: 22px; font-weight: 900; color: #001233; }
         .card.verde { border-bottom-color: #27ae60; }
 
-        /* Filtros */
         .secao-filtros { background: white; padding: 20px; border-radius: 15px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        label { display: block; font-size: 12px; font-weight: bold; color: #003399; margin-bottom: 8px; text-transform: uppercase; }
-        select { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; font-weight: bold; outline: none; transition: 0.3s; }
-        select:focus { border-color: #003399; }
+        label { display: block; font-size: 11px; font-weight: bold; color: #003399; margin-bottom: 8px; text-transform: uppercase; }
+        select { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; font-weight: bold; outline: none; }
 
         .btn-print { width: 100%; background: #27ae60; color: white; border: none; padding: 16px; border-radius: 10px; font-weight: 900; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; text-transform: uppercase; }
-        .btn-print:hover { background: #219150; }
 
-        /* Tabela Visualização */
         .tabela-wrapper { background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        table { width: 100%; border-collapse: collapse; min-width: 700px; }
         th { background: #f8f9fa; padding: 15px; text-align: left; font-size: 11px; color: #888; text-transform: uppercase; border-bottom: 2px solid #eee; }
         td { padding: 15px; border-bottom: 1px solid #eee; font-size: 14px; }
+
+        /* Estilo do Número da Placa */
+        .placa-box { background: #eee; color: #333; padding: 5px 10px; border-radius: 6px; font-weight: 900; font-size: 18px; border: 1px solid #ccc; display: inline-block; min-width: 45px; text-align: center; }
+
         .pago-badge { padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; }
         .status-sim { background: #d4edda; color: #155724; }
         .status-nao { background: #f8d7da; color: #721c24; }
 
-        /* ESTILO PARA IMPRESSÃO */
         @media print {
             .no-print { display: none !important; }
             body { background: white !important; }
             .container { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
-            .tabela-wrapper { box-shadow: none !important; }
-            table { border: 1px solid #000; }
-            th, td { border: 1px solid #000 !important; color: black !important; padding: 8px !important; }
-            th { background: #eee !important; }
-            .campo-manual { border-bottom: 1px solid #000; width: 120px; height: 20px; display: block; }
-            
-            #header-print { display: block !important; text-align: center; margin-bottom: 30px; }
-            #header-print h1 { font-size: 28px; text-transform: uppercase; }
+            table { border: 1px solid #000; width: 100%; }
+            th, td { border: 1px solid #000 !important; color: black !important; padding: 6px !important; }
+            .placa-box { background: none !important; border: none !important; font-size: 16pt !important; padding: 0 !important; }
+            .campo-manual { border-bottom: 1px solid #000; width: 130px; height: 25px; display: block; }
+            #header-print { display: block !important; text-align: center; margin-bottom: 20px; }
         }
         #header-print { display: none; }
     </style>
@@ -64,13 +58,13 @@
 <body>
 
     <div id="header-print">
-        <h1>DOWNHILL PE - RELATÓRIO DE PROVA</h1>
-        <p>Categoria: <strong id="cat-label">TODAS</strong> | Data: 2026</p>
+        <h1 style="text-transform: uppercase;">Folha de Largada - Downhill PE</h1>
+        <p>Categoria: <strong id="cat-label">TODAS</strong> | Juiz de Prova: ____________________</p>
     </div>
 
     <div class="navbar no-print">
-        <h2><i class="fas fa-user-shield"></i> Painel Organizador</h2>
-        <a href="dashboard.html" style="color:white; text-decoration:none;"><i class="fas fa-times fa-lg"></i></a>
+        <h2><i class="fas fa-user-shield"></i> Organizador</h2>
+        <a href="dashboard.html" style="color:white;"><i class="fas fa-times fa-lg"></i></a>
     </div>
 
     <div class="container">
@@ -78,18 +72,18 @@
         <div class="resumo-cards no-print">
             <div class="card">
                 <i class="fas fa-users"></i>
-                <h4>Inscritos</h4>
+                <h4>Atletas</h4>
                 <p id="total-atletas">0</p>
             </div>
             <div class="card verde">
-                <i class="fas fa-hand-holding-usd"></i>
-                <h4>Arrecadado</h4>
+                <i class="fas fa-cash-register"></i>
+                <h4>Caixa</h4>
                 <p id="total-caixa">R$ 0,00</p>
             </div>
         </div>
 
         <div class="secao-filtros no-print">
-            <label>Filtrar por Categoria para Impressão:</label>
+            <label>Gerar lista por Categoria:</label>
             <select id="filtroCat" onchange="renderizarTabela()">
                 <option value="TODAS">TODAS AS CATEGORIAS</option>
                 <option value="ELITE">ELITE</option>
@@ -100,7 +94,7 @@
                 <option value="JUNIOR">JUNIOR</option>
             </select>
             <button class="btn-print" onclick="window.print()">
-                <i class="fas fa-print"></i> Imprimir Folha de Largada
+                <i class="fas fa-print"></i> Imprimir para Prancheta
             </button>
         </div>
 
@@ -108,28 +102,27 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 60px;">ID</th>
+                        <th style="width: 80px; text-align: center;">PLACA</th>
                         <th>PILOTO / CIDADE</th>
                         <th>CATEGORIA</th>
-                        <th class="no-print">PAGAMENTO</th>
-                        <th>TEMPO (CRONÔMETRO)</th>
+                        <th class="no-print">PGTO</th>
+                        <th>TEMPO FINAL</th>
                     </tr>
                 </thead>
                 <tbody id="corpo-tabela">
-                    </tbody>
+                </tbody>
             </table>
         </div>
-
     </div>
 
     <script>
-        // DADOS PARA TESTE (Simulando Banco de Dados)
+        // Simulando dados com Número de Placa (numeral)
         const atletas = [
-            { id: 10, nome: "Bruno Rocha", cidade: "Ouricuri", cat: "ELITE", pago: true, valor: 120 },
-            { id: 25, nome: "Lucas Silva", cidade: "Surubim", cat: "ELITE", pago: true, valor: 120 },
-            { id: 42, nome: "André Santos", cidade: "Caruaru", cat: "MASTER A", pago: false, valor: 120 },
-            { id: 15, nome: "Felipe Góes", cidade: "Recife", cat: "RÍGIDA", pago: true, valor: 120 },
-            { id: 33, nome: "João Pedro", cidade: "Salgueiro", cat: "MASTER B", pago: true, valor: 120 }
+            { placa: "01", nome: "Bruno Rocha", cidade: "Ouricuri", cat: "ELITE", pago: true, valor: 120 },
+            { placa: "05", nome: "Lucas Silva", cidade: "Surubim", cat: "ELITE", pago: true, valor: 120 },
+            { placa: "112", nome: "André Santos", cidade: "Caruaru", cat: "MASTER A", pago: false, valor: 120 },
+            { placa: "88", nome: "Felipe Góes", cidade: "Recife", cat: "RÍGIDA", pago: true, valor: 120 },
+            { placa: "33", nome: "João Pedro", cidade: "Salgueiro", cat: "MASTER B", pago: true, valor: 120 }
         ];
 
         function renderizarTabela() {
@@ -143,6 +136,9 @@
             let totalInscritos = 0;
             let totalCaixa = 0;
 
+            // Ordena por placa (menor para maior)
+            atletas.sort((a, b) => a.placa - b.placa);
+
             const filtrados = atletas.filter(a => filtro === "TODAS" ? true : a.cat === filtro);
 
             filtrados.forEach(a => {
@@ -150,29 +146,27 @@
                 if(a.pago) totalCaixa += a.valor;
 
                 const badge = a.pago ? 
-                    `<span class="pago-badge status-sim">PAGO</span>` : 
-                    `<span class="pago-badge status-nao">PENDENTE</span>`;
+                    `<span class="pago-badge status-sim">OK</span>` : 
+                    `<span class="pago-badge status-nao">PEND</span>`;
 
                 corpo.innerHTML += `
                     <tr>
-                        <td><strong>#${a.id}</strong></td>
+                        <td style="text-align:center;"><span class="placa-box">${a.placa}</span></td>
                         <td>
                             <div style="font-weight:bold; color:#003399;">${a.nome.toUpperCase()}</div>
                             <div style="font-size:11px; color:#888;">${a.cidade}</div>
                         </td>
-                        <td style="font-weight:bold;">${a.cat}</td>
+                        <td style="font-weight:bold; font-size:12px;">${a.cat}</td>
                         <td class="no-print">${badge}</td>
                         <td><div class="campo-manual"></div></td>
                     </tr>
                 `;
             });
 
-            // Atualiza Resumo (Só na tela)
             document.getElementById('total-atletas').innerText = totalInscritos;
             document.getElementById('total-caixa').innerText = totalCaixa.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
-        // Inicia a tabela
         renderizarTabela();
     </script>
 </body>
