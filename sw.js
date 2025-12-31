@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dh-pe-v8'; // MUDAMOS PARA V8
+const CACHE_NAME = 'dh-pe-v9'; // MUDAMOS PARA V8
 const ASSETS = [
   'index.html',
   'dashboard.html',
