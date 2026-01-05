@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>FPC Sistema V11</title>
+    <title>FPC Sistema V12</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f1c3f">
@@ -13,13 +13,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     
     <script>
-        if (!window.location.search.includes('v=11')) {
+        // ANTI-CACHE V12
+        if (!window.location.search.includes('v=12')) {
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then(function(regs) {
                     for(let reg of regs) reg.unregister();
                 });
             }
-            var newUrl = window.location.href.split('?')[0] + '?v=11';
+            var newUrl = window.location.href.split('?')[0] + '?v=12';
             window.location.replace(newUrl);
         }
     </script>
@@ -37,47 +38,42 @@
         h1 { font-size: 1.5rem; font-weight: 900; }
         .sub { color: #fdd000; font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; }
 
-        /* GERAL */
+        /* FORM */
         .form-box { width: 100%; max-width: 400px; }
-        .input-group { margin-bottom: 15px; }
+        .input-group { margin-bottom: 15px; position: relative; } /* Relative para o ícone do olho */
         .input-group label { display: block; color: #ccc; margin-bottom: 5px; font-weight: 600; font-size: 0.85rem; }
-        .input-group input { width: 100%; height: 50px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; padding: 0 15px; font-size: 1rem; outline: none; }
+        .input-group input { width: 100%; height: 50px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; padding: 0 15px; padding-right: 45px; font-size: 1rem; outline: none; }
+        .input-group input:focus { border-color: #fdd000; background: rgba(255,255,255,0.1); }
         
+        /* ÍCONE DO OLHO */
+        .eye-icon { position: absolute; right: 15px; top: 38px; color: #ccc; font-size: 1.1rem; cursor: pointer; z-index: 10; }
+
+        /* BOTÕES */
         .btn { width: 100%; height: 55px; border-radius: 10px; border: none; font-size: 1rem; font-weight: 800; text-transform: uppercase; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; }
         .btn-primary { background: #fdd000; color: #0f1c3f; }
         .btn-outline { background: transparent; border: 2px solid #fdd000; color: #fdd000; margin-top: 15px; }
-        
-        .footer-tech { margin-top: auto; padding: 20px 0; text-align: center; width: 100%; opacity: 0.7; }
+
+        /* PAGINAS */
         .page { display: none; width: 100%; animation: fade 0.3s; flex-direction: column; align-items: center; }
         .page.active { display: flex; }
         @keyframes fade { from { opacity:0; } to { opacity:1; } }
 
-        /* DASHBOARD PRINCIPAL (GRID 6 ITENS) */
+        /* DASHBOARD GRID */
         .dash-header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; margin-top: 10px; }
         .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
-        .dash-item { background: rgba(255,255,255,0.08); border-radius: 15px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; align-items: center; aspect-ratio: 1; justify-content: center; cursor: pointer; transition: transform 0.1s; }
-        .dash-item:active { transform: scale(0.95); background: rgba(255,255,255,0.15); }
-        .dash-item i { font-size: 2rem; color: #fdd000; margin-bottom: 8px; }
-        .dash-item b { font-size: 0.9rem; }
-
-        /* SUB-MENU (MODALIDADE) */
+        .dash-item { background: rgba(255,255,255,0.08); border-radius: 15px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; align-items: center; aspect-ratio: 1; justify-content: center; cursor: pointer; }
+        
+        /* SUBMENU */
         .submenu-list { width: 100%; display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
-        .menu-btn { width: 100%; height: 70px; background: rgba(255,255,255,0.1); border-radius: 12px; display: flex; align-items: center; padding: 0 20px; cursor: pointer; border-left: 5px solid #fdd000; transition: 0.2s; }
-        .menu-btn:active { background: rgba(255,255,255,0.2); }
+        .menu-btn { width: 100%; height: 70px; background: rgba(255,255,255,0.1); border-radius: 12px; display: flex; align-items: center; padding: 0 20px; cursor: pointer; border-left: 5px solid #fdd000; }
         .menu-btn i { font-size: 1.5rem; color: #fdd000; margin-right: 20px; width: 30px; text-align: center; }
         .menu-btn div { text-align: left; }
         .menu-btn h4 { font-size: 1rem; text-transform: uppercase; margin-bottom: 3px; }
         .menu-btn p { font-size: 0.7rem; color: #ccc; }
 
-        /* TABELA RANKING */
-        .rank-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .rank-table th { background: #fdd000; color: #0f1c3f; padding: 10px; text-align: left; font-size: 0.9rem; }
-        .rank-table td { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; }
-        .rank-pos { font-weight: bold; color: #fdd000; width: 40px; }
+        /* FOOTER */
+        .footer-tech { margin-top: auto; padding: 20px 0; text-align: center; width: 100%; opacity: 0.7; }
         
-        /* CARDS DE EVENTO */
-        .event-card { width: 100%; background: rgba(255,255,255,0.1); border-left: 5px solid #fdd000; padding: 15px; margin-bottom: 10px; border-radius: 8px; text-align: left; }
-
         /* MODAL MANUAL */
         #manual-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; display: none; justify-content: center; align-items: center; padding: 30px; }
     </style>
@@ -90,7 +86,7 @@
             <div class="header">
                 <div class="logo-circle"><img src="logo-fpc.png"></div>
                 <h1>F.P.C.</h1>
-                <div class="sub">SISTEMA ATLETA V11</div>
+                <div class="sub">SISTEMA ATLETA V12</div>
             </div>
 
             <div id="install-btn-area" style="display:none; width:100%; max-width:400px; margin-bottom:15px;">
@@ -101,29 +97,71 @@
 
             <div class="form-box">
                 <div class="input-group"><label>CPF</label><input type="tel" id="login-cpf" oninput="maskCPF(this)"></div>
-                <div class="input-group"><label>SENHA</label><input type="password" id="login-pass"></div>
+                
+                <div class="input-group">
+                    <label>SENHA</label>
+                    <input type="password" id="login-pass">
+                    <i class="fas fa-eye eye-icon" onclick="togglePass('login-pass', this)"></i>
+                </div>
 
                 <button class="btn btn-primary" onclick="login()">ENTRAR</button>
-                <div style="text-align:center; margin-top:15px; font-size:0.8rem; color:#aaa;" onclick="alert('Funcionalidade na V10')"><u>Esqueci minha senha</u></div>
+                
+                <div style="text-align:center; margin-top:15px; font-size:0.8rem; color:#aaa;" onclick="mudarTela('pg-recover')">
+                    <u>Esqueci minha senha</u>
+                </div>
                 
                 <button class="btn btn-outline" onclick="mudarTela('pg-register')">CRIAR NOVA CONTA</button>
             </div>
             
             <div class="footer-tech">
-                <span style="background:#e30613; padding:4px 10px; border-radius:4px; font-size:0.7rem; font-weight:bold;">VERSÃO 11.0</span>
+                <span style="background:#e30613; padding:4px 10px; border-radius:4px; font-size:0.7rem; font-weight:bold;">VERSÃO 12.0</span>
                 <span style="display:block; margin-top:10px; color:#aaa; font-size:0.7rem; text-decoration:underline;" onclick="forcarUpdate()">Forçar Atualização</span>
             </div>
         </div>
 
         <div id="pg-register" class="page">
             <h2 style="margin: 20px 0;">NOVA FILIAÇÃO</h2>
-            <div class="form-box">
-                <div class="input-group"><label>Nome</label><input type="text" id="reg-nome"></div>
+            <div class="form-box" style="padding-bottom:50px;">
+                <div class="input-group"><label>Nome Completo</label><input type="text" id="reg-nome"></div>
                 <div class="input-group"><label>Nascimento</label><input type="date" id="reg-nasc"></div>
                 <div class="input-group"><label>CPF</label><input type="tel" id="reg-cpf" oninput="maskCPF(this)"></div>
-                <div class="input-group"><label>Senha</label><input type="password" id="reg-pass"></div>
-                <button class="btn btn-primary" onclick="registrar()">SALVAR</button>
+                
+                <div class="input-group">
+                    <label>Crie uma Senha</label>
+                    <input type="password" id="reg-pass">
+                    <i class="fas fa-eye eye-icon" onclick="togglePass('reg-pass', this)"></i>
+                </div>
+
+                <div class="input-group" style="margin-top:20px; border-top:1px dashed #555; padding-top:15px;">
+                    <label style="color:#fdd000;">Palavra de Segurança (Importante)</label>
+                    <p style="font-size:0.7rem; color:#aaa; margin-bottom:5px;">Ex: Nome da mãe, nome do cachorro. Usado para recuperar senha.</p>
+                    <input type="text" id="reg-sec" placeholder="Digite sua palavra secreta">
+                </div>
+
+                <button class="btn btn-primary" onclick="registrar()">SALVAR DADOS</button>
                 <button class="btn btn-outline" onclick="mudarTela('pg-login')">VOLTAR</button>
+            </div>
+        </div>
+
+        <div id="pg-recover" class="page">
+            <h2 style="margin: 30px 0;">RECUPERAR</h2>
+            <div class="form-box">
+                <p style="text-align:center; margin-bottom:20px; color:#ccc; font-size:0.9rem;">Para sua segurança, confirme seus dados.</p>
+                
+                <div id="rec-step-1">
+                    <div class="input-group"><label>Seu CPF</label><input type="tel" id="rec-cpf" oninput="maskCPF(this)"></div>
+                    <button class="btn btn-primary" onclick="buscarConta()">BUSCAR</button>
+                </div>
+
+                <div id="rec-step-2" style="display:none; animation: fade 0.5s;">
+                    <div class="input-group">
+                        <label style="color:#fdd000;">Qual sua Palavra de Segurança?</label>
+                        <input type="text" id="rec-sec-check">
+                    </div>
+                    <button class="btn btn-primary" onclick="validarRecuperacao()">VER SENHA</button>
+                </div>
+
+                <button class="btn btn-outline" onclick="mudarTela('pg-login')">CANCELAR</button>
             </div>
         </div>
 
@@ -149,70 +187,23 @@
                 <h2 id="sub-title">DOWNHILL</h2>
                 <div class="sub">MENU DA MODALIDADE</div>
             </div>
-
             <div class="submenu-list">
                 <div class="menu-btn" onclick="abrirCalendario()">
                     <i class="far fa-calendar-alt"></i>
-                    <div><h4>Calendário / Inscrição</h4><p>Próximas etapas e pagamentos</p></div>
+                    <div><h4>Calendário / Inscrição</h4><p>Etapas e pagamentos</p></div>
                 </div>
-                
-                <div class="menu-btn" onclick="abrirRanking()">
+                <div class="menu-btn" onclick="alert('Em breve')">
                     <i class="fas fa-trophy"></i>
-                    <div><h4>Ranking 2026</h4><p>Pontuação atualizada</p></div>
-                </div>
-
-                <div class="menu-btn" onclick="alert('PDF do Regulamento abriria aqui')">
-                    <i class="fas fa-scroll"></i>
-                    <div><h4>Regulamento</h4><p>Regras oficiais da temporada</p></div>
-                </div>
-                
-                <div class="menu-btn" onclick="alert('Sistema de filiação anual')">
-                    <i class="fas fa-id-card"></i>
-                    <div><h4>Filiação Anual</h4><p>Renove sua carteirinha</p></div>
+                    <div><h4>Ranking 2026</h4><p>Pontuação</p></div>
                 </div>
             </div>
-
-            <button class="btn btn-outline" onclick="mudarTela('pg-dash')">VOLTAR AO INÍCIO</button>
+            <button class="btn btn-outline" onclick="mudarTela('pg-dash')">VOLTAR</button>
         </div>
 
         <div id="pg-events" class="page">
-            <h3 style="margin:20px 0; color:#fdd000;">PRÓXIMAS ETAPAS</h3>
-            <div class="form-box" id="events-list">
-                </div>
+            <h3 style="margin:20px 0; color:#fdd000;">ETAPAS 2026</h3>
+            <div class="form-box" id="events-list"></div>
             <button class="btn btn-outline" onclick="mudarTela('pg-submenu')">VOLTAR</button>
-        </div>
-
-        <div id="pg-ranking" class="page">
-            <h3 style="margin:20px 0; color:#fdd000;">RANKING TOP 5</h3>
-            <div style="width:100%; overflow-x:auto;">
-                <table class="rank-table">
-                    <thead><tr><th>#</th><th>Atleta</th><th>Pts</th></tr></thead>
-                    <tbody>
-                        <tr><td class="rank-pos">1</td><td>Carlos Silva</td><td>250</td></tr>
-                        <tr><td class="rank-pos">2</td><td>João Pedro</td><td>220</td></tr>
-                        <tr><td class="rank-pos">3</td><td>Lucas Bike</td><td>180</td></tr>
-                        <tr><td class="rank-pos">4</td><td>Maria Downhill</td><td>150</td></tr>
-                        <tr><td class="rank-pos">5</td><td>Pedro Santos</td><td>100</td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <button class="btn btn-outline" onclick="mudarTela('pg-submenu')">VOLTAR</button>
-        </div>
-
-        <div id="pg-pay" class="page">
-            <h3 style="margin:20px 0;">CONFIRMAR</h3>
-            <div class="form-box" style="background:rgba(255,255,255,0.05); padding:20px; border-radius:12px;">
-                <p style="color:#aaa; font-size:0.8rem;">EVENTO</p>
-                <h3 id="pay-event" style="margin-bottom:15px;">...</h3>
-                <p style="color:#aaa; font-size:0.8rem;">CATEGORIA</p>
-                <h3 id="pay-cat" style="color:#fdd000; margin-bottom:15px;">...</h3>
-                <div style="border-top:1px dashed #555; margin:15px 0;"></div>
-                <p>Valor: <strong style="color:#00ff6a; font-size:1.2rem;">R$ 120,00</strong></p>
-                <p style="margin-top:20px; font-size:0.8rem;">Chave PIX:</p>
-                <input type="text" value="00020126360014BR.GOV..." style="width:100%; padding:10px; border-radius:5px; border:none; text-align:center;" readonly>
-                <button class="btn btn-primary" onclick="alert('Simulação OK!')">JÁ PAGUEI</button>
-            </div>
-            <button class="btn btn-outline" onclick="mudarTela('pg-events')">CANCELAR</button>
         </div>
 
         <div id="manual-modal" onclick="this.style.display='none'">
@@ -227,16 +218,31 @@
     </div>
 
     <script>
-        // === DADOS ===
-        let users = JSON.parse(localStorage.getItem('users_v11')) || [];
+        // === DADOS E VARIÁVEIS ===
+        let users = JSON.parse(localStorage.getItem('users_v12')) || [];
         let currentUser = null;
-        let currentModalidade = "";
+        let tempRecUser = null; // Usuário temporário para recuperação
 
         const eventsDB = [
             {id:1, local:"Ouricuri-PE", data:"25/26 Abr", mod:"Downhill"},
-            {id:2, local:"Caruaru-PE", data:"16/17 Mai", mod:"Downhill"},
-            {id:3, local:"Recife-PE", data:"10/11 Jun", mod:"Speed"}
+            {id:2, local:"Caruaru-PE", data:"16/17 Mai", mod:"Downhill"}
         ];
+
+        // === FUNÇÃO DO OLHINHO (SENHA) ===
+        function togglePass(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+                icon.style.color = "#fdd000";
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+                icon.style.color = "#ccc";
+            }
+        }
 
         // === NAVEGAÇÃO ===
         function mudarTela(id) {
@@ -245,83 +251,91 @@
             window.scrollTo(0,0);
         }
 
-        // === SUBMENUS INTELIGENTES ===
-        function abrirSubmenu(modalidade) {
-            currentModalidade = modalidade;
-            document.getElementById('sub-title').innerText = modalidade.toUpperCase();
-            
-            // Troca ícone
-            let iconClass = "fas fa-bicycle";
-            if(modalidade === 'Downhill') iconClass = "fas fa-mountain";
-            if(modalidade === 'Speed') iconClass = "fas fa-tachometer-alt";
-            if(modalidade === 'MTB') iconClass = "fas fa-biking";
-            document.getElementById('sub-icon').className = iconClass;
-
+        // === SUBMENU E EVENTOS ===
+        function abrirSubmenu(mod) {
+            document.getElementById('sub-title').innerText = mod.toUpperCase();
             mudarTela('pg-submenu');
         }
-
         function abrirCalendario() {
             const list = document.getElementById('events-list');
             list.innerHTML = "";
-            // Filtra eventos da modalidade atual
-            const eventosFiltrados = eventsDB.filter(e => e.mod === currentModalidade);
-            
-            if(eventosFiltrados.length === 0) {
-                list.innerHTML = "<p style='text-align:center; color:#aaa; margin-top:20px;'>Nenhum evento desta modalidade em breve.</p>";
-            } else {
-                eventosFiltrados.forEach(ev => {
-                    list.innerHTML += `
-                    <div class="event-card">
-                        <h4>${ev.local}</h4>
-                        <p>Data: ${ev.data}</p>
-                        <button class="btn btn-primary" style="height:40px; font-size:0.8rem;" onclick="irPagamento(${ev.id})">INSCREVER</button>
-                    </div>`;
-                });
-            }
+            eventsDB.forEach(ev => {
+                list.innerHTML += `
+                <div style="background:rgba(255,255,255,0.1); padding:15px; border-radius:10px; margin-bottom:10px; border-left:4px solid #fdd000; text-align:left;">
+                    <h4>${ev.local}</h4><p>${ev.data}</p>
+                    <button class="btn btn-primary" style="height:40px; margin-top:10px;" onclick="alert('Inscrição Simulada!')">INSCREVER</button>
+                </div>`;
+            });
             mudarTela('pg-events');
         }
 
-        function abrirRanking() {
-            mudarTela('pg-ranking');
-        }
-
-        // === PAGAMENTO ===
-        function irPagamento(id) {
-            let ev = eventsDB.find(e => e.id === id);
-            document.getElementById('pay-event').innerText = ev.local;
-            document.getElementById('pay-cat').innerText = getCategoria(currentUser.nasc);
-            mudarTela('pg-pay');
-        }
-
-        // === CATEGORIA ===
-        function getCategoria(nasc) {
-            if(!nasc) return "Visitante";
-            const idade = new Date().getFullYear() - new Date(nasc).getFullYear();
-            if(idade <= 18) return "Júnior";
-            if(idade <= 29) return "Sub-30";
-            if(idade <= 39) return "Master A";
-            return "Master B+";
-        }
-
-        // === AUTH BÁSICO ===
+        // === AUTH & SEGURANÇA ===
         function registrar() {
-            const nome=document.getElementById('reg-nome').value, cpf=document.getElementById('reg-cpf').value, pass=document.getElementById('reg-pass').value, nasc=document.getElementById('reg-nasc').value;
-            if(!nome||!cpf||!pass) return alert("Preencha tudo");
-            users.push({nome,cpf,pass,nasc}); localStorage.setItem('users_v11',JSON.stringify(users));
-            alert("Sucesso!"); mudarTela('pg-login');
+            const nome = document.getElementById('reg-nome').value;
+            const cpf = document.getElementById('reg-cpf').value;
+            const pass = document.getElementById('reg-pass').value;
+            const sec = document.getElementById('reg-sec').value; // Palavra de Segurança
+
+            if(!nome || !cpf || !pass || !sec) return alert("Preencha todos os campos, incluindo a Palavra de Segurança!");
+            
+            if(users.find(u => u.cpf === cpf)) return alert("CPF já cadastrado!");
+
+            users.push({ nome, cpf, pass, sec });
+            localStorage.setItem('users_v12', JSON.stringify(users));
+            alert("Cadastro realizado! Lembre-se da sua Palavra de Segurança.");
+            mudarTela('pg-login');
         }
+
         function login() {
-            const cpf=document.getElementById('login-cpf').value, pass=document.getElementById('login-pass').value;
+            const cpf = document.getElementById('login-cpf').value;
+            const pass = document.getElementById('login-pass').value;
             let u = users.find(x => x.cpf==cpf && x.pass==pass);
-            if(u){ currentUser=u; document.getElementById('user-name').innerText=u.nome.split(' ')[0]; mudarTela('pg-dash'); }
-            else alert("Erro login");
+            if(u){ 
+                currentUser=u; 
+                document.getElementById('user-name').innerText=u.nome.split(' ')[0]; 
+                mudarTela('pg-dash'); 
+            } else {
+                alert("Login inválido.");
+            }
+        }
+
+        // === LÓGICA DE RECUPERAÇÃO ===
+        function buscarConta() {
+            const cpf = document.getElementById('rec-cpf').value;
+            tempRecUser = users.find(u => u.cpf === cpf);
+            
+            if(tempRecUser) {
+                // Se achou o CPF, mostra a pergunta de segurança
+                document.getElementById('rec-step-1').style.display = 'none';
+                document.getElementById('rec-step-2').style.display = 'block';
+                // Verifica se o usuário tem palavra salva (usuários antigos podem não ter)
+                if(!tempRecUser.sec) {
+                    alert("Este usuário antigo não definiu Palavra de Segurança. Crie uma nova conta.");
+                    mudarTela('pg-register');
+                }
+            } else {
+                alert("CPF não encontrado.");
+            }
+        }
+
+        function validarRecuperacao() {
+            const attempt = document.getElementById('rec-sec-check').value;
+            if(attempt.toLowerCase().trim() === tempRecUser.sec.toLowerCase().trim()) {
+                alert("VALIDADO! Sua senha é: " + tempRecUser.pass);
+                // Reseta tela
+                mudarTela('pg-login');
+                document.getElementById('rec-step-1').style.display = 'block';
+                document.getElementById('rec-step-2').style.display = 'none';
+                document.getElementById('rec-sec-check').value = "";
+            } else {
+                alert("Palavra de Segurança INCORRETA!");
+            }
         }
 
         // === UTILITÁRIOS ===
         function maskCPF(i){i.value=i.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");}
-        function forcarUpdate(){ if(confirm("Atualizar?")) window.location.href=window.location.href.split('?')[0]+'?v='+new Date().getTime(); }
+        function forcarUpdate(){ if(confirm("Atualizar agora?")) window.location.href=window.location.href.split('?')[0]+'?v='+new Date().getTime(); }
         
-        // Install Logic
         let deferredPrompt; window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById('install-btn-area').style.display='block'; });
         function acaoInstalar(){ if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;});}else{document.getElementById('manual-modal').style.display='flex';} }
     </script>
