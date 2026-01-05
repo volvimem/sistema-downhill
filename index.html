@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>FPC Sistema V13 (Completo)</title>
+    <title>FPC Sistema V14</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f1c3f">
@@ -13,14 +13,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     
     <script>
-        // ANTI-CACHE V13
-        if (!window.location.search.includes('v=13')) {
+        // ANTI-CACHE V14
+        if (!window.location.search.includes('v=14')) {
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then(function(regs) {
                     for(let reg of regs) reg.unregister();
                 });
             }
-            var newUrl = window.location.href.split('?')[0] + '?v=13';
+            var newUrl = window.location.href.split('?')[0] + '?v=14';
             window.location.replace(newUrl);
         }
     </script>
@@ -38,13 +38,11 @@
         h1 { font-size: 1.5rem; font-weight: 900; }
         .sub { color: #fdd000; font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; }
 
-        /* FORMULÁRIOS & INPUTS */
+        /* INPUTS & FORM */
         .form-box { width: 100%; max-width: 400px; }
         .input-group { margin-bottom: 15px; position: relative; }
         .input-group label { display: block; color: #ccc; margin-bottom: 5px; font-weight: 600; font-size: 0.85rem; }
-        .input-group input, .input-group select { width: 100%; height: 50px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; padding: 0 15px; font-size: 1rem; outline: none; }
-        
-        /* ÍCONE OLHO */
+        .input-group input { width: 100%; height: 50px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; padding: 0 15px; font-size: 1rem; outline: none; }
         .eye-icon { position: absolute; right: 15px; top: 38px; color: #ccc; font-size: 1.1rem; cursor: pointer; z-index: 10; }
 
         /* BOTÕES */
@@ -52,14 +50,39 @@
         .btn-primary { background: #fdd000; color: #0f1c3f; box-shadow: 0 4px 15px rgba(253, 208, 0, 0.2); }
         .btn-outline { background: transparent; border: 2px solid #fdd000; color: #fdd000; margin-top: 15px; }
 
-        /* SISTEMA DE ABAS (TABS) - RESTAURADO */
+        /* MENU DE ABAS (TABS) */
         .tabs-container { width: 100%; display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .tab-btn { flex: 1; padding: 15px 5px; text-align: center; font-size: 0.8rem; font-weight: bold; color: #aaa; background: transparent; border: none; cursor: pointer; text-transform: uppercase; }
         .tab-btn.active { color: #fdd000; border-bottom: 3px solid #fdd000; }
         .tab-content { display: none; width: 100%; animation: fade 0.3s; }
         .tab-content.active { display: block; }
 
-        /* TELAS */
+        /* LISTA DE EVENTOS (LAYOUT ANTERIOR) */
+        .event-list-container { width: 100%; display: flex; flex-direction: column; gap: 15px; }
+        .event-card { 
+            background: rgba(255,255,255,0.1); 
+            border-radius: 12px; 
+            padding: 20px; 
+            border-left: 5px solid #fdd000;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .event-card:active { transform: scale(0.98); background: rgba(255,255,255,0.2); }
+        .event-card h3 { font-size: 1.1rem; text-transform: uppercase; margin-bottom: 5px; color: white; }
+        .event-card p { color: #ccc; font-size: 0.9rem; margin-bottom: 10px; }
+        .status-badge { background: #009640; color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; display: inline-block; }
+
+        /* SUBMENU (ÍCONES GRANDES) */
+        .submenu-btn {
+            width: 100%; background: rgba(255,255,255,0.08); padding: 20px; margin-bottom: 15px;
+            border-radius: 12px; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer;
+        }
+        .submenu-btn i { font-size: 1.8rem; color: #fdd000; margin-right: 20px; width: 40px; text-align: center; }
+        .submenu-btn div { text-align: left; }
+        .submenu-btn h4 { margin: 0; font-size: 1rem; text-transform: uppercase; }
+        .submenu-btn span { font-size: 0.75rem; color: #aaa; }
+
+        /* PAGINAS */
         .page { display: none; width: 100%; animation: fade 0.3s; flex-direction: column; align-items: center; }
         .page.active { display: flex; }
         @keyframes fade { from { opacity:0; } to { opacity:1; } }
@@ -68,7 +91,7 @@
         .dash-header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; margin-top: 10px; }
         .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
         .dash-item { background: rgba(255,255,255,0.08); border-radius: 15px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; align-items: center; aspect-ratio: 1; justify-content: center; cursor: pointer; }
-
+        
         /* TABELAS CBC */
         .cbc-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
         .cbc-table td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -86,7 +109,7 @@
             <div class="header">
                 <div class="logo-circle"><img src="logo-fpc.png"></div>
                 <h1>F.P.C.</h1>
-                <div class="sub">SISTEMA ATLETA V13</div>
+                <div class="sub">SISTEMA ATLETA V14</div>
             </div>
             
             <div id="install-btn-area" style="display:none; width:100%; max-width:400px; margin-bottom:15px;">
@@ -108,7 +131,7 @@
             </div>
             
             <div style="margin-top:auto; padding:20px; text-align:center;">
-                <span style="background:#e30613; padding:4px 10px; border-radius:4px; font-size:0.7rem; font-weight:bold;">VERSÃO 13.0 (COMPLETA)</span>
+                <span style="background:#e30613; padding:4px 10px; border-radius:4px; font-size:0.7rem; font-weight:bold;">VERSÃO 14.0 (CORRIGIDA)</span>
                 <span style="display:block; margin-top:10px; color:#aaa; font-size:0.7rem; text-decoration:underline;" onclick="forcarUpdate()">Forçar Atualização</span>
             </div>
         </div>
@@ -117,22 +140,18 @@
             <h2 style="margin: 20px 0;">NOVA FILIAÇÃO</h2>
             <div class="form-box" style="padding-bottom:50px;">
                 <div class="input-group"><label>Nome Completo</label><input type="text" id="reg-nome"></div>
-                <div class="input-group"><label>Data de Nascimento (Cálculo CBC)</label><input type="date" id="reg-nasc"></div>
-                <div class="input-group"><label>WhatsApp</label><input type="tel" id="reg-phone" oninput="maskPhone(this)" placeholder="(00) 00000-0000"></div>
+                <div class="input-group"><label>Data de Nascimento</label><input type="date" id="reg-nasc"></div>
+                <div class="input-group"><label>WhatsApp</label><input type="tel" id="reg-phone" oninput="maskPhone(this)"></div>
                 <div class="input-group"><label>CPF</label><input type="tel" id="reg-cpf" oninput="maskCPF(this)"></div>
-                
                 <div class="input-group">
                     <label>Senha</label>
                     <input type="password" id="reg-pass">
                     <i class="fas fa-eye eye-icon" onclick="togglePass('reg-pass', this)"></i>
                 </div>
-                
                 <div class="input-group" style="margin-top:20px; border-top:1px dashed #555; padding-top:15px;">
                     <label style="color:#fdd000;">Palavra de Segurança</label>
-                    <p style="font-size:0.7rem; color:#aaa; margin-bottom:5px;">Para recuperar senha (Ex: Nome da mãe)</p>
-                    <input type="text" id="reg-sec">
+                    <input type="text" id="reg-sec" placeholder="Ex: Nome da mãe">
                 </div>
-
                 <button class="btn btn-primary" onclick="registrar()">SALVAR DADOS</button>
                 <button class="btn btn-outline" onclick="mudarTela('pg-login')">VOLTAR</button>
             </div>
@@ -174,21 +193,36 @@
                 <h2 id="sub-title">DOWNHILL</h2>
                 <div class="sub">MENU DA MODALIDADE</div>
             </div>
-            <div class="form-box" style="width:100%;">
-                <div class="dash-item" style="flex-direction:row; justify-content: flex-start; margin-bottom:15px;" onclick="abrirEventoDetalhe()">
-                    <i class="far fa-calendar-alt" style="margin-right:20px; font-size:1.5rem;"></i>
-                    <div style="text-align:left;"><b>Etapa 1: Ouricuri-PE</b><br><span style="font-size:0.7rem; color:#aaa;">25/26 Abril</span></div>
+            
+            <div class="form-box">
+                <div class="submenu-btn" onclick="abrirListaEventos()">
+                    <i class="far fa-calendar-alt"></i>
+                    <div><h4>Calendário / Inscrição</h4><span>Próximas etapas 2026</span></div>
                 </div>
-                <div class="dash-item" style="flex-direction:row; justify-content: flex-start; margin-bottom:15px;" onclick="alert('Em breve')">
-                    <i class="fas fa-trophy" style="margin-right:20px; font-size:1.5rem;"></i>
-                    <div style="text-align:left;"><b>Ranking 2026</b><br><span style="font-size:0.7rem; color:#aaa;">Pontuação</span></div>
+
+                <div class="submenu-btn" onclick="alert('Em breve')">
+                    <i class="fas fa-trophy"></i>
+                    <div><h4>Ranking 2026</h4><span>Pontuação atualizada</span></div>
+                </div>
+                
+                 <div class="submenu-btn" onclick="alert('Em breve')">
+                    <i class="fas fa-scroll"></i>
+                    <div><h4>Regulamento</h4><span>Regras Oficiais</span></div>
                 </div>
             </div>
+            
             <button class="btn btn-outline" onclick="mudarTela('pg-dash')">VOLTAR</button>
         </div>
 
+        <div id="pg-events-list" class="page">
+            <h3 style="margin:20px 0; color:#fdd000;">ETAPAS 2026</h3>
+            <div class="form-box event-list-container" id="events-container">
+                </div>
+            <button class="btn btn-outline" onclick="mudarTela('pg-submenu')">VOLTAR</button>
+        </div>
+
         <div id="pg-event-detail" class="page">
-            <h3 style="margin:20px 0; color:#fdd000;">ETAPA OURICURI-PE</h3>
+            <h3 style="margin:20px 0; color:#fdd000;" id="detail-title">ETAPA</h3>
             
             <div class="tabs-container">
                 <button class="tab-btn active" onclick="switchTab('tab-info')">INFO</button>
@@ -197,49 +231,44 @@
             </div>
 
             <div id="tab-info" class="tab-content active form-box">
-                <p><b>Local:</b> Pista da Serra do Gavião</p>
-                <p><b>Data:</b> 25 e 26 de Abril de 2026</p>
+                <p><b>Local:</b> <span id="detail-local">...</span></p>
+                <p><b>Data:</b> <span id="detail-data">...</span></p>
                 <br>
-                <p>Estrutura completa com resgate, cronometragem eletrônica e pontuação válida para o ranking estadual.</p>
+                <p>Estrutura completa, resgate e cronometragem oficial.</p>
             </div>
 
             <div id="tab-cat" class="tab-content form-box">
-                <p style="margin-bottom:15px; font-size:0.8rem; color:#ccc;">Categorias Oficiais CBC 2026:</p>
+                <p style="margin-bottom:10px; font-size:0.8rem; color:#ccc;">Categorias Oficiais CBC:</p>
                 <table class="cbc-table">
-                    <tr><td class="cbc-header">Elite</td><td>Critério Técnico (Open)</td></tr>
-                    <tr><td class="cbc-header">Junior</td><td>17 a 18 anos</td></tr>
-                    <tr><td class="cbc-header">Sub-30</td><td>19 a 29 anos</td></tr>
-                    <tr><td class="cbc-header">Master A1</td><td>30 a 34 anos</td></tr>
-                    <tr><td class="cbc-header">Master A2</td><td>35 a 39 anos</td></tr>
-                    <tr><td class="cbc-header">Master B1</td><td>40 a 44 anos</td></tr>
-                    <tr><td class="cbc-header">Master B2</td><td>45 a 49 anos</td></tr>
-                    <tr><td class="cbc-header">Master C1</td><td>50 a 54 anos</td></tr>
-                    <tr><td class="cbc-header">Master C2</td><td>55 a 59 anos</td></tr>
-                    <tr><td class="cbc-header">Master D</td><td>60 anos ou +</td></tr>
-                    <tr><td class="cbc-header">Rígida</td><td>Livre (Hardtail)</td></tr>
+                    <tr><td class="cbc-header">Elite</td><td>Critério Técnico</td></tr>
+                    <tr><td class="cbc-header">Junior</td><td>17-18 anos</td></tr>
+                    <tr><td class="cbc-header">Sub-30</td><td>19-29 anos</td></tr>
+                    <tr><td class="cbc-header">Master A</td><td>30-39 anos</td></tr>
+                    <tr><td class="cbc-header">Master B</td><td>40-49 anos</td></tr>
+                    <tr><td class="cbc-header">Master C</td><td>50-59 anos</td></tr>
+                    <tr><td class="cbc-header">Master D</td><td>60+ anos</td></tr>
+                    <tr><td class="cbc-header">Rígida</td><td>Livre</td></tr>
                 </table>
             </div>
 
             <div id="tab-insc" class="tab-content form-box">
                 <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
                     <p style="color:#aaa; font-size:0.8rem;">SUA CATEGORIA AUTOMÁTICA</p>
-                    <h2 id="user-cat-display" style="color:#fdd000; margin-bottom:15px;">Calculando...</h2>
-                    
+                    <h2 id="user-cat-display" style="color:#fdd000; margin-bottom:15px;">...</h2>
                     <div style="border-top:1px dashed #555; margin:15px 0;"></div>
-                    <p>Valor Inscrição: <strong style="color:#00ff6a; font-size:1.2rem;">R$ 120,00</strong></p>
-                    
-                    <button class="btn btn-primary" onclick="alert('PIX Gerado com Sucesso!')">GERAR PIX</button>
+                    <p>Valor: <strong style="color:#00ff6a; font-size:1.2rem;">R$ 120,00</strong></p>
+                    <button class="btn btn-primary" onclick="alert('PIX Gerado!')">GERAR PIX</button>
                 </div>
             </div>
 
-            <button class="btn btn-outline" style="margin-top:20px;" onclick="mudarTela('pg-submenu')">VOLTAR</button>
+            <button class="btn btn-outline" style="margin-top:20px;" onclick="mudarTela('pg-events-list')">VOLTAR</button>
         </div>
 
         <div id="manual-modal" onclick="this.style.display='none'">
             <div style="text-align: center;">
                 <i class="fas fa-arrow-up" style="font-size:3rem; color:var(--fpc-yellow); margin-bottom:30px;"></i>
                 <h3 style="color:white; margin-bottom:20px;">Instalar App</h3>
-                <p style="color:#ccc; font-size:1.1rem; line-height:1.6;">Toque no menu do navegador e escolha: <strong>"Adicionar à Tela Inicial"</strong></p>
+                <p style="color:#ccc; font-size:1.1rem; line-height:1.6;">Toque no menu e selecione: <strong>"Adicionar à Tela Inicial"</strong></p>
                 <button style="margin-top:30px; padding:10px 20px; background:#fdd000; border:none; border-radius:5px; font-weight:bold;">ENTENDI</button>
             </div>
         </div>
@@ -247,17 +276,24 @@
     </div>
 
     <script>
-        // === DADOS E VARIÁVEIS ===
-        let users = JSON.parse(localStorage.getItem('users_v13')) || [];
+        // === DADOS DO SISTEMA ===
+        let users = JSON.parse(localStorage.getItem('users_v14')) || [];
         let currentUser = null;
         let tempRecUser = null;
+        let currentModalidade = "";
 
-        // === LÓGICA DE IDADE CBC (O CORAÇÃO DO SISTEMA) ===
+        // === LISTA DE ETAPAS (RESTAURADA AQUI) ===
+        const eventsDB = [
+            { id: 1, local: "Etapa Ouricuri-PE", data: "25 e 26 de Abril", status: "Aberto" },
+            { id: 2, local: "Etapa Caruaru-PE", data: "16 e 17 de Maio", status: "Em Breve" },
+            { id: 3, local: "Etapa Santa Cruz-PE", data: "29 e 30 de Agosto", status: "Em Breve" }
+        ];
+
+        // === LÓGICA DE IDADE CBC ===
         function calcularCategoriaCBC(nascimento) {
             if(!nascimento) return "Visitante";
-            
             const anoNasc = new Date(nascimento).getFullYear();
-            const anoAtual = new Date().getFullYear(); // 2026 no caso
+            const anoAtual = new Date().getFullYear();
             const idade = anoAtual - anoNasc;
 
             if (idade <= 18) return "Júnior (Até 18)";
@@ -272,7 +308,7 @@
             return "Categoria Indefinida";
         }
 
-        // === NAVEGAÇÃO E ABAS ===
+        // === NAVEGAÇÃO ===
         function mudarTela(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -280,29 +316,69 @@
         }
 
         function switchTab(tabId) {
-            // Remove active de todos os botões e conteúdos
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
-            // Ativa o clicado
             document.getElementById(tabId).classList.add('active');
             event.target.classList.add('active');
         }
 
         function abrirSubmenu(mod) {
+            currentModalidade = mod;
             document.getElementById('sub-title').innerText = mod.toUpperCase();
+            
+            // Ícone Dinâmico
+            let icon = "fas fa-bicycle";
+            if(mod === "Downhill") icon = "fas fa-mountain";
+            if(mod === "Speed") icon = "fas fa-tachometer-alt";
+            if(mod === "MTB") icon = "fas fa-biking";
+            document.getElementById('sub-icon').className = icon;
+            
             mudarTela('pg-submenu');
         }
 
-        function abrirEventoDetalhe() {
-            // Calcula categoria na hora de abrir
+        // === FUNÇÃO QUE GERA A LISTA DE ETAPAS (O QUE FALTAVA) ===
+        function abrirListaEventos() {
+            const container = document.getElementById('events-container');
+            container.innerHTML = "";
+            
+            // Gera os cards baseado na eventsDB
+            eventsDB.forEach(ev => {
+                container.innerHTML += `
+                <div class="event-card" onclick="abrirDetalheEvento(${ev.id})">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <h3>${ev.local}</h3>
+                        <span class="status-badge">${ev.status}</span>
+                    </div>
+                    <p><i class="far fa-calendar-alt"></i> ${ev.data}</p>
+                    <div style="color:#fdd000; font-size:0.8rem; font-weight:bold;">TOQUE PARA INSCREVER &rarr;</div>
+                </div>`;
+            });
+            
+            mudarTela('pg-events-list');
+        }
+
+        function abrirDetalheEvento(id) {
+            let evento = eventsDB.find(e => e.id === id);
+            
+            // Preenche os dados da tela de detalhe
+            document.getElementById('detail-title').innerText = evento.local.toUpperCase();
+            document.getElementById('detail-local').innerText = evento.local;
+            document.getElementById('detail-data').innerText = evento.data;
+            
             if(currentUser) {
                 document.getElementById('user-cat-display').innerText = calcularCategoriaCBC(currentUser.nasc);
             }
+
+            // Reseta para a primeira aba
+            switchTab('tab-info');
+            // Gambiarra visual para resetar botões das abas
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.tab-btn').classList.add('active'); // Ativa o primeiro botão
+
             mudarTela('pg-event-detail');
         }
 
-        // === AUTH E SEGURANÇA ===
+        // === AUTH & SEGURANÇA ===
         function togglePass(inputId, icon) {
             const input = document.getElementById(inputId);
             if (input.type === "password") { input.type = "text"; icon.classList.remove("fa-eye"); icon.classList.add("fa-eye-slash"); icon.style.color = "#fdd000"; } 
@@ -311,12 +387,10 @@
 
         function registrar() {
             const nome=document.getElementById('reg-nome').value, nasc=document.getElementById('reg-nasc').value, phone=document.getElementById('reg-phone').value, cpf=document.getElementById('reg-cpf').value, pass=document.getElementById('reg-pass').value, sec=document.getElementById('reg-sec').value;
-            
             if(!nome || !nasc || !phone || !cpf || !pass || !sec) return alert("Preencha todos os campos!");
             if(users.find(u => u.cpf === cpf)) return alert("CPF já cadastrado!");
-
             users.push({ nome, nasc, phone, cpf, pass, sec });
-            localStorage.setItem('users_v13', JSON.stringify(users));
+            localStorage.setItem('users_v14', JSON.stringify(users));
             alert("Cadastro realizado!"); mudarTela('pg-login');
         }
 
@@ -327,20 +401,15 @@
             else alert("Login inválido.");
         }
 
-        // === RECUPERAÇÃO ===
         function buscarConta() {
             const cpf = document.getElementById('rec-cpf').value;
             tempRecUser = users.find(u => u.cpf === cpf);
-            if(tempRecUser) {
-                document.getElementById('rec-step-1').style.display = 'none';
-                document.getElementById('rec-step-2').style.display = 'block';
-            } else alert("CPF não encontrado.");
+            if(tempRecUser) { document.getElementById('rec-step-1').style.display='none'; document.getElementById('rec-step-2').style.display='block'; }
+            else alert("CPF não encontrado.");
         }
-
         function validarRecuperacao() {
             if(document.getElementById('rec-sec-check').value.toLowerCase().trim() === tempRecUser.sec.toLowerCase().trim()) {
-                alert("Sua senha é: " + tempRecUser.pass); mudarTela('pg-login');
-                document.getElementById('rec-step-1').style.display = 'block'; document.getElementById('rec-step-2').style.display = 'none';
+                alert("Sua senha é: " + tempRecUser.pass); mudarTela('pg-login'); document.getElementById('rec-step-1').style.display='block'; document.getElementById('rec-step-2').style.display='none';
             } else alert("Palavra incorreta!");
         }
 
