@@ -2,11 +2,40 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <meta name="theme-color" content="#003399"> <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#003399">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="FPC Atleta">
+    
+    <link rel="manifest" id="my-manifest">
+    <script>
+        // Gera o manifesto dinamicamente com base na logo local
+        const manifest = {
+            "name": "FPC Sistema Atleta",
+            "short_name": "FPC Atleta",
+            "start_url": ".",
+            "display": "standalone",
+            "background_color": "#001a4d",
+            "theme_color": "#003399",
+            "orientation": "portrait",
+            "icons": [
+                {
+                    "src": "logo-fpc.png", 
+                    "sizes": "512x512",
+                    "type": "image/png"
+                }
+            ]
+        };
+        const stringManifest = JSON.stringify(manifest);
+        const blob = new Blob([stringManifest], {type: 'application/json'});
+        const manifestURL = URL.createObjectURL(blob);
+        document.querySelector('#my-manifest').setAttribute('href', manifestURL);
+    </script>
     
     <link rel="icon" type="image/png" href="logo-fpc.png">
+    <link rel="apple-touch-icon" href="logo-fpc.png">
     
     <title>FPC - Sistema Atleta</title>
     
@@ -16,13 +45,10 @@
 
     <style>
         :root {
-            /* Cores Extraídas da Logo FPC */
-            --fpc-blue: #0f1c3f;    /* Azul Marinho Escuro da Logo */
-            --fpc-yellow: #fdd000;  /* Amarelo da Estrela */
-            --fpc-red: #e30613;     /* Vermelho da Faixa */
-            --fpc-green: #009640;   /* Verde da Faixa */
-            
-            --bg-dark: #0a0e17;
+            --fpc-blue: #0f1c3f;
+            --fpc-yellow: #fdd000;
+            --fpc-red: #e30613;
+            --fpc-green: #009640;
             --glass: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.1);
             --text: #ffffff;
@@ -30,7 +56,6 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            /* Fundo com as cores institucionais */
             background: linear-gradient(160deg, var(--fpc-blue) 0%, #000000 90%);
             color: var(--text);
             margin: 0;
@@ -39,6 +64,8 @@
             align-items: flex-start;
             min-height: 100vh;
             background-attachment: fixed;
+            user-select: none; /* Sensação de App nativo */
+            -webkit-tap-highlight-color: transparent;
         }
 
         .container {
@@ -56,31 +83,15 @@
             padding-bottom: 40px;
         }
 
-        /* HEADER COM LOGO FPC */
-        .app-header {
-            text-align: center;
-            margin-bottom: 25px;
-            margin-top: 10px;
-        }
+        /* HEADER */
+        .app-header { text-align: center; margin-bottom: 25px; margin-top: 10px; }
         .logo-area {
-            width: 110px;
-            height: 110px;
-            background: white;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 110px; height: 110px; background: white; border-radius: 50%;
+            margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;
             border: 4px solid var(--fpc-yellow);
-            box-shadow: 0 0 30px rgba(253, 208, 0, 0.2);
-            overflow: hidden;
-            position: relative;
+            box-shadow: 0 0 30px rgba(253, 208, 0, 0.2); overflow: hidden;
         }
-        .logo-area img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ajuste para a logo preencher bem */
-        }
+        .logo-area img { width: 100%; height: 100%; object-fit: cover; }
         h2 { font-weight: 800; text-transform: uppercase; margin: 0; font-size: 1.8em; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         .subtitle { font-size: 0.75em; color: var(--fpc-yellow); letter-spacing: 1px; text-transform: uppercase; margin-top: 5px; font-weight: 600; }
 
@@ -88,162 +99,91 @@
         .input-group { margin-bottom: 15px; text-align: left; }
         .input-group label { display: block; margin-bottom: 6px; font-size: 0.85em; color: #ccc; margin-left: 5px; font-weight: 600; }
         .input-group input {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            background: var(--glass);
-            color: white;
-            box-sizing: border-box;
-            outline: none;
-            transition: 0.3s;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1rem;
+            width: 100%; padding: 14px; border: 1px solid var(--glass-border); border-radius: 12px;
+            background: var(--glass); color: white; box-sizing: border-box; outline: none;
+            transition: 0.3s; font-family: 'Montserrat', sans-serif; font-size: 1rem;
         }
         .input-group input:focus { border-color: var(--fpc-yellow); background: rgba(255,255,255, 0.05); }
 
-        /* BOTÕES ESTILIZADOS */
+        /* BOTÕES */
         button {
-            width: 100%;
-            padding: 16px;
+            width: 100%; padding: 16px;
             background: linear-gradient(90deg, var(--fpc-yellow), #e6bc00);
-            border: none;
-            color: var(--fpc-blue);
-            font-weight: 800;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(253, 208, 0, 0.2);
-            transition: transform 0.2s, box-shadow 0.2s;
+            border: none; color: var(--fpc-blue); font-weight: 800; border-radius: 12px;
+            cursor: pointer; font-size: 16px; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(253, 208, 0, 0.2); transition: transform 0.2s;
         }
         button:active { transform: scale(0.98); }
         
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--fpc-yellow);
-            color: var(--fpc-yellow);
-            box-shadow: none;
-            margin-top: 10px;
-        }
+        .btn-outline { background: transparent; border: 2px solid var(--fpc-yellow); color: var(--fpc-yellow); box-shadow: none; margin-top: 10px; }
         
-        .btn-reset {
-            background: transparent;
-            border: 1px dashed #555;
-            color: #777;
-            font-size: 0.7em;
-            width: auto;
-            padding: 8px 20px;
-            margin-top: 40px;
-            box-shadow: none;
+        /* BOTÃO DE INSTALAÇÃO PWA */
+        #install-btn {
+            display: none; /* Escondido por padrão, aparece via JS */
+            background: linear-gradient(90deg, #009640, #00b34d);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 150, 64, 0.3);
+            animation: pulse 2s infinite;
         }
-        .btn-reset:hover { border-color: var(--fpc-red); color: var(--fpc-red); }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
 
-        /* LINKS */
-        .link { text-align: center; margin-top: 20px; font-size: 0.9em; cursor: pointer; color: #aaa; transition: 0.2s; }
-        .link:hover { color: white; }
+        /* BOTÃO IOS */
+        #ios-install-btn {
+            display: none; /* Aparece só se for iOS */
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;
+        }
+
+        .link { text-align: center; margin-top: 20px; font-size: 0.9em; cursor: pointer; color: #aaa; }
         .link span { color: var(--fpc-yellow); font-weight: bold; }
 
         /* VIEWS */
-        .view { display: none; animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .view { display: none; animation: fadeIn 0.5s; }
         .view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .hidden { display: none; }
 
-        /* MENU GRID */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .menu-item {
-            background: var(--glass);
-            padding: 25px 15px;
-            border-radius: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        /* MODAL IOS */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 1000; display: none;
+            justify-content: center; align-items: end;
         }
-        .menu-item:hover {
-            border-color: var(--fpc-yellow);
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(253, 208, 0, 0.2);
+        .modal-content {
+            background: #1a1a1a; width: 100%; padding: 30px 20px; border-radius: 20px 20px 0 0;
+            text-align: center; border-top: 2px solid var(--fpc-yellow);
+            animation: slideUp 0.3s;
         }
-        .menu-item i { font-size: 32px; margin-bottom: 12px; color: var(--fpc-yellow); filter: drop-shadow(0 0 5px rgba(253,208,0,0.5)); }
-        .menu-item p { margin: 0; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-        /* PARCEIROS GRID */
-        .partner-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 15px;
-        }
-        .partner-card {
-            background: white;
-            border-radius: 12px;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            opacity: 0.95;
-            transition: 0.3s;
-        }
-        .partner-card:hover { transform: scale(1.02); opacity: 1; }
+        /* OUTROS ESTILOS (Menu, Cards, Ticket) mantidos do anterior */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .menu-item { background: var(--glass); padding: 25px 15px; border-radius: 16px; text-align: center; cursor: pointer; border: 1px solid transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .menu-item:hover { border-color: var(--fpc-yellow); background: rgba(255, 255, 255, 0.15); transform: translateY(-5px); }
+        .menu-item i { font-size: 32px; margin-bottom: 12px; color: var(--fpc-yellow); }
+        .menu-item p { margin: 0; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; }
+
+        .partner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .partner-card { background: white; border-radius: 12px; height: 80px; display: flex; align-items: center; justify-content: center; padding: 15px; opacity: 0.95; }
         .partner-card i { font-size: 2.5em; color: #333; }
 
-        /* CARDS E LISTAS */
-        .event-card { 
-            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
-            border-left: 5px solid var(--fpc-yellow);
-            padding: 20px; border-radius: 10px; margin-bottom: 15px; 
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .event-card h4 { margin: 0 0 8px 0; color: var(--fpc-yellow); font-size: 1.2em; text-transform: uppercase; }
-        .event-btn { 
-            background: linear-gradient(90deg, var(--fpc-yellow), #e6bc00); 
-            color: var(--fpc-blue); padding: 12px; border-radius: 8px; font-weight: bold; 
-            margin-top: 15px; border: none; cursor: pointer; width: 100%; text-transform: uppercase;
-        }
-
-        .submenu-item {
-            background: var(--glass); padding: 20px; border-radius: 12px; display: flex; align-items: center;
-            cursor: pointer; transition: 0.2s; margin-bottom: 12px; border: 1px solid transparent;
-        }
-        .submenu-item:hover { border-color: var(--fpc-yellow); background: rgba(255,255,255,0.1); }
-        .submenu-item i { font-size: 22px; color: var(--fpc-yellow); width: 45px; text-align: center; }
-        .submenu-item span { font-weight: 600; font-size: 1rem; }
-
-        /* HEADER INTERNO */
         .dash-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.15); }
         .user-welcome { font-size: 0.85em; color: #ccc; }
         .user-name { font-size: 1.3em; color: var(--fpc-yellow); font-weight: 800; text-transform: uppercase; }
 
-        /* TICKET OFICIAL */
-        #ticket-area {
-            background: linear-gradient(135deg, var(--fpc-blue) 0%, #000 100%);
-            border: 2px solid var(--fpc-yellow); padding: 25px; border-radius: 18px;
-            text-align: center; margin-bottom: 25px; position: relative; overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-        }
+        #ticket-area { background: linear-gradient(135deg, var(--fpc-blue) 0%, #000 100%); border: 2px solid var(--fpc-yellow); padding: 25px; border-radius: 18px; text-align: center; margin-bottom: 25px; position: relative; overflow: hidden; }
         .flag-strip { height: 8px; width: 100%; display: flex; margin-bottom: 20px; border-radius: 4px; overflow: hidden; }
         .fs-r { flex: 1; background: var(--fpc-red); }
         .fs-y { flex: 1; background: var(--fpc-yellow); }
         .fs-g { flex: 1; background: var(--fpc-green); }
-
-        .ticket-title { color: white; font-size: 1.3em; text-transform: uppercase; font-weight: 900; margin-bottom: 20px; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
+        .ticket-title { color: white; font-size: 1.3em; text-transform: uppercase; font-weight: 900; margin-bottom: 20px; }
         .ticket-info { color: white; margin-bottom: 12px; font-size: 1em; border-bottom: 1px dashed rgba(255,255,255,0.15); padding-bottom: 8px; }
-        .ticket-info strong { color: var(--fpc-yellow); font-size: 0.75em; text-transform: uppercase; display: block; margin-bottom: 3px; letter-spacing: 1px; }
-        .ticket-status { background: var(--fpc-green); color: white; padding: 8px 25px; border-radius: 30px; font-size: 0.9em; display: inline-block; margin-top: 15px; font-weight: 800; box-shadow: 0 4px 15px rgba(0,155,58,0.4); text-transform: uppercase; }
-        
-        /* Marca d'água FPC */
+        .ticket-info strong { color: var(--fpc-yellow); font-size: 0.75em; text-transform: uppercase; display: block; margin-bottom: 3px; }
+        .ticket-status { background: var(--fpc-green); color: white; padding: 8px 25px; border-radius: 30px; font-size: 0.9em; display: inline-block; margin-top: 15px; font-weight: 800; text-transform: uppercase; }
         .watermark { position: absolute; opacity: 0.08; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70%; pointer-events: none; filter: grayscale(100%); }
+
+        .event-card { background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%); border-left: 5px solid var(--fpc-yellow); padding: 20px; border-radius: 10px; margin-bottom: 15px; }
+        .event-card h4 { margin: 0 0 8px 0; color: var(--fpc-yellow); font-size: 1.2em; text-transform: uppercase; }
+        .event-btn { background: linear-gradient(90deg, var(--fpc-yellow), #e6bc00); color: var(--fpc-blue); padding: 12px; border-radius: 8px; font-weight: bold; margin-top: 15px; border: none; cursor: pointer; width: 100%; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -268,40 +208,38 @@
                 <input type="password" id="login-pass">
             </div>
             <button onclick="fazerLogin()">ACESSAR SISTEMA</button>
+            
+            <button id="install-btn" onclick="installPWA()">📲 INSTALAR APLICATIVO</button>
+            <button id="ios-install-btn" onclick="showIOSGuide()">📲 INSTALAR NO iPHONE</button>
+            
             <div class="link" onclick="toggleView('view-recover')">Recuperar Senha</div>
             <div class="link">Não é filiado? <span onclick="toggleView('view-register')">FILIE-SE AGORA</span></div>
 
-            <div style="text-align: center;">
-                <button class="btn-reset" onclick="resetarSistema()">Limpar Dados (Dev)</button>
+            <div style="text-align: center; margin-top: 30px;">
+                <button style="background:transparent; border:1px dashed #555; color:#777; font-size:0.7em; width:auto; padding:5px 15px; box-shadow:none;" onclick="resetarSistema()">Limpar Dados (Dev)</button>
+            </div>
+        </div>
+
+        <div id="ios-modal" class="modal-overlay" onclick="hideIOSGuide()">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <i class="fab fa-apple" style="font-size: 3em; color: white; margin-bottom: 15px;"></i>
+                <h3 style="color:var(--fpc-yellow); margin:0 0 10px 0;">Instalar no iPhone</h3>
+                <p style="color:#ccc; font-size:0.9em; line-height:1.5;">
+                    1. Toque no botão <strong>Compartilhar</strong> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Apple_Share_Icon.svg/1200px-Apple_Share_Icon.svg.png" width="15" style="filter:invert(1)"> na barra inferior do Safari.<br><br>
+                    2. Role para baixo e toque em <strong>"Adicionar à Tela de Início"</strong>.
+                </p>
+                <button onclick="hideIOSGuide()">ENTENDI</button>
             </div>
         </div>
 
         <div id="view-register" class="view">
             <h3 style="text-align:center; color:white; margin-bottom:20px; font-weight:800;">Ficha de Filiação</h3>
-            <div class="input-group">
-                <label>Nome Completo</label>
-                <input type="text" id="reg-name">
-            </div>
-            <div class="input-group">
-                <label>Data de Nascimento (Cálculo CBC)</label>
-                <input type="date" id="reg-birth">
-            </div>
-            <div class="input-group">
-                <label>WhatsApp</label>
-                <input type="text" id="reg-phone" placeholder="(81) 9 0000-0000" maxlength="16" oninput="maskPhone(this)">
-            </div>
-            <div class="input-group">
-                <label>CPF</label>
-                <input type="text" id="reg-cpf" placeholder="000.000.000-00" maxlength="14" oninput="maskCPF(this)">
-            </div>
-            <div class="input-group">
-                <label>Crie uma Senha</label>
-                <input type="password" id="reg-pass">
-            </div>
-            <div class="input-group">
-                <label>Palavra de Segurança (Ex: Nome da mãe)</label>
-                <input type="text" id="reg-sec-word">
-            </div>
+            <div class="input-group"><label>Nome Completo</label><input type="text" id="reg-name"></div>
+            <div class="input-group"><label>Data de Nascimento (Cálculo CBC)</label><input type="date" id="reg-birth"></div>
+            <div class="input-group"><label>WhatsApp</label><input type="text" id="reg-phone" placeholder="(81) 9 0000-0000" maxlength="16" oninput="maskPhone(this)"></div>
+            <div class="input-group"><label>CPF</label><input type="text" id="reg-cpf" placeholder="000.000.000-00" maxlength="14" oninput="maskCPF(this)"></div>
+            <div class="input-group"><label>Crie uma Senha</label><input type="password" id="reg-pass"></div>
+            <div class="input-group"><label>Palavra de Segurança</label><input type="text" id="reg-sec-word"></div>
             <button onclick="registrarUsuario()">CONCLUIR CADASTRO</button>
             <div class="link" onclick="toggleView('view-login')">Voltar</div>
         </div>
@@ -309,10 +247,7 @@
         <div id="view-recover" class="view">
             <h3 style="text-align:center; margin-bottom:20px; font-weight:800;">Recuperação</h3>
             <div id="rec-step-1">
-                <div class="input-group">
-                    <label>Informe seu CPF</label>
-                    <input type="text" id="rec-cpf" placeholder="000.000.000-00" oninput="maskCPF(this)">
-                </div>
+                <div class="input-group"><label>Informe seu CPF</label><input type="text" id="rec-cpf" placeholder="000.000.000-00" oninput="maskCPF(this)"></div>
                 <button onclick="verificarUsuarioRec()">Continuar</button>
             </div>
             <div id="rec-step-2" class="hidden">
@@ -330,15 +265,10 @@
 
         <div id="view-dashboard" class="view">
             <div class="dash-header">
-                <div>
-                    <span class="user-welcome">Bem-vindo, Atleta</span><br>
-                    <span class="user-name" id="user-name-display">Nome</span>
-                </div>
+                <div><span class="user-welcome">Bem-vindo, Atleta</span><br><span class="user-name" id="user-name-display">Nome</span></div>
                 <i class="fas fa-sign-out-alt" onclick="logout()" style="cursor:pointer; color:var(--fpc-red); font-size: 1.4em;"></i>
             </div>
-            
             <p style="color:#aaa; font-size:0.75em; text-transform:uppercase; margin-bottom:15px; letter-spacing:1px; font-weight:700;">Menu Principal</p>
-            
             <div class="menu-grid">
                 <div class="menu-item" onclick="abrirModalidade('Downhill')"><i class="fas fa-mountain"></i><p>Downhill</p></div>
                 <div class="menu-item" onclick="abrirModalidade('Speed')"><i class="fas fa-tachometer-alt"></i><p>Speed</p></div>
@@ -352,13 +282,7 @@
         </div>
 
         <div id="view-partners" class="view">
-            <div class="dash-header">
-                <div onclick="toggleView('view-dashboard')" style="cursor:pointer; display:flex; align-items:center; gap:10px;">
-                    <i class="fas fa-arrow-left"></i> <strong style="color:var(--fpc-yellow);">Nossos Parceiros</strong>
-                </div>
-            </div>
-            <p style="text-align:center; font-size:0.9em; margin-bottom:20px;">Apoio ao Ciclismo Pernambucano</p>
-            
+            <div class="dash-header"><div onclick="toggleView('view-dashboard')" style="cursor:pointer; display:flex; align-items:center; gap:10px;"><i class="fas fa-arrow-left"></i> <strong style="color:var(--fpc-yellow);">Nossos Parceiros</strong></div></div>
             <div class="partner-grid">
                 <div class="partner-card"><i class="fas fa-bicycle"></i></div>
                 <div class="partner-card"><i class="fas fa-store"></i></div>
@@ -371,15 +295,9 @@
         </div>
 
         <div id="view-category" class="view">
-            <div class="dash-header">
-                <div onclick="toggleView('view-dashboard')" style="cursor:pointer; display:flex; align-items:center; gap:10px;">
-                    <i class="fas fa-arrow-left"></i> <strong style="color:var(--fpc-yellow); font-size:1.2em;" id="cat-title">Categoria</strong>
-                </div>
-            </div>
+            <div class="dash-header"><div onclick="toggleView('view-dashboard')" style="cursor:pointer; display:flex; align-items:center; gap:10px;"><i class="fas fa-arrow-left"></i> <strong style="color:var(--fpc-yellow); font-size:1.2em;" id="cat-title">Categoria</strong></div></div>
             <div class="submenu-list">
-                <div class="submenu-item" onclick="abrirCalendario()">
-                    <i class="far fa-calendar-check"></i> <span>Calendário & Inscrições</span>
-                </div>
+                <div class="submenu-item" onclick="abrirCalendario()"><i class="far fa-calendar-check"></i> <span>Calendário & Inscrições</span></div>
                 <div class="submenu-item"><i class="fas fa-id-card"></i> <span>Carteirinha Digital</span></div>
                 <div class="submenu-item"><i class="fas fa-shield-alt" style="color:var(--fpc-yellow);"></i> <span>Seguro Atleta</span></div>
                 <div class="submenu-item"><i class="fas fa-trophy"></i> <span>Ranking Estadual</span></div>
@@ -388,59 +306,36 @@
         </div>
 
         <div id="view-events" class="view">
-            <div class="dash-header">
-                <div onclick="toggleView('view-category')" style="cursor:pointer; display:flex; align-items:center; gap:10px;">
-                    <i class="fas fa-arrow-left"></i> <strong>Etapas 2026</strong>
-                </div>
-            </div>
+            <div class="dash-header"><div onclick="toggleView('view-category')" style="cursor:pointer; display:flex; align-items:center; gap:10px;"><i class="fas fa-arrow-left"></i> <strong>Etapas 2026</strong></div></div>
             <div id="events-container"></div>
         </div>
 
         <div id="view-payment" class="view">
             <h3 style="text-align:center; color:var(--fpc-yellow);">Confirmar Inscrição</h3>
             <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:12px; margin-bottom:20px; border:1px solid rgba(255,255,255,0.1);">
-                <p style="color:#aaa; font-size:0.8em; margin:0;">EVENTO</p>
-                <strong id="pay-event-name" style="font-size:1.1em; display:block; margin-bottom:15px;">...</strong>
-                
-                <p style="color:#aaa; font-size:0.8em; margin:0;">SUA CATEGORIA (CBC)</p>
-                <strong id="pay-category" style="color:var(--fpc-yellow); font-size:1.1em; display:block; margin-bottom:15px;">...</strong>
-                
-                <div style="border-top:1px dashed #444; padding-top:10px; margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
-                    <span>Valor da Inscrição:</span>
-                    <strong style="color:var(--fpc-green); font-size:1.4em;">R$ 120,00</strong>
-                </div>
+                <p style="color:#aaa; font-size:0.8em; margin:0;">EVENTO</p><strong id="pay-event-name" style="font-size:1.1em; display:block; margin-bottom:15px;">...</strong>
+                <p style="color:#aaa; font-size:0.8em; margin:0;">SUA CATEGORIA</p><strong id="pay-category" style="color:var(--fpc-yellow); font-size:1.1em; display:block; margin-bottom:15px;">...</strong>
+                <div style="border-top:1px dashed #444; padding-top:10px; margin-top:10px; display:flex; justify-content:space-between; align-items:center;"><span>Valor:</span><strong style="color:var(--fpc-green); font-size:1.4em;">R$ 120,00</strong></div>
             </div>
-
-            <div style="text-align:center; margin-bottom:20px;">
-                <p style="margin-bottom:5px; font-size:0.9em;">Chave PIX (Copia e Cola)</p>
-                <input type="text" value="00020126360014BR.GOV.BCB.PIX..." style="text-align:center; width:100%; padding:14px; background:rgba(0,0,0,0.3); color:var(--fpc-yellow); border:1px dashed var(--fpc-yellow); font-size:0.9em; border-radius:8px;" readonly>
-            </div>
-
+            <div style="text-align:center; margin-bottom:20px;"><p style="margin-bottom:5px; font-size:0.9em;">Chave PIX</p><input type="text" value="00020126360014BR.GOV.BCB.PIX..." style="text-align:center; width:100%; padding:14px; background:rgba(0,0,0,0.3); color:var(--fpc-yellow); border:1px dashed var(--fpc-yellow); font-size:0.9em; border-radius:8px;" readonly></div>
             <button onclick="gerarConfirmacao()">JÁ FIZ O PIX</button>
             <div class="link" onclick="toggleView('view-events')">Cancelar</div>
         </div>
 
         <div id="view-ticket" class="view">
             <h3 style="text-align:center; color:white;">Inscrição Confirmada!</h3>
-            
             <div id="ticket-area">
                 <img class="watermark" src="logo-fpc.png" alt="Marca FPC">
-                
-                <div class="flag-strip">
-                    <div class="fs-r"></div><div class="fs-y"></div><div class="fs-g"></div>
-                </div>
+                <div class="flag-strip"><div class="fs-r"></div><div class="fs-y"></div><div class="fs-g"></div></div>
                 <div class="ticket-title">Comprovante FPC</div>
-                
                 <div class="ticket-info"><strong>Atleta</strong> <span id="ticket-name">...</span></div>
                 <div class="ticket-info"><strong>CPF</strong> <span id="ticket-cpf">...</span></div>
                 <div class="ticket-info"><strong>Evento</strong> <span id="ticket-event">...</span></div>
                 <div class="ticket-info"><strong>Data</strong> <span id="ticket-date">...</span></div>
                 <div class="ticket-info" style="border:none;"><strong>Categoria Oficial</strong> <span id="ticket-cat" style="color:var(--fpc-yellow); font-weight:800; font-size:1.1em;">...</span></div>
-                
                 <div class="ticket-status">PAGAMENTO APROVADO</div>
                 <div style="margin-top:15px; font-size:0.6em; color:rgba(255,255,255,0.6);">Federação Pernambucana de Ciclismo • ID: <span id="ticket-id">000</span></div>
             </div>
-
             <button onclick="downloadComprovante()"><i class="fas fa-download"></i> BAIXAR TICKET</button>
             <div class="link" onclick="toggleView('view-dashboard')">Voltar ao Início</div>
         </div>
@@ -448,7 +343,48 @@
     </div>
 
     <script>
-        // === DADOS EVENTOS ===
+        // === PWA INSTALL LOGIC ===
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+        const iosBtn = document.getElementById('ios-install-btn');
+
+        // Detecta se é iOS (iPhone/iPad)
+        const isIos = () => {
+          const userAgent = window.navigator.userAgent.toLowerCase();
+          return /iphone|ipad|ipod/.test( userAgent );
+        }
+
+        // Se for iOS, mostra o botão "Instalar no iPhone"
+        if (isIos()) {
+            iosBtn.style.display = 'block';
+        }
+
+        // Captura o evento nativo do Chrome/Android para instalar
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block'; // Mostra botão verde
+        });
+
+        // Ação do Botão Android/Chrome
+        async function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                installBtn.style.display = 'none';
+            }
+        }
+
+        // Funções do Guia iOS
+        function showIOSGuide() {
+            document.getElementById('ios-modal').style.display = 'flex';
+        }
+        function hideIOSGuide() {
+            document.getElementById('ios-modal').style.display = 'none';
+        }
+
+        // === RESTO DA LÓGICA (Mantida igual ao anterior) ===
         const eventosDownhill = [
             { id: 1, local: "Ouricuri-PE", data: "25 e 26 de Abril", nome: "DH Ouricuri Challenge" },
             { id: 2, local: "Caruaru-PE", data: "16 e 17 de Maio", nome: "Caruaru Downhill Cup" },
@@ -459,13 +395,11 @@
         let eventoSelecionado = null;
         let usuarioLogado = null;
 
-        // === CÁLCULO DE CATEGORIA CBC ===
         function calcularCategoria(dataNascimento) {
             if(!dataNascimento) return "Categoria não definida";
             const anoNasc = new Date(dataNascimento).getFullYear();
             const anoAtual = new Date().getFullYear();
             const idade = anoAtual - anoNasc;
-
             if (idade <= 11) return "Mirim (Até 11)";
             if (idade >= 12 && idade <= 14) return "Infanto-Juvenil (12-14)";
             if (idade >= 15 && idade <= 16) return "Juvenil (15-16)";
@@ -481,7 +415,6 @@
             return "Categoria Indefinida"; 
         }
 
-        // === NAVEGAÇÃO ===
         function toggleView(viewId) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.getElementById(viewId).classList.add('active');
@@ -494,7 +427,6 @@
             toggleView('view-category');
         }
 
-        // === EVENTOS E INSCRIÇÃO ===
         function abrirCalendario() {
             if(document.getElementById('cat-title').innerText !== "Downhill") {
                 alert("Calendário disponível apenas para Downhill no momento.");
@@ -502,16 +434,10 @@
             }
             const container = document.getElementById('events-container');
             container.innerHTML = ""; 
-
             eventosDownhill.forEach(ev => {
                 const card = document.createElement('div');
                 card.className = 'event-card';
-                card.innerHTML = `
-                    <h4><i class="fas fa-map-marker-alt"></i> ${ev.local}</h4>
-                    <p><strong>Evento:</strong> ${ev.nome}</p>
-                    <p><strong>Data:</strong> ${ev.data}</p>
-                    <button class="event-btn" onclick="iniciarInscricao(${ev.id})">INSCREVER-SE</button>
-                `;
+                card.innerHTML = `<h4><i class="fas fa-map-marker-alt"></i> ${ev.local}</h4><p><strong>Evento:</strong> ${ev.nome}</p><p><strong>Data:</strong> ${ev.data}</p><button class="event-btn" onclick="iniciarInscricao(${ev.id})">INSCREVER-SE</button>`;
                 container.appendChild(card);
             });
             toggleView('view-events');
@@ -537,7 +463,6 @@
 
         function downloadComprovante() {
             const element = document.getElementById("ticket-area");
-            // Usa cor de fundo da FPC para garantir que a imagem não saia transparente
             html2canvas(element, { backgroundColor: "#0f1c3f", scale: 2 }).then(canvas => {
                 const link = document.createElement("a");
                 link.download = `Inscricao_FPC_${eventoSelecionado.local}.png`;
@@ -546,7 +471,6 @@
             });
         }
 
-        // === AUTH E UTILITÁRIOS ===
         function resetarSistema() {
             if(confirm("Deseja resetar o sistema e apagar todos os usuários?")) {
                 localStorage.removeItem('bikeUsers');
@@ -562,13 +486,10 @@
             const cpf = document.getElementById('reg-cpf').value;
             const pass = document.getElementById('reg-pass').value;
             const secWord = document.getElementById('reg-sec-word').value;
-
             if(!nome || !nasc || !pass || !cpf || !secWord) return alert("Preencha todos os campos.");
             if(!validarCPF(cpf)) return alert("CPF Inválido.");
-
             let usuarios = JSON.parse(localStorage.getItem('bikeUsers')) || [];
             if(usuarios.find(u => u.cpf === cpf)) return alert("CPF já cadastrado.");
-
             usuarios.push({ nome, nasc, phone, cpf, pass, secWord });
             localStorage.setItem('bikeUsers', JSON.stringify(usuarios));
             alert("Cadastro realizado! Faça login.");
@@ -587,18 +508,10 @@
         }
 
         function logout(){ location.reload(); }
-
-        // Máscaras e Validação
         function maskCPF(i){let v=i.value.replace(/\D/g,"");v=v.replace(/(\d{3})(\d)/,"$1.$2");v=v.replace(/(\d{3})(\d)/,"$1.$2");v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");i.value=v;}
         function maskPhone(i){let v=i.value.replace(/\D/g,"");v=v.replace(/^(\d\d)(\d)/,"($1) $2");v=v.replace(/(\d)(\d{4})$/,"$1-$2");i.value=v;}
         function validarCPF(cpf){cpf=cpf.replace(/[^\d]+/g,'');if(cpf=='')return false;if(cpf.length!=11||/^(\d)\1{10}$/.test(cpf))return false;let a=0;for(let i=0;i<9;i++)a+=parseInt(cpf.charAt(i))*(10-i);let r=11-(a%11);if(r==10||r==11)r=0;if(r!=parseInt(cpf.charAt(9)))return false;a=0;for(let i=0;i<10;i++)a+=parseInt(cpf.charAt(i))*(11-i);r=11-(a%11);if(r==10||r==11)r=0;if(r!=parseInt(cpf.charAt(10)))return false;return true;}
 
-        // Recuperação
         let userRec=null, methodRec=null, smsCode=null;
         function resetRecovery(){document.getElementById('rec-step-1').style.display='block';document.getElementById('rec-step-2').classList.add('hidden');document.getElementById('rec-step-3').classList.add('hidden');}
-        function verificarUsuarioRec(){const c=document.getElementById('rec-cpf').value;let u=JSON.parse(localStorage.getItem('bikeUsers'))||[];userRec=u.find(k=>k.cpf===c);if(userRec){document.getElementById('rec-step-1').style.display='none';document.getElementById('rec-step-2').classList.remove('hidden');}else alert("CPF não encontrado.");}
-        function escolherMetodo(m){methodRec=m;document.getElementById('rec-step-2').classList.add('hidden');document.getElementById('rec-step-3').classList.remove('hidden');if(m==='sms'){smsCode=Math.floor(1000+Math.random()*9000);alert("SMS Enviado: "+smsCode);document.getElementById('rec-instruction').innerText="Digite o código SMS:";}else{document.getElementById('rec-instruction').innerText="Sua Palavra de Segurança:";}}
-        function finalizarRecuperacao(){const r=document.getElementById('rec-input-validate').value;if(methodRec==='sms'){if(parseInt(r)===smsCode){alert("Senha: "+userRec.pass);toggleView('view-login');}else alert("Código incorreto");}else{if(r.trim().toLowerCase()===userRec.secWord.trim().toLowerCase()){alert("Senha: "+userRec.pass);toggleView('view-login');}else alert("Palavra incorreta");}}
-    </script>
-</body>
-</html>
+        function verificarUsuarioRec(){const c=document.getElementById('rec-cpf').value;let u=JSON.parse(localStorage.getItem('bikeUsers'))||[];userRec=u.find(k=>k.cpf===c);if(userRec){
