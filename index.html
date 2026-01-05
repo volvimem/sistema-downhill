@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>FPC Atleta V9</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f1c3f">
+    <link rel="icon" type="image/png" href="logo-fpc.png">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        // SCRIPT ANTI-CACHE V9
+        if (!window.location.search.includes('v=9')) {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(regs) {
+                    for(let reg of regs) reg.unregister();
+                });
+            }
+            // Força o recarregamento com a nova versão
+            var newUrl = window.location.href.split('?')[0] + '?v=9';
+            window.location.replace(newUrl);
+        }
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0f1c3f;
+            color: white;
+            width: 100vw;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            flex: 1;
+            background: linear-gradient(180deg, #0f1c3f 0%, #000 100%);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* HEADER */
+        .header {
+            display: flex; flex-direction: column; align-items: center;
+            margin-top: 30px; margin-bottom: 20px;
+        }
+        .logo-circle {
+            width: 120px; height: 120px;
+            background: white; border-radius: 50%;
+            border: 4px solid #fdd000;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 10px; overflow: hidden;
+            box-shadow: 0 0 30px rgba(253, 208, 0, 0.3);
+        }
+        .logo-circle img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.4); }
+        h1 { font-size: 1.8rem; font-weight: 900; margin-bottom: 5px; }
+        .sub { color: #fdd000; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; }
+
+        /* BOTÃO INSTALAR (VERDE PULSANTE) */
+        #install-area { width: 100%; max-width: 400px; margin-bottom: 20px; }
+        .btn-install {
+            width: 100%; height: 55px;
+            background: linear-gradient(90deg, #009640, #00c753);
+            color: white; border: 2px solid #00ff6a;
+            border-radius: 12px; font-weight: 900; font-size: 1rem;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            animation: pulse 2s infinite; cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 150, 64, 0.5);
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+
+        /* FORMULÁRIO */
+        .form-box { width: 100%; max-width: 400px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; color: #ccc; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
+        .input-group input {
+            width: 100%; height: 55px;
+            border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05); color: white;
+            padding: 0 15px; font-size: 1.1rem; outline: none;
+        }
+        .input-group input:focus { border-color: #fdd000; background: rgba(255,255,255,0.1); }
+
+        /* BOTÕES AÇÃO */
+        .btn {
+            width: 100%; height: 55px; border-radius: 12px; border: none;
+            font-size: 1rem; font-weight: 800; text-transform: uppercase;
+            cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center;
+        }
+        .btn-primary { background: #fdd000; color: #0f1c3f; box-shadow: 0 4px 15px rgba(253, 208, 0, 0.2); }
+        .btn-outline { background: transparent; border: 2px solid #fdd000; color: #fdd000; margin-top: 15px; }
+
+        /* RODAPÉ TÉCNICO */
+        .footer-tech { margin-top: auto; padding: 20px 0; text-align: center; width: 100%; opacity: 0.7; }
+        .version-tag { background: #e30613; color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; }
+        .refresh-link { display: block; margin-top: 10px; color: #aaa; font-size: 0.7rem; text-decoration: underline; cursor: pointer; }
+
+        /* TELAS */
+        .page { display: none; width: 100%; animation: fade 0.3s; flex-direction: column; align-items: center; }
+        .page.active { display: flex; }
+        @keyframes fade { from { opacity:0; } to { opacity:1; } }
+
+        /* DASHBOARD */
+        .dash-header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; margin-top: 10px; }
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
+        .dash-item { background: rgba(255,255,255,0.08); border-radius: 18px; padding: 25px; text-align: center; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; align-items: center; aspect-ratio: 1; justify-content: center; }
+
+        /* MODAL MANUAL */
+        #manual-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 9999; display: none;
+            justify-content: center; align-items: center; padding: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div id="pg-login" class="page active">
+            <div class="header">
+                <div class="logo-circle"><img src="logo-fpc.png"></div>
+                <h1>F.P.C.</h1>
+                <div class="sub">SISTEMA ATLETA</div>
+            </div>
+
+            <div id="install-area">
+                <button class="btn-install" onclick="acaoInstalar()">
+                    <i class="fas fa-download"></i> INSTALAR APP
+                </button>
+            </div>
+
+            <div class="form-box">
+                <div class="input-group">
+                    <label>CPF</label>
+                    <input type="tel" id="login-cpf" placeholder="000.000.000-00" oninput="mask(this)">
+                </div>
+                <div class="input-group">
+                    <label>SENHA</label>
+                    <input type="password" id="login-pass">
+                </div>
+
+                <button class="btn btn-primary" onclick="login()">ENTRAR</button>
+                
+                <button class="btn btn-outline" onclick="mudarTela('pg-register')">CRIAR NOVA CONTA</button>
+            </div>
+
+            <div class="footer-tech">
+                <span class="version-tag">VERSÃO 9.0</span>
+                <span class="refresh-link" onclick="forcarUpdate()">
+                    <i class="fas fa-sync-alt"></i> Toque aqui se travar (Forçar Update)
+                </span>
+            </div>
+        </div>
+
+        <div id="pg-register" class="page">
+            <h2 style="margin: 30px 0 20px 0;">NOVA FILIAÇÃO</h2>
+            <div class="form-box">
+                <div class="input-group"><label>Nome Completo</label><input type="text" id="reg-nome"></div>
+                <div class="input-group"><label>CPF</label><input type="tel" id="reg-cpf" oninput="mask(this)"></div>
+                <div class="input-group"><label>Senha</label><input type="password" id="reg-pass"></div>
+                <button class="btn btn-primary" onclick="registrar()">SALVAR DADOS</button>
+                <button class="btn btn-outline" onclick="mudarTela('pg-login')">VOLTAR</button>
+            </div>
+        </div>
+
+        <div id="pg-dash" class="page">
+            <div class="dash-header">
+                <div><span style="color:#ccc; font-size:0.8rem;">Bem-vindo,</span><br><span style="color:#fdd000; font-size:1.5rem; font-weight:800;" id="user-name">Atleta</span></div>
+                <i class="fas fa-sign-out-alt" style="font-size:1.6rem; color:#e30613;" onclick="location.reload()"></i>
+            </div>
+            <div class="dash-grid">
+                <div class="dash-item"><i class="fas fa-mountain" style="font-size:2.2rem; color:#fdd000; margin-bottom:10px;"></i><b>Downhill</b></div>
+                <div class="dash-item"><i class="fas fa-tachometer-alt" style="font-size:2.2rem; color:#fdd000; margin-bottom:10px;"></i><b>Speed</b></div>
+                <div class="dash-item"><i class="fas fa-biking" style="font-size:2.2rem; color:#fdd000; margin-bottom:10px;"></i><b>MTB</b></div>
+                <div class="dash-item"><i class="far fa-newspaper" style="font-size:2.2rem; color:#fdd000; margin-bottom:10px;"></i><b>Notícias</b></div>
+            </div>
+        </div>
+
+        <div id="manual-modal" onclick="this.style.display='none'">
+            <div style="text-align: center;">
+                <i class="fas fa-arrow-up" style="font-size:3rem; color:var(--fpc-yellow); margin-bottom:30px; animation: bounce 1s infinite;"></i>
+                <h3 style="color:white; margin-bottom:20px;">Instalar App</h3>
+                <p style="color:#ccc; font-size:1.1rem; line-height:1.6;">
+                    Toque no menu do navegador e selecione:<br><br>
+                    <strong>"Adicionar à Tela Inicial"</strong><br>ou<br><strong>"Instalar Aplicativo"</strong>
+                </p>
+                <button style="margin-top:30px; padding:10px 20px; background:#fdd000; border:none; border-radius:5px; font-weight:bold;" onclick="document.getElementById('manual-modal').style.display='none'">ENTENDI</button>
+            </div>
+        </div>
+        <style>@keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-10px);} }</style>
+
+    </div>
+
+    <script>
+        // === INSTALAÇÃO DO APP ===
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function acaoInstalar() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+            } else {
+                document.getElementById('manual-modal').style.display = 'flex';
+            }
+        }
+
+        // === SISTEMA ===
+        function mudarTela(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function mask(i){
+            let v = i.value.replace(/\D/g,"");
+            v=v.replace(/(\d{3})(\d)/,"$1.$2");
+            v=v.replace(/(\d{3})(\d)/,"$1.$2");
+            v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+            i.value = v;
+        }
+
+        function forcarUpdate() {
+            if(confirm("Reiniciar para atualizar?")) {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(function(regs) {
+                        for(let reg of regs) reg.unregister();
+                    });
+                }
+                window.location.href = window.location.origin + window.location.pathname + '?v=' + new Date().getTime();
+            }
+        }
+
+        function registrar() {
+            const nome = document.getElementById('reg-nome').value, cpf = document.getElementById('reg-cpf').value, pass = document.getElementById('reg-pass').value;
+            if(!nome || !cpf || !pass) return alert("Preencha todos os campos!");
+            let users = JSON.parse(localStorage.getItem('users_fpc')) || [];
+            if(users.find(u => u.cpf === cpf)) return alert("CPF já existe!");
+            users.push({ nome, cpf, pass });
+            localStorage.setItem('users_fpc', JSON.stringify(users));
+            alert("Cadastro realizado!"); mudarTela('pg-login');
+        }
+
+        function login() {
+            const cpf = document.getElementById('login-cpf').value, pass = document.getElementById('login-pass').value;
+            let users = JSON.parse(localStorage.getItem('users_fpc')) || [];
+            let user = users.find(u => u.cpf === cpf && u.pass === pass);
+            if(user) {
+                document.getElementById('user-name').innerText = user.nome.split(' ')[0];
+                mudarTela('pg-dash');
+            } else alert("CPF ou Senha incorretos.");
+        }
+    </script>
+</body>
+</html>

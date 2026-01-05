@@ -1,0 +1,21 @@
+{
+  "name": "FPC Sistema Atleta",
+  "short_name": "FPC Atleta",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0f1c3f",
+  "theme_color": "#0f1c3f",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "logo-fpc.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo-fpc.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
