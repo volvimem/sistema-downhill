@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>FPC Sistema V14</title>
+    <title>FPC Sistema V15</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f1c3f">
@@ -13,14 +13,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     
     <script>
-        // ANTI-CACHE V14
-        if (!window.location.search.includes('v=14')) {
+        // ANTI-CACHE V15
+        if (!window.location.search.includes('v=15')) {
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then(function(regs) {
                     for(let reg of regs) reg.unregister();
                 });
             }
-            var newUrl = window.location.href.split('?')[0] + '?v=14';
+            var newUrl = window.location.href.split('?')[0] + '?v=15';
             window.location.replace(newUrl);
         }
     </script>
@@ -57,26 +57,18 @@
         .tab-content { display: none; width: 100%; animation: fade 0.3s; }
         .tab-content.active { display: block; }
 
-        /* LISTA DE EVENTOS (LAYOUT ANTERIOR) */
+        /* LISTA DE EVENTOS */
         .event-list-container { width: 100%; display: flex; flex-direction: column; gap: 15px; }
         .event-card { 
-            background: rgba(255,255,255,0.1); 
-            border-radius: 12px; 
-            padding: 20px; 
-            border-left: 5px solid #fdd000;
-            cursor: pointer;
-            transition: transform 0.1s;
+            background: rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; border-left: 5px solid #fdd000; cursor: pointer; transition: transform 0.1s;
         }
         .event-card:active { transform: scale(0.98); background: rgba(255,255,255,0.2); }
         .event-card h3 { font-size: 1.1rem; text-transform: uppercase; margin-bottom: 5px; color: white; }
         .event-card p { color: #ccc; font-size: 0.9rem; margin-bottom: 10px; }
         .status-badge { background: #009640; color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; display: inline-block; }
 
-        /* SUBMENU (ÍCONES GRANDES) */
-        .submenu-btn {
-            width: 100%; background: rgba(255,255,255,0.08); padding: 20px; margin-bottom: 15px;
-            border-radius: 12px; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer;
-        }
+        /* SUBMENU */
+        .submenu-btn { width: 100%; background: rgba(255,255,255,0.08); padding: 20px; margin-bottom: 15px; border-radius: 12px; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
         .submenu-btn i { font-size: 1.8rem; color: #fdd000; margin-right: 20px; width: 40px; text-align: center; }
         .submenu-btn div { text-align: left; }
         .submenu-btn h4 { margin: 0; font-size: 1rem; text-transform: uppercase; }
@@ -109,7 +101,7 @@
             <div class="header">
                 <div class="logo-circle"><img src="logo-fpc.png"></div>
                 <h1>F.P.C.</h1>
-                <div class="sub">SISTEMA ATLETA V14</div>
+                <div class="sub">SISTEMA ATLETA V15</div>
             </div>
             
             <div id="install-btn-area" style="display:none; width:100%; max-width:400px; margin-bottom:15px;">
@@ -131,7 +123,7 @@
             </div>
             
             <div style="margin-top:auto; padding:20px; text-align:center;">
-                <span style="background:#e30613; padding:4px 10px; border-radius:4px; font-size:0.7rem; font-weight:bold;">VERSÃO 14.0 (CORRIGIDA)</span>
+                <span style="background:#e30613; padding:4px 10px; border-radius:4px; font-size:0.7rem; font-weight:bold;">VERSÃO 15.0 (BANCO FIXO)</span>
                 <span style="display:block; margin-top:10px; color:#aaa; font-size:0.7rem; text-decoration:underline;" onclick="forcarUpdate()">Forçar Atualização</span>
             </div>
         </div>
@@ -276,20 +268,31 @@
     </div>
 
     <script>
-        // === DADOS DO SISTEMA ===
-        let users = JSON.parse(localStorage.getItem('users_v14')) || [];
+        // === BANCO DE DADOS FIXO (NÃO MUDA MAIS) ===
+        // Agora usamos 'fpc_banco_oficial' para tudo.
+        // Se a gente atualizar o site no futuro, os dados continuarão aqui.
+        let users = JSON.parse(localStorage.getItem('fpc_banco_oficial')) || [];
+        
+        // Tentativa de migrar dados antigos (se o usuário tiver)
+        // Isso ajuda quem tinha dados na V14 a não perder
+        if(users.length === 0) {
+            let oldUsers = JSON.parse(localStorage.getItem('users_v14'));
+            if(oldUsers) {
+                users = oldUsers;
+                localStorage.setItem('fpc_banco_oficial', JSON.stringify(users));
+            }
+        }
+
         let currentUser = null;
         let tempRecUser = null;
         let currentModalidade = "";
 
-        // === LISTA DE ETAPAS (RESTAURADA AQUI) ===
         const eventsDB = [
             { id: 1, local: "Etapa Ouricuri-PE", data: "25 e 26 de Abril", status: "Aberto" },
             { id: 2, local: "Etapa Caruaru-PE", data: "16 e 17 de Maio", status: "Em Breve" },
             { id: 3, local: "Etapa Santa Cruz-PE", data: "29 e 30 de Agosto", status: "Em Breve" }
         ];
 
-        // === LÓGICA DE IDADE CBC ===
         function calcularCategoriaCBC(nascimento) {
             if(!nascimento) return "Visitante";
             const anoNasc = new Date(nascimento).getFullYear();
@@ -308,7 +311,6 @@
             return "Categoria Indefinida";
         }
 
-        // === NAVEGAÇÃO ===
         function mudarTela(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -325,23 +327,17 @@
         function abrirSubmenu(mod) {
             currentModalidade = mod;
             document.getElementById('sub-title').innerText = mod.toUpperCase();
-            
-            // Ícone Dinâmico
             let icon = "fas fa-bicycle";
             if(mod === "Downhill") icon = "fas fa-mountain";
             if(mod === "Speed") icon = "fas fa-tachometer-alt";
             if(mod === "MTB") icon = "fas fa-biking";
             document.getElementById('sub-icon').className = icon;
-            
             mudarTela('pg-submenu');
         }
 
-        // === FUNÇÃO QUE GERA A LISTA DE ETAPAS (O QUE FALTAVA) ===
         function abrirListaEventos() {
             const container = document.getElementById('events-container');
             container.innerHTML = "";
-            
-            // Gera os cards baseado na eventsDB
             eventsDB.forEach(ev => {
                 container.innerHTML += `
                 <div class="event-card" onclick="abrirDetalheEvento(${ev.id})">
@@ -353,32 +349,23 @@
                     <div style="color:#fdd000; font-size:0.8rem; font-weight:bold;">TOQUE PARA INSCREVER &rarr;</div>
                 </div>`;
             });
-            
             mudarTela('pg-events-list');
         }
 
         function abrirDetalheEvento(id) {
             let evento = eventsDB.find(e => e.id === id);
-            
-            // Preenche os dados da tela de detalhe
             document.getElementById('detail-title').innerText = evento.local.toUpperCase();
             document.getElementById('detail-local').innerText = evento.local;
             document.getElementById('detail-data').innerText = evento.data;
-            
             if(currentUser) {
                 document.getElementById('user-cat-display').innerText = calcularCategoriaCBC(currentUser.nasc);
             }
-
-            // Reseta para a primeira aba
             switchTab('tab-info');
-            // Gambiarra visual para resetar botões das abas
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector('.tab-btn').classList.add('active'); // Ativa o primeiro botão
-
+            document.querySelector('.tab-btn').classList.add('active');
             mudarTela('pg-event-detail');
         }
 
-        // === AUTH & SEGURANÇA ===
         function togglePass(inputId, icon) {
             const input = document.getElementById(inputId);
             if (input.type === "password") { input.type = "text"; icon.classList.remove("fa-eye"); icon.classList.add("fa-eye-slash"); icon.style.color = "#fdd000"; } 
@@ -389,8 +376,11 @@
             const nome=document.getElementById('reg-nome').value, nasc=document.getElementById('reg-nasc').value, phone=document.getElementById('reg-phone').value, cpf=document.getElementById('reg-cpf').value, pass=document.getElementById('reg-pass').value, sec=document.getElementById('reg-sec').value;
             if(!nome || !nasc || !phone || !cpf || !pass || !sec) return alert("Preencha todos os campos!");
             if(users.find(u => u.cpf === cpf)) return alert("CPF já cadastrado!");
+            
+            // SALVANDO NO BANCO FIXO
             users.push({ nome, nasc, phone, cpf, pass, sec });
-            localStorage.setItem('users_v14', JSON.stringify(users));
+            localStorage.setItem('fpc_banco_oficial', JSON.stringify(users));
+            
             alert("Cadastro realizado!"); mudarTela('pg-login');
         }
 
@@ -413,7 +403,6 @@
             } else alert("Palavra incorreta!");
         }
 
-        // === UTILITÁRIOS ===
         function maskCPF(i){i.value=i.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");}
         function maskPhone(i){i.value=i.value.replace(/\D/g,"").replace(/^(\d\d)(\d)/,"($1) $2").replace(/(\d)(\d{4})$/,"$1-$2");}
         function forcarUpdate(){ if(confirm("Atualizar?")) window.location.href=window.location.href.split('?')[0]+'?v='+new Date().getTime(); }
