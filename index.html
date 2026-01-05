@@ -8,10 +8,8 @@
     <meta name="theme-color" content="#0f1c3f">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="format-detection" content="telephone=no">
     
     <link rel="icon" type="image/png" href="logo-fpc.png">
-    
     <title>FPC Atleta</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -27,135 +25,28 @@
             --text: #ffffff;
         }
 
-        /* RESET TOTAL PARA MOBILE */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
 
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--fpc-blue);
             color: var(--text);
-            width: 100vw;
+            width: 100%;
             min-height: 100vh;
-            overflow-x: hidden; /* Impede rolagem lateral */
+            overflow-x: hidden;
         }
 
-        /* CONTAINER FLUIDO - OCUPA 100% DA TELA */
+        /* CONTAINER FLUIDO - OCUPA A TELA TODA */
         .container {
             width: 100%;
             min-height: 100vh;
             background: linear-gradient(180deg, var(--fpc-blue) 0%, #000 120%);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 30px 20px; /* Margem interna segura */
+            padding: 25px; /* Espaçamento das bordas */
         }
 
-        /* HEADER & LOGO */
-        .app-header { 
-            margin-top: 40px; 
-            margin-bottom: 30px; 
-            text-align: center;
-            width: 100%;
-        }
-        
-        .logo-area {
-            width: 140px; 
-            height: 140px; 
-            background: white; 
-            border-radius: 50%;
-            margin: 0 auto 15px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            border: 4px solid var(--fpc-yellow);
-            box-shadow: 0 0 30px rgba(253, 208, 0, 0.3);
-            overflow: hidden;
-            position: relative;
-        }
-        
-        /* ZOOM NA LOGO PARA REMOVER BORDAS */
-        .logo-area img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: contain; 
-            transform: scale(1.5); 
-        }
-        
-        h2 { font-size: 2rem; font-weight: 800; letter-spacing: 1px; }
-        .subtitle { font-size: 0.8rem; color: var(--fpc-yellow); letter-spacing: 1px; font-weight: 600; opacity: 0.9; margin-top: 5px; }
-
-        /* INPUTS GRANDES */
-        .form-area { width: 100%; }
-        
-        .input-group { margin-bottom: 20px; width: 100%; }
-        .input-group label { display: block; margin-bottom: 8px; font-size: 1rem; color: #ddd; font-weight: 600; padding-left: 5px; }
-        
-        .input-group input {
-            width: 100%; 
-            height: 55px; /* Altura fixa grande */
-            padding: 0 15px; 
-            border: 1px solid var(--border); 
-            border-radius: 12px;
-            background: var(--glass); 
-            color: white; 
-            outline: none; 
-            font-size: 1.1rem; /* Letra maior */
-            font-family: 'Montserrat', sans-serif;
-        }
-        .input-group input:focus { border-color: var(--fpc-yellow); background: rgba(255,255,255, 0.15); }
-
-        /* BOTÕES GIGANTES */
-        button {
-            width: 100%; 
-            height: 60px; /* Altura fixa grande */
-            background: var(--fpc-yellow);
-            border: none; 
-            color: var(--fpc-blue); 
-            font-weight: 900; 
-            border-radius: 12px;
-            font-size: 1.1rem; /* Letra maior */
-            margin-top: 15px; 
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-        button:active { transform: scale(0.98); opacity: 0.9; }
-
-        /* BOTÃO INSTALAR (VERDE) */
-        #install-btn {
-            background: #009640; 
-            color: white; 
-            margin-bottom: 30px; 
-            border: 2px solid #00c753;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-
-        /* LINKS */
-        .link { text-align: center; margin-top: 30px; font-size: 1rem; color: #aaa; padding: 10px; }
-        .link span { color: var(--fpc-yellow); font-weight: bold; text-decoration: underline; }
-
-        /* VIEWS (Telas) */
-        .view { display: none; width: 100%; animation: fadeIn 0.3s ease-out; }
-        .view.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* MENU DASHBOARD */
-        .dash-header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            width: 100%; margin-bottom: 30px; padding-bottom: 15px; 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
-        }
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
-        .menu-item {
-            background: rgba(255,255,255,0.08); padding: 30px 10px; border-radius: 16px;
-            text-align: center; display: flex; flex-direction: column; align-items: center;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .menu-item i { font-size: 36px; margin-bottom: 10px; color: var(--fpc-yellow); }
-        .menu-item p { font-size: 0.9rem; font-weight: 700; margin: 0; }
-
-        /* SPLASH SCREEN */
+        /* SPLASH SCREEN (SEM IMAGEM, SÓ SPINNER) */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--fpc-blue); z-index: 9999;
@@ -163,26 +54,114 @@
             transition: opacity 0.5s;
         }
         
+        /* Círculo giratório de carregamento */
+        .spinner {
+            width: 50px; height: 50px;
+            border: 5px solid rgba(255,255,255,0.1);
+            border-top: 5px solid var(--fpc-yellow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* HEADER LOGO (Apenas na tela de login) */
+        .app-header { 
+            display: flex; flex-direction: column; align-items: center;
+            margin-top: 40px; margin-bottom: 40px; 
+        }
+        
+        .logo-area {
+            width: 130px; height: 130px; 
+            background: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            border: 4px solid var(--fpc-yellow);
+            box-shadow: 0 0 30px rgba(253, 208, 0, 0.2);
+            overflow: hidden; margin-bottom: 15px;
+        }
+        
+        /* Zoom na logo para preencher */
+        .logo-area img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.4); }
+        
+        h2 { font-size: 1.8rem; font-weight: 800; letter-spacing: 1px; }
+        .subtitle { font-size: 0.8rem; color: var(--fpc-yellow); text-transform: uppercase; font-weight: 600; }
+
+        /* FORMULÁRIO FULL WIDTH */
+        .form-area { width: 100%; flex-grow: 1; display: flex; flex-direction: column; }
+        
+        .input-group { margin-bottom: 20px; width: 100%; }
+        .input-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: #ccc; font-weight: 600; padding-left: 2px; }
+        
+        .input-group input {
+            width: 100%; /* Força largura total */
+            height: 55px;
+            padding: 0 20px; 
+            border: 1px solid var(--border); 
+            border-radius: 12px;
+            background: var(--glass); 
+            color: white; 
+            outline: none; 
+            font-size: 1.1rem; 
+        }
+        .input-group input:focus { border-color: var(--fpc-yellow); background: rgba(255,255,255, 0.1); }
+
+        /* BOTÕES LARGOS */
+        button {
+            width: 100%; /* Força largura total */
+            height: 55px;
+            background: var(--fpc-yellow);
+            border: none; 
+            color: var(--fpc-blue); 
+            font-weight: 800; 
+            border-radius: 12px;
+            font-size: 1rem; 
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            margin-top: 10px;
+        }
+        button:active { transform: scale(0.98); opacity: 0.9; }
+
+        #install-btn {
+            background: #009640; color: white; margin-bottom: 30px; 
+            border: 2px solid #00c753; animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+
+        .link { text-align: center; margin-top: 30px; font-size: 0.9rem; color: #aaa; padding: 10px; }
+        .link span { color: var(--fpc-yellow); font-weight: bold; }
+
+        /* TELAS */
+        .view { display: none; width: 100%; animation: fadeIn 0.3s; padding-bottom: 50px; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* DASHBOARD GRID */
+        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; width: 100%; }
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
+        .menu-item {
+            background: rgba(255,255,255,0.06); padding: 25px; border-radius: 16px;
+            text-align: center; border: 1px solid rgba(255,255,255,0.05);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            aspect-ratio: 1/1; /* Quadrados perfeitos */
+        }
+        .menu-item i { font-size: 32px; margin-bottom: 10px; color: var(--fpc-yellow); }
+        .menu-item p { font-size: 0.85rem; font-weight: 700; }
+
         /* MODAL MANUAL */
         #manual-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 9999; display: none;
-            justify-content: center; align-items: center; padding: 20px;
+            background: rgba(0,0,0,0.95); z-index: 9999; display: none;
+            justify-content: center; align-items: center; padding: 30px;
         }
-        .modal-box {
-            background: #222; padding: 30px; border-radius: 20px; text-align: center;
-            border: 2px solid var(--fpc-yellow); width: 100%;
-        }
-
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
-        <div class="logo-area" style="width:120px; height:120px; margin:0;">
-            <img src="logo-fpc.png">
-        </div>
-        <h3 style="color:white; margin-top:20px; font-weight:800;">CARREGANDO...</h3>
+        <div class="spinner"></div>
+        <h2 style="color:white; letter-spacing: 3px;">F.P.C.</h2>
+        <p style="color: var(--fpc-yellow); font-size: 0.8rem; margin-top: 5px;">SISTEMA ATLETA</p>
     </div>
 
     <div class="container">
@@ -193,7 +172,7 @@
                     <img src="logo-fpc.png" alt="FPC">
                 </div>
                 <h2>F.P.C.</h2>
-                <div class="subtitle">FEDERAÇÃO PERNAMBUCANA DE CICLISMO</div>
+                <div class="subtitle">FEDERAÇÃO PERNAMBUCANA</div>
             </div>
 
             <div class="form-area">
@@ -213,33 +192,34 @@
                 <button onclick="fazerLogin()">ENTRAR</button>
 
                 <div class="link" onclick="toggleView('view-recover')">Esqueci minha senha</div>
-                <div class="link">Novo aqui? <span onclick="toggleView('view-register')">CRIAR CONTA</span></div>
+                <div class="link" style="margin-top: 10px;">Ainda não tem conta? <span onclick="toggleView('view-register')">CADASTRAR</span></div>
             </div>
             
-            <div style="margin-top:40px; opacity:0.6; text-align:center;">
-                <small onclick="localStorage.clear(); location.reload();">Limpar Dados do App</small>
+            <div style="margin-top:auto; padding-top: 30px; opacity: 0.5; text-align: center;">
+                <small onclick="localStorage.clear(); location.reload();">Limpar Dados</small>
             </div>
         </div>
 
         <div id="manual-modal" onclick="this.style.display='none'">
-            <div class="modal-box" onclick="event.stopPropagation()">
-                <i class="fas fa-arrow-up" style="font-size:3rem; color:white; margin-bottom:20px;"></i>
-                <h3 style="color:var(--fpc-yellow); margin-bottom:15px;">Instalar App</h3>
-                <p style="color:#ccc; font-size:1.1rem; line-height:1.5;">
-                    Toque no menu do navegador e selecione:<br><br>
-                    <strong>"Adicionar à Tela Inicial"</strong><br>ou<br><strong>"Instalar Aplicativo"</strong>
+            <div style="text-align: center;">
+                <i class="fas fa-arrow-up" style="font-size:3rem; color:var(--fpc-yellow); margin-bottom:30px; animation: bounce 1s infinite;"></i>
+                <h3 style="color:white; margin-bottom:20px;">Instalar App</h3>
+                <p style="color:#ccc; font-size:1.1rem; line-height:1.6;">
+                    Para instalar, abra o menu do navegador e toque em:<br><br>
+                    <strong>"Adicionar à Tela Inicial"</strong>
                 </p>
-                <button onclick="document.getElementById('manual-modal').style.display='none'" style="margin-top:20px;">OK, ENTENDI</button>
+                <button onclick="document.getElementById('manual-modal').style.display='none'" style="margin-top:30px;">ENTENDI</button>
             </div>
         </div>
+        <style>@keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-10px);} }</style>
 
         <div id="view-dashboard" class="view">
             <div class="dash-header">
                 <div>
-                    <span style="color:#ccc; font-size:0.9rem;">Bem-vindo,</span><br>
+                    <span style="color:#ccc; font-size:0.9rem;">Olá,</span><br>
                     <span style="color:var(--fpc-yellow); font-size:1.5rem; font-weight:800;" id="user-name">Atleta</span>
                 </div>
-                <i class="fas fa-sign-out-alt" onclick="location.reload()" style="color:#e30613; font-size:1.8rem;"></i>
+                <i class="fas fa-sign-out-alt" onclick="location.reload()" style="color:#e30613; font-size:1.5rem;"></i>
             </div>
             
             <div class="menu-grid">
@@ -250,7 +230,6 @@
                 <div class="menu-item"><i class="fas fa-handshake"></i><p>Parceiros</p></div>
                 <div class="menu-item"><i class="far fa-newspaper"></i><p>Notícias</p></div>
             </div>
-            <div class="link" onclick="toggleView('view-login')">Voltar</div>
         </div>
 
         <div id="view-register" class="view">
@@ -262,14 +241,25 @@
                 <div class="input-group"><label>CPF</label><input type="tel" id="reg-cpf" oninput="maskCPF(this)"></div>
                 <div class="input-group"><label>Senha</label><input type="password" id="reg-pass"></div>
                 <button onclick="registrar()">CADASTRAR</button>
-                <div class="link" onclick="toggleView('view-login')">Voltar ao Login</div>
+                <div class="link" onclick="toggleView('view-login')">Voltar</div>
+            </div>
+        </div>
+
+        <div id="view-recover" class="view">
+            <div class="app-header">
+                <h2 style="font-size:1.5rem;">RECUPERAR</h2>
+            </div>
+            <div class="form-area">
+                <div class="input-group"><label>Seu CPF</label><input type="tel" id="rec-cpf" oninput="maskCPF(this)"></div>
+                <button onclick="alert('Função em desenvolvimento')">BUSCAR CONTA</button>
+                <div class="link" onclick="toggleView('view-login')">Cancelar</div>
             </div>
         </div>
 
     </div>
 
     <script>
-        // === SPLASH SCREEN ===
+        // === SPLASH ===
         window.addEventListener('load', () => {
             if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
             setTimeout(() => {
