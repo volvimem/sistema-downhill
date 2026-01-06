@@ -1,294 +1,574 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>FPC Sistema V18</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0f1c3f">
-    <link rel="icon" type="image/png" href="logo-fpc.png">
-    
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-    
-    <script>
-        if (!window.location.search.includes('v=18')) {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then(function(regs) {
-                    for(let reg of regs) reg.unregister();
-                });
-            }
-            window.location.replace(window.location.href.split('?')[0] + '?v=18');
-        }
-    </script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FPC - Sistema v11</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Montserrat', sans-serif; background-color: #0f1c3f; color: white; width: 100vw; min-height: 100vh; overflow-x: hidden; }
-        
-        /* ANIMAÇÃO DE VIDA NO APP */
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(30px); }
-            to { opacity: 1; transform: translateX(0); }
+        :root {
+            --fpc-navy: #132047; --pe-blue: #0038a8; --pe-yellow: #ffcc29; --pe-red: #d50000; --pe-green: #009b3a;
+            --bg-grad: linear-gradient(to bottom, #f0f4f8 0%, #ffffff 100%);
+            --glass-bg: rgba(255, 255, 255, 0.98); --text-main: #132047;
         }
-
-        .container { flex: 1; background: linear-gradient(180deg, #0f1c3f 0%, #000 120%); padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-
-        /* HEADER */
-        .logo-circle { width: 110px; height: 110px; background: white; border-radius: 50%; border: 4px solid #fdd000; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; box-shadow: 0 0 30px rgba(253, 208, 0, 0.3); }
-        .logo-circle img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.3); }
-
-        /* BOTÕES VIVOS */
-        .submenu-btn {
-            width: 100%; background: rgba(255,255,255,0.07); padding: 18px; margin-bottom: 12px;
-            border-radius: 15px; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.1); 
-            border-left: 6px solid #fdd000; cursor: pointer; animation: slideIn 0.4s ease-out;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: 0.2s;
-        }
-        .submenu-btn:active { background: rgba(255,255,255,0.2); transform: scale(0.98); }
-        .submenu-btn i { font-size: 1.7rem; color: #fdd000; margin-right: 18px; width: 35px; text-align: center; }
-        .submenu-btn h4 { font-size: 0.95rem; text-transform: uppercase; font-weight: 800; color: #fff; }
-
-        /* TABS */
-        .tabs-container { width: 100%; display: flex; margin-bottom: 20px; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 5px; }
-        .tab-btn { flex: 1; padding: 12px 5px; text-align: center; font-size: 0.7rem; font-weight: 900; color: #aaa; border: none; background: none; cursor: pointer; transition: 0.3s; }
-        .tab-btn.active { color: #0f1c3f; background: #fdd000; border-radius: 8px; }
-
-        /* PAGINAS */
-        .page { display: none; width: 100%; flex-direction: column; align-items: center; }
-        .page.active { display: flex; animation: slideIn 0.3s ease-out; }
-
-        /* CARDS */
-        .event-card { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px; border-left: 6px solid #00c753; margin-bottom: 15px; width: 100%; }
-        .event-card.future { border-left: 6px solid #fdd000; }
-        .status-badge { background: #009640; color: white; padding: 4px 10px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; float: right; }
-
-        .btn-primary { width: 100%; height: 55px; background: #fdd000; color: #0f1c3f; border: none; border-radius: 12px; font-weight: 900; text-transform: uppercase; margin-top: 15px; }
-        .btn-outline { width: 100%; height: 55px; background: transparent; border: 2px solid #fdd000; color: #fdd000; border-radius: 12px; font-weight: 900; margin-top: 15px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; outline: none; }
+        /* MAIÚSCULAS VISUAIS */
+        input, select, textarea, button, .menu-card b, h1, h2, .event-city, .cat-auto { text-transform: uppercase; }
         
-        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
-        .dash-item { background: rgba(255,255,255,0.08); border-radius: 20px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; aspect-ratio: 1; justify-content: center; animation: slideIn 0.5s ease-out; }
-        .dash-item i { font-size: 2.2rem; color: #fdd000; margin-bottom: 10px; }
+        body { background: var(--bg-grad); height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .app-container { width: 100%; height: 100%; max-width: 420px; background: var(--glass-bg); position: relative; overflow-y: auto; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        
+        /* GERAL */
+        h1 { font-size: 22px; font-weight: 800; color: var(--fpc-navy); text-align: center; margin-bottom: 5px; }
+        p.subtitle { text-align: center; color: #64748b; font-size: 12px; margin-bottom: 20px; text-transform: none; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, var(--fpc-navy), var(--pe-blue)); color: white; font-weight: 700; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .btn:active { transform: scale(0.98); }
+        
+        /* INPUTS */
+        .input-group { margin-bottom: 12px; }
+        .input-group label { font-size: 10px; font-weight: 800; color: var(--fpc-navy); margin-left: 10px; display: block; margin-bottom: 3px; }
+        
+        /* WRAPPER PARA ICONES DENTRO DO INPUT */
+        .input-wrapper { position: relative; display: flex; align-items: center; }
+        input, select, textarea { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-size: 14px; color: var(--text-main); font-weight: 600; }
+        input:focus, textarea:focus { border-color: var(--pe-blue); background: white; }
+        
+        /* Ícone do Olho: Agora alinhado perfeitamente */
+        .icon-eye { position: absolute; right: 15px; color: #a0aec0; cursor: pointer; z-index: 10; font-size: 16px; padding: 5px; }
+        
+        /* TELAS */
+        .screen { display: none; padding: 20px; min-height: 100%; flex-direction: column; animation: fade 0.3s; }
+        .screen.active { display: flex; }
+        .screen-center { justify-content: center; }
+        @keyframes fade { from { opacity:0; } to { opacity:1; } }
+
+        /* HEADER & MENU */
+        .app-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 2px solid #eee; margin-top: 25px; margin-bottom: 15px; }
+        .header-logo { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--pe-blue); overflow: hidden; background: #eee; }
+        .header-logo img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .menu-card { background: white; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; border-bottom: 3px solid transparent; }
+        .menu-card i { font-size: 24px; margin-bottom: 5px; }
+        .menu-card b { font-size: 11px; display: block; color: var(--fpc-navy); }
+        
+        .c-dh { border-color: var(--pe-red); } .c-dh i { color: var(--pe-red); }
+        .c-sp { border-color: var(--pe-blue); } .c-sp i { color: var(--pe-blue); }
+        .c-mtb { border-color: var(--pe-green); } .c-mtb i { color: var(--pe-green); }
+        .c-xc { border-color: var(--pe-yellow); } .c-xc i { color: #f59e0b; }
+        .c-inf { border-color: #666; } .c-inf i { color: #666; }
+        .c-par { border-color: purple; } .c-par i { color: purple; }
+
+        .cat-tabs { display: flex; background: #f1f5f9; border-radius: 10px; padding: 4px; margin-bottom: 15px; }
+        .tab-item { flex: 1; text-align: center; padding: 8px; font-size: 10px; font-weight: bold; color: #64748b; border-radius: 8px; cursor: pointer; }
+        .tab-item.active { background: white; color: var(--fpc-navy); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
+        /* LISTAS USER */
+        .event-card { background: white; padding: 12px; border-radius: 10px; margin-bottom: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: relative; overflow: hidden; }
+        .event-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 5px; }
+        .event-date { font-size: 10px; font-weight: 900; color: var(--pe-blue); background: #ebf8ff; padding: 3px 6px; border-radius: 4px; }
+        .event-city { font-size: 10px; color: #666; font-weight: bold; display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+        
+        /* BADGES */
+        .badge-box { display: flex; gap: 3px; }
+        .badge { font-size: 8px; color: #fff; padding: 2px 5px; border-radius: 4px; font-weight: 900; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-shadow: 0 1px 1px rgba(0,0,0,0.2); }
+        .b-cbc { background: linear-gradient(45deg, #ffd700, #ffaa00); }
+        .b-est { background: linear-gradient(45deg, #0038a8, #0050f0); }
+
+        .btn-insc { background: var(--pe-green); color: white; border: none; padding: 8px 12px; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
+        .btn-insc.pendente { background: var(--pe-yellow); color: #555; cursor: default; }
+        .btn-insc.inscrito { background: var(--fpc-navy); cursor: default; }
+
+        /* RANKING */
+        .rank-header { display: flex; font-size: 9px; font-weight: bold; color: #999; padding: 0 10px 5px 10px; border-bottom: 2px solid #eee; margin-bottom: 5px; }
+        .rank-row { display: flex; align-items: center; padding: 12px 10px; border-bottom: 1px solid #f5f5f5; font-size: 12px; background: white; border-radius: 8px; margin-bottom: 5px; }
+        .rank-pos { width: 30px; font-weight: 900; color: white; background: var(--pe-blue); font-size: 12px; height: 25px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-right: 10px; }
+        .rank-name { flex: 1; font-weight: 600; color: var(--fpc-navy); }
+        .rank-val { font-family: 'Courier New', monospace; font-weight: 900; color: var(--fpc-navy); background: #e0e7ff; padding: 4px 8px; border-radius: 6px; }
+
+        /* ADMIN */
+        .admin-row { display: flex; gap: 5px; margin-bottom: 5px; align-items: center; justify-content: space-between; background: #fff; padding: 8px; border-radius: 6px; border: 1px solid #eee; }
+        .btn-act { width: 30px; height: 30px; border-radius: 6px; border: none; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .btn-edit { background: var(--pe-blue); }
+        .btn-del { background: var(--pe-red); }
+
+        /* MODAIS */
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index: 2000; display:none; align-items:center; justify-content:center; backdrop-filter: blur(5px); }
+        .modal-box { background: white; width: 85%; max-width: 350px; padding: 20px; border-radius: 15px; text-align: center; border-top: 5px solid var(--pe-blue); }
+        .pix-key { background: #f0fdf4; border: 1px dashed var(--pe-green); padding: 10px; word-break: break-all; font-size: 12px; margin: 10px 0; color: #006400; font-weight: bold; text-transform: none; }
+
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--fpc-navy); color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 3000; width: 80%; text-align: center; }
+        .toast.show { opacity: 1; top: 50px; }
+        
+        /* BOTÕES TOPO */
+        .top-btn { position: absolute; top:15px; width:30px; height:30px; border-radius:50%; background:white; box-shadow:0 2px 5px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--fpc-navy); z-index:50; }
+        .top-btn:active { transform:scale(0.9); }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="container">
+<div class="toast" id="toast"></div>
 
-        <div id="pg-login" class="page active">
-            <div class="header" style="text-align:center; margin-top:30px;">
-                <div class="logo-circle" style="margin: 0 auto 15px;"><img src="logo-fpc.png"></div>
-                <h1>F.P.C.</h1>
-                <p style="color:#fdd000; font-weight:bold; font-size:0.8rem;">FEDERAÇÃO PERNAMBUCANA</p>
-            </div>
-            <div class="form-box" style="width:100%; margin-top:30px;">
-                <input type="tel" id="login-cpf" placeholder="CPF" style="width:100%; height:55px; border-radius:12px; border:1px solid #333; background:rgba(255,255,255,0.05); color:white; padding: 0 15px; margin-bottom:15px;" oninput="maskCPF(this)">
-                <input type="password" id="login-pass" placeholder="SENHA" style="width:100%; height:55px; border-radius:12px; border:1px solid #333; background:rgba(255,255,255,0.05); color:white; padding: 0 15px; margin-bottom:15px;">
-                <button class="btn-primary" onclick="login()">ENTRAR</button>
-                <button class="btn-outline" onclick="mudarTela('pg-register')">CADASTRAR</button>
-            </div>
+<div class="modal-overlay" id="modal-pix">
+    <div class="modal-box" style="border-top-color:var(--pe-green)">
+        <h3 style="color:var(--fpc-navy)">INSCRIÇÃO VIA PIX</h3>
+        <p style="font-size:12px; color:#666">VALOR: <b id="pix-valor" style="color:var(--pe-green); font-size:14px">R$ 100,00</b></p>
+        <div class="pix-key" id="pix-key-display">CHAVE</div>
+        <button class="btn" onclick="copiarPix()" style="background:#64748b; font-size:11px; padding:8px"><i class="far fa-copy"></i> COPIAR CHAVE</button>
+        <hr style="border:0; border-top:1px solid #eee; margin: 15px 0">
+        <button class="btn" style="background:var(--pe-green)" onclick="confirmarInscricao()">JÁ PAGUEI / CONFIRMAR</button>
+        <button class="btn" style="background:transparent; color:#999; margin-top:0" onclick="fecharModal('modal-pix')">CANCELAR</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-search">
+    <div class="modal-box" style="border-top-color:var(--fpc-navy)">
+        <h3 style="color:var(--fpc-navy); margin-bottom:15px"><i class="fas fa-search"></i> BUSCAR ATLETA</h3>
+        <div class="input-group">
+            <input type="text" id="search-input" placeholder="DIGITE O NOME OU CPF..." onkeyup="filtrarPilotos()">
+        </div>
+        <div id="search-results" style="max-height:200px; overflow-y:auto; text-align:left; margin-top:10px; border-top:1px solid #eee; padding-top:10px">
+            <p style="font-size:11px; color:#999; text-align:center">DIGITE PARA BUSCAR</p>
+        </div>
+        <button class="btn" style="background:transparent; color:#999; margin-top:10px" onclick="fecharModal('modal-search')">FECHAR</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-edit">
+    <div class="modal-box">
+        <h3 style="color:var(--pe-blue); margin-bottom:15px">EDITAR EVENTO</h3>
+        <input type="hidden" id="edit-idx">
+        <div class="input-group"><label>NOME</label><div class="input-wrapper"><input type="text" id="edit-title"></div></div>
+        <div class="input-group"><label>CIDADE</label><div class="input-wrapper"><input type="text" id="edit-city"></div></div>
+        <div class="input-group"><label>DATA</label><div class="input-wrapper"><input type="text" id="edit-date-text"></div></div>
+        
+        <div style="display:flex; gap:10px; margin-bottom:15px; font-size:11px; font-weight:bold; color:var(--text-main)">
+            <label style="display:flex;align-items:center;gap:5px"><input type="checkbox" id="edit-cbc" style="width:auto"> RANKING CBC</label>
+            <label style="display:flex;align-items:center;gap:5px"><input type="checkbox" id="edit-est" style="width:auto"> RANKING ESTADUAL</label>
         </div>
 
-        <div id="pg-dash" class="page">
-            <div style="width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-                <h2>Olá, <span id="user-name" style="color:#fdd000;">Atleta</span></h2>
-                <i class="fas fa-power-off" style="color:#e30613; font-size:1.5rem;" onclick="location.reload()"></i>
-            </div>
-            <div class="dash-grid">
-                <div class="dash-item" onclick="abrirSubmenu('Downhill')"><i class="fas fa-mountain"></i><b>DOWNHILL</b></div>
-                <div class="dash-item" onclick="abrirSubmenu('Speed')"><i class="fas fa-tachometer-alt"></i><b>SPEED</b></div>
-                <div class="dash-item" onclick="abrirSubmenu('MTB')"><i class="fas fa-biking"></i><b>MTB</b></div>
-                <div class="dash-item" onclick="abrirSubmenu('BMX')"><i class="fas fa-bicycle"></i><b>BMX</b></div>
+        <div class="input-group"><label>STATUS</label><div class="input-wrapper"><select id="edit-open"><option value="true">ABERTO</option><option value="false">ENCERRADO</option></select></div></div>
+        <button class="btn" onclick="salvarEdicaoEvento()">SALVAR</button>
+        <button class="btn" style="background:transparent; color:#999" onclick="fecharModal('modal-edit')">CANCELAR</button>
+    </div>
+</div>
+
+<div class="app-container">
+    
+    <div id="screen-login" class="screen screen-center active">
+        <div class="top-btn" style="right:15px" onclick="abrirBusca()"><i class="fas fa-search"></i></div>
+        <div style="position:absolute; top:15px; left:15px; font-size:9px; font-weight:900; opacity:0.5" onclick="location.reload(true)">v11.0</div>
+
+        <div style="width:100px; height:100px; margin:0 auto 20px; border-radius:50%; background:white; border:4px solid white; box-shadow:0 5px 15px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; overflow:hidden">
+            <img src="logo-fp.jpg" alt="FPC" style="width:100%;height:100%;object-fit:contain">
+        </div>
+        <h1>ACESSO FPC</h1>
+        
+        <div class="input-group">
+            <div class="input-wrapper"><input type="tel" id="login-cpf" placeholder="CPF (000.000.000-00)" oninput="mascaraCPF(this)"></div>
+        </div>
+        <div class="input-group">
+            <div class="input-wrapper">
+                <input type="password" id="login-pass" placeholder="SENHA">
+                <i class="fas fa-eye icon-eye" onclick="togglePass('login-pass', this)"></i>
             </div>
         </div>
-
-        <div id="pg-submenu" class="page">
-            <h2 id="sub-title" style="margin: 20px 0; color:#fdd000;">MODALIDADE</h2>
-            
-            <div class="form-box" id="submenu-options">
-                </div>
-
-            <button class="btn-outline" onclick="mudarTela('pg-dash')">VOLTAR</button>
-        </div>
-
-        <div id="pg-events-list" class="page">
-            <h2 style="margin:20px 0; color:#fdd000;">ETAPAS 2026</h2>
-            <div class="form-box" id="events-container" style="width:100%;"></div>
-            <button class="btn-outline" onclick="mudarTela('pg-submenu')">VOLTAR</button>
-        </div>
-
-        <div id="pg-event-detail" class="page">
-            <h3 id="detail-title" style="margin:20px 0; color:#fdd000;">ETAPA</h3>
-            
-            <div class="tabs-container">
-                <button class="tab-btn active" id="btn-info" onclick="switchTab('tab-info')">INFO</button>
-                <button class="tab-btn" id="btn-cat" onclick="switchTab('tab-cat')">CATEGORIAS</button>
-                <button class="tab-btn" id="btn-tempo" onclick="switchTab('tab-tempo')">TEMPO</button>
-                <button class="tab-btn" id="btn-insc" onclick="switchTab('tab-insc')">INSCRIÇÃO</button>
-            </div>
-
-            <div id="tab-info" class="tab-content active" style="width:100%;">
-                <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:15px;">
-                    <p><b>Local:</b> <span id="detail-local"></span></p>
-                    <p><b>Data:</b> <span id="detail-data"></span></p>
-                    <p style="margin-top:15px; color:#00ff6a;"><i class="fas fa-shield-alt"></i> Seguro Atleta Incluso</p>
-                </div>
-            </div>
-
-            <div id="tab-cat" class="tab-content" style="width:100%;">
-                <div id="cbc-list" style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px; font-size:0.8rem;">
-                    </div>
-            </div>
-
-            <div id="tab-tempo" class="tab-content" style="width:100%;">
-                <div style="text-align:center; padding:40px 20px;">
-                    <i class="fas fa-stopwatch" style="font-size:3rem; color:#aaa; margin-bottom:15px;"></i>
-                    <p>Os tempos serão publicados logo após o término da prova.</p>
-                </div>
-            </div>
-
-            <div id="tab-insc" class="tab-content" style="width:100%;">
-                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px; text-align:center;">
-                    <p>Valor: <b>R$ 120,00</b></p>
-                    <button class="btn-primary" onclick="alert('Gerando PIX...')">PAGAR INSCRIÇÃO</button>
-                </div>
-            </div>
-
-            <button class="btn-outline" style="margin-top:30px;" onclick="mudarTela('pg-events-list')">VOLTAR</button>
-        </div>
-
-        <div id="pg-register" class="page">
-            <h2 style="margin:20px 0;">NOVA CONTA</h2>
-            <div class="form-box" style="width:100%;">
-                <input type="text" id="reg-nome" placeholder="NOME COMPLETO" style="width:100%; height:50px; border-radius:10px; border:1px solid #333; background:rgba(255,255,255,0.05); color:white; padding: 0 15px; margin-bottom:10px;">
-                <input type="date" id="reg-nasc" style="width:100%; height:50px; border-radius:10px; border:1px solid #333; background:rgba(255,255,255,0.05); color:white; padding: 0 15px; margin-bottom:10px;">
-                <input type="tel" id="reg-cpf" placeholder="CPF" style="width:100%; height:50px; border-radius:10px; border:1px solid #333; background:rgba(255,255,255,0.05); color:white; padding: 0 15px; margin-bottom:10px;" oninput="maskCPF(this)">
-                <input type="password" id="reg-pass" placeholder="SENHA" style="width:100%; height:50px; border-radius:10px; border:1px solid #333; background:rgba(255,255,255,0.05); color:white; padding: 0 15px; margin-bottom:10px;">
-                <button class="btn-primary" onclick="registrar()">SALVAR</button>
-                <button class="btn-outline" onclick="mudarTela('pg-login')">VOLTAR</button>
-            </div>
-        </div>
-
+        
+        <button class="btn" onclick="fazerLogin()">ENTRAR</button>
+        <button class="btn" onclick="trocarTela('cadastro')" style="background:transparent; color:var(--pe-blue); font-size:12px">CRIAR CONTA</button>
+        <div style="margin-top:30px; text-align:center"><span style="font-size:10px; color:#999; text-decoration:underline; cursor:pointer" onclick="trocarTela('admin-login')">SOU ADMIN (ORGANIZADOR)</span></div>
     </div>
 
-    <script>
-        const eventsDB = [
-            { id: 1, local: "Ouricuri-PE", data: "25/26 de Abril", status: "Aberto" },
-            { id: 2, local: "Caruaru-PE", data: "16/17 de Maio", status: "Futuro" },
-            { id: 3, local: "Gravatá-PE", data: "19/20 de Setembro", status: "Futuro" },
-            { id: 4, local: "Santa Cruz-PE", data: "29/30 de Agosto", status: "Futuro" }
-        ];
+    <div id="screen-admin-login" class="screen screen-center">
+        <h1 style="color:var(--pe-red)">ÁREA RESTRITA</h1>
+        <p class="subtitle">GESTÃO DO SISTEMA</p>
+        <div class="input-group">
+            <div class="input-wrapper">
+                <input type="password" id="admin-pass-input" placeholder="SENHA ADMIN">
+                <i class="fas fa-eye icon-eye" onclick="togglePass('admin-pass-input', this)"></i>
+            </div>
+        </div>
+        <button class="btn" style="background:var(--pe-red)" onclick="loginAdmin()">ACESSAR PAINEL</button>
+        <button class="btn" style="background:transparent; color:#555" onclick="trocarTela('login')">VOLTAR</button>
+    </div>
 
-        let currentUser = null;
-        let currentMod = "";
+    <div id="screen-admin-dash" class="screen">
+        <h1 style="color:var(--fpc-navy); font-size:18px">GESTÃO FPC</h1>
+        <div class="input-group"><label>MODALIDADE</label><div class="input-wrapper"><select id="adm-cat-select" onchange="renderAdminEvents()"><option value="DOWNHILL">DOWNHILL</option><option value="SPEED">SPEED</option><option value="MTB">MTB</option><option value="XC / XCO">XC / XCO</option></select></div></div>
 
-        function mudarTela(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            window.scrollTo(0,0);
-        }
-
-        function abrirSubmenu(mod) {
-            currentMod = mod;
-            document.getElementById('sub-title').innerText = mod.toUpperCase();
-            const container = document.getElementById('submenu-options');
+        <div style="background:white; padding:15px; border-radius:10px; margin-bottom:15px; border-left:4px solid var(--pe-blue)">
+            <b style="color:var(--pe-blue)">1. NOVO EVENTO</b>
+            <div class="input-group"><label>NOME DA ETAPA</label><div class="input-wrapper"><input type="text" id="adm-evt-title" placeholder="EX: 1ª ETAPA"></div></div>
+            <div class="input-group"><label>CIDADE</label><div class="input-wrapper"><input type="text" id="adm-evt-city" placeholder="EX: CARUARU-PE"></div></div>
+            <div style="display:flex; gap:5px; align-items:flex-end; margin-bottom:10px">
+                <div style="flex:1" class="input-group"><label>DATA</label><div class="input-wrapper"><input type="date" id="adm-evt-date"></div></div>
+            </div>
+            <div style="display:flex; gap:10px; margin-bottom:10px; font-size:11px; font-weight:bold; color:var(--text-main)">
+                <label style="display:flex;align-items:center;gap:5px"><input type="checkbox" id="adm-evt-cbc" style="width:auto"> RANKING CBC</label>
+                <label style="display:flex;align-items:center;gap:5px"><input type="checkbox" id="adm-evt-est" style="width:auto"> RANKING ESTADUAL</label>
+            </div>
             
-            let html = `
-                <div class="submenu-btn" onclick="switchTab('tab-cat'); abrirCategorias()">
-                    <i class="fas fa-list-ul"></i>
-                    <div><h4>Categorias CBC</h4><span>Tabela de Idades</span></div>
-                </div>
-                <div class="submenu-btn" onclick="alert('Seguro Atleta Ativo')">
-                    <i class="fas fa-shield-alt"></i>
-                    <div><h4>Seguro Atleta</h4><span>Cobertura FPC</span></div>
-                </div>
-                <div class="submenu-btn" onclick="switchTab('tab-tempo'); abrirCategorias()">
-                    <i class="fas fa-stopwatch"></i>
-                    <div><h4>Tempo / Resultados</h4><span>Ranking Online</span></div>
-                </div>
-            `;
+            <button class="btn" style="padding:10px; font-size:12px; margin-top:0" onclick="addEvento()">ADICIONAR AO CALENDÁRIO</button>
+            <div id="adm-event-list" style="margin-top:15px; border-top:1px solid #eee; padding-top:10px"></div>
+        </div>
 
-            // CALENDÁRIO APENAS NO DOWNHILL
-            if(mod === 'Downhill') {
-                html = `
-                    <div class="submenu-btn" onclick="abrirCalendario()">
-                        <i class="far fa-calendar-alt"></i>
-                        <div><h4>Calendário / Inscrição</h4><span>Etapas 2026</span></div>
+        <div style="background:white; padding:15px; border-radius:10px; margin-bottom:15px; border-left:4px solid var(--pe-green)">
+            <b style="color:var(--pe-green)">2. LANÇAR RESULTADOS (AUTO)</b>
+            <div style="margin-bottom:10px">
+                <select id="adm-rank-type" style="font-weight:bold; color:var(--pe-green)">
+                    <option value="tempos">⏱️ TEMPO (00:00.000)</option>
+                    <option value="ranking">🏆 PONTOS (RANKING)</option>
+                </select>
+            </div>
+            <div style="display:flex; gap:5px; margin-bottom:5px">
+                <input type="text" id="adm-rank-name" placeholder="NOME PILOTO" style="flex:2">
+                <input type="tel" id="adm-rank-val" placeholder="00:00.000" style="flex:1" oninput="mascaraTempoInput(this)">
+            </div>
+            <button class="btn" style="padding:8px; font-size:12px; background:var(--pe-green); margin-top:0" onclick="addResultado()">LANÇAR E CLASSIFICAR</button>
+            <button class="btn" style="padding:5px; font-size:10px; background:#ccc; color:black; margin-top:5px" onclick="limparRanking()">LIMPAR LISTA</button>
+        </div>
+
+        <div style="background:white; padding:15px; border-radius:10px; margin-bottom:15px; border-left:4px solid var(--pe-yellow)">
+            <b style="color:#d97706">3. CONFIGURAÇÕES</b>
+            <div class="input-group"><label>CHAVE PIX</label><div class="input-wrapper"><input id="adm-conf-pix"></div></div>
+            <div class="input-group"><label>VALOR (R$)</label><div class="input-wrapper"><input id="adm-conf-val"></div></div>
+            <div class="input-group">
+                <label>SENHA ADMIN</label>
+                <div class="input-wrapper">
+                    <input id="adm-conf-pass" type="password">
+                    <i class="fas fa-eye icon-eye" onclick="togglePass('adm-conf-pass', this)"></i>
+                </div>
+            </div>
+            <div class="input-group"><label>INFO DA CATEGORIA</label><div class="input-wrapper"><textarea id="adm-conf-info" rows="3"></textarea></div></div>
+            <button class="btn" style="background:#d97706" onclick="salvarConfig()">SALVAR TUDO</button>
+        </div>
+        <button class="btn" style="background:#333" onclick="fazerLogout()">SAIR DO ADMIN</button>
+    </div>
+
+    <div id="screen-cadastro" class="screen screen-center">
+        <h1 style="color:var(--pe-green)">CADASTRO</h1>
+        <div style="overflow-y:auto; padding-bottom:20px">
+            <div class="input-group"><label>NOME COMPLETO</label><div class="input-wrapper"><input id="cad-nome"></div></div>
+            <div class="input-group"><label>CPF</label><div class="input-wrapper"><input type="tel" id="cad-cpf" oninput="mascaraCPF(this)"></div></div>
+            <div class="input-group"><label>NASCIMENTO</label><div class="input-wrapper"><input type="date" id="cad-nasc" onchange="calcCat(this.value)"></div></div>
+            <div class="input-group"><label>CATEGORIA (AUTO CBC)</label><div class="input-wrapper"><input id="cad-cat" readonly class="cat-auto" style="background:#eef2ff; color:#132047"></div></div>
+            <div class="input-group">
+                <label>SENHA</label>
+                <div class="input-wrapper">
+                    <input type="password" id="cad-pass">
+                    <i class="fas fa-eye icon-eye" onclick="togglePass('cad-pass', this)"></i>
+                </div>
+            </div>
+            <div class="input-group"><label>PALAVRA-CHAVE</label><div class="input-wrapper"><input id="cad-resp"></div></div>
+            <button class="btn" onclick="cadastrar()" style="background:var(--pe-green)">CADASTRAR</button>
+            <button class="btn" style="background:transparent; color:#555" onclick="trocarTela('login')">VOLTAR</button>
+        </div>
+    </div>
+
+    <div id="screen-app" class="screen">
+        <div class="app-header">
+            <div><span>OLÁ,</span><h2 id="app-name">PILOTO</h2></div>
+            <div class="header-logo" onclick="document.getElementById('f-in').click()"><img id="user-img" src="logo-fp.jpg"></div>
+            <input type="file" id="f-in" hidden onchange="upFoto(this)">
+        </div>
+
+        <div id="main-menu" class="menu-grid">
+            <div class="menu-card c-dh" onclick="openCat('DOWNHILL')"><i class="fas fa-mountain"></i><b>DOWNHILL</b></div>
+            <div class="menu-card c-sp" onclick="openCat('SPEED')"><i class="fas fa-road"></i><b>SPEED</b></div>
+            <div class="menu-card c-mtb" onclick="openCat('MTB')"><i class="fas fa-biking"></i><b>MTB</b></div>
+            <div class="menu-card c-xc" onclick="openCat('XC / XCO')"><i class="fas fa-stopwatch"></i><b>XC / XCO</b></div>
+            <div class="menu-card c-inf" onclick="openCat('INFORMAÇÕES')"><i class="fas fa-info-circle"></i><b>INFO</b></div>
+            <div class="menu-card c-par" onclick="openCat('PARCERIAS')"><i class="fas fa-handshake"></i><b>PARCERIAS</b></div>
+        </div>
+
+        <div id="cat-view" style="display:none">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+                <i class="fas fa-arrow-left" onclick="closeCat()" style="padding:10px;cursor:pointer"></i>
+                <h2 id="cat-title" style="color:var(--fpc-navy);margin:0">CAT</h2>
+            </div>
+
+            <div class="cat-tabs">
+                <div class="tab-item active" onclick="tab('calendar')" id="t-calendar"><i class="far fa-calendar-alt"></i> EVENTOS</div>
+                <div class="tab-item" onclick="tab('tempos')" id="t-tempos"><i class="fas fa-stopwatch"></i> TEMPOS</div>
+                <div class="tab-item" onclick="tab('ranking')" id="t-ranking"><i class="fas fa-trophy"></i> RANKING</div>
+                <div class="tab-item" onclick="tab('info')" id="t-info"><i class="fas fa-info"></i> INFO</div>
+            </div>
+
+            <div class="seguro-btn btn" style="background:linear-gradient(90deg,#11998e,#38ef7d); margin-bottom:15px; font-size:12px; display:flex; justify-content:center; gap:5px; box-shadow:none" onclick="alert('Seguradora Parceira...')">
+                <i class="fas fa-shield-alt"></i> CONTRATAR SEGURO ATLETA
+            </div>
+
+            <div id="cont-calendar" class="c-sec active"></div>
+            <div id="cont-tempos" class="c-sec" style="display:none"></div>
+            <div id="cont-ranking" class="c-sec" style="display:none"></div>
+            <div id="cont-info" class="c-sec" style="display:none"></div>
+        </div>
+        
+        <div style="margin-top:auto"><button class="btn" style="background:var(--pe-red); width:80px; font-size:10px; margin-left:auto; display:block" onclick="fazerLogout()">SAIR</button></div>
+    </div>
+</div>
+
+<script>
+    const DB_KEY = 'fpc_v11_db';
+    const SESS_KEY = 'fpc_sess';
+    const DEFAULT_DB = {
+        users: [],
+        config: { pixKey: "FPC.FINANCEIRO@EMAIL.COM", pixVal: "100,00", adminPass: "ADMIN" },
+        data: {
+            'DOWNHILL': { 
+                events: [
+                    { id:1, d:'25/26 ABR', city:'OURICURI-PE', t:'1ª ETAPA', cbc:true, est:true, open:true },
+                    { id:2, d:'16/17 MAI', city:'CARUARU-PE', t:'2ª ETAPA', cbc:true, est:true, open:true },
+                    { id:3, d:'29/30 AGO', city:'SANTA CRUZ-PE', t:'3ª ETAPA', cbc:false, est:true, open:false },
+                    { id:4, d:'19/20 SET', city:'GRAVATÁ-PE', t:'4ª ETAPA', cbc:false, est:true, open:false }
+                ], 
+                tempos: [], ranking: [], info: "CATEGORIAS OFICIAIS CBC." 
+            },
+            'SPEED': { events: [{id:1, d:'02 FEV', city:'RECIFE-PE', t:'CIRCUITO DO CAIS', cbc:false, est:true, open:true}], tempos:[], ranking:[], info:"SPEED OFICIAL." },
+            'MTB': { events:[], tempos:[], ranking:[], info:"EM BREVE." },
+            'XC / XCO': { events:[], tempos:[], ranking:[], info:"EM BREVE." },
+            'INFORMAÇÕES': { events:[], tempos:[], ranking:[], info:"FEDERAÇÃO PERNAMBUCANA DE CICLISMO." },
+            'PARCERIAS': { events:[], tempos:[], ranking:[], info:"PARCEIROS OFICIAIS." }
+        }
+    };
+
+    let db = JSON.parse(localStorage.getItem(DB_KEY));
+    if(!db) { db = DEFAULT_DB; saveDB(); }
+    let currCat = '', currEvtId = null;
+
+    function saveDB() { localStorage.setItem(DB_KEY, JSON.stringify(db)); }
+    function getUser() { return JSON.parse(localStorage.getItem(SESS_KEY)); }
+    function toast(m) { const t=document.getElementById('toast'); t.innerText=m.toUpperCase(); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+
+    function togglePass(id, el) {
+        const inp = document.getElementById(id);
+        if(inp.type === 'password') { inp.type = 'text'; el.classList.remove('fa-eye'); el.classList.add('fa-eye-slash'); el.style.color = 'var(--pe-blue)'; } 
+        else { inp.type = 'password'; el.classList.remove('fa-eye-slash'); el.classList.add('fa-eye'); el.style.color = '#a0aec0'; }
+    }
+
+    function mascaraTempoInput(input) {
+        if(document.getElementById('adm-rank-type').value === 'ranking') return;
+        let v = input.value.replace(/\D/g, "");
+        if(v.length > 7) v = v.substring(0, 7);
+        if(v.length >= 3) v = v.substring(0, v.length-3) + "." + v.substring(v.length-3);
+        if(v.length >= 6) v = v.substring(0, v.length-6) + ":" + v.substring(v.length-6);
+        input.value = v;
+    }
+
+    // --- BUSCA PILOTO ---
+    function abrirBusca() { document.getElementById('modal-search').style.display = 'flex'; document.getElementById('search-input').focus(); filtrarPilotos(); }
+    function filtrarPilotos() {
+        const term = document.getElementById('search-input').value.trim().toUpperCase();
+        const resDiv = document.getElementById('search-results');
+        if(!term) { resDiv.innerHTML = '<p style="font-size:11px; color:#999; text-align:center">DIGITE PARA BUSCAR</p>'; return; }
+        
+        const filtered = db.users.filter(u => u.nome.includes(term) || u.cpf.includes(term));
+        if(filtered.length === 0) { resDiv.innerHTML = '<p style="font-size:11px; color:#999; text-align:center">NENHUM PILOTO ENCONTRADO</p>'; return; }
+        
+        resDiv.innerHTML = filtered.map(u => `
+            <div style="padding:8px; border-bottom:1px solid #f0f0f0; display:flex; align-items:center; gap:10px">
+                <div style="width:30px; height:30px; border-radius:50%; background:#eee; overflow:hidden"><img src="${u.photo || 'logo-fp.jpg'}" style="width:100%;height:100%;object-fit:cover"></div>
+                <div>
+                    <div style="font-size:12px; font-weight:bold; color:var(--fpc-navy)">${u.nome}</div>
+                    <div style="font-size:10px; color:#666">${u.cat}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // --- ADMIN ---
+    function loginAdmin() {
+        if(document.getElementById('admin-pass-input').value.toUpperCase() === db.config.adminPass) {
+            trocarTela('admin-dash'); renderAdminEvents();
+        } else { toast("SENHA INCORRETA"); }
+    }
+    
+    function renderAdminEvents() {
+        const cat = document.getElementById('adm-cat-select').value;
+        document.getElementById('adm-conf-pix').value = db.config.pixKey;
+        document.getElementById('adm-conf-val').value = db.config.pixVal;
+        document.getElementById('adm-conf-pass').value = db.config.adminPass;
+        document.getElementById('adm-conf-info').value = db.data[cat].info;
+
+        const list = document.getElementById('adm-event-list');
+        list.innerHTML = db.data[cat].events.map((e, i) => `
+            <div class="admin-row">
+                <div style="flex:1; font-size:11px"><b>${e.d}</b> - ${e.city}<br>${e.t}</div>
+                <button class="btn-act btn-edit" onclick="abrirEdicaoEvento(${i})"><i class="fas fa-pen"></i></button>
+                <button class="btn-act btn-del" onclick="delEvent('${cat}', ${i})"><i class="fas fa-trash"></i></button>
+            </div>
+        `).join('');
+    }
+
+    function addEvento() {
+        const cat = document.getElementById('adm-cat-select').value;
+        const title = document.getElementById('adm-evt-title').value.trim().toUpperCase();
+        const city = document.getElementById('adm-evt-city').value.trim().toUpperCase();
+        const dateInput = document.getElementById('adm-evt-date').value;
+        const isCbc = document.getElementById('adm-evt-cbc').checked;
+        const isEst = document.getElementById('adm-evt-est').checked;
+        if(title && city && dateInput) {
+            const [ano, mes, dia] = dateInput.split('-');
+            db.data[cat].events.push({ id: Date.now(), d: `${dia}/${mes}`, t: title, city: city, cbc: isCbc, est: isEst, open:true });
+            saveDB(); renderAdminEvents(); toast("ADICIONADO!");
+            document.getElementById('adm-evt-title').value = ''; document.getElementById('adm-evt-city').value = '';
+        } else { toast("PREENCHA TUDO"); }
+    }
+
+    function abrirEdicaoEvento(index) {
+        const cat = document.getElementById('adm-cat-select').value;
+        const ev = db.data[cat].events[index];
+        document.getElementById('edit-idx').value = index;
+        document.getElementById('edit-title').value = ev.t;
+        document.getElementById('edit-city').value = ev.city;
+        document.getElementById('edit-date-text').value = ev.d;
+        document.getElementById('edit-cbc').checked = ev.cbc || false;
+        document.getElementById('edit-est').checked = ev.est || false;
+        document.getElementById('edit-open').value = ev.open.toString();
+        document.getElementById('modal-edit').style.display = 'flex';
+    }
+
+    function salvarEdicaoEvento() {
+        const cat = document.getElementById('adm-cat-select').value;
+        const index = document.getElementById('edit-idx').value;
+        const t = document.getElementById('edit-title').value.trim().toUpperCase();
+        const city = document.getElementById('edit-city').value.trim().toUpperCase();
+        const d = document.getElementById('edit-date-text').value.trim().toUpperCase();
+        const cbc = document.getElementById('edit-cbc').checked;
+        const est = document.getElementById('edit-est').checked;
+        const open = document.getElementById('edit-open').value === 'true';
+        db.data[cat].events[index] = { ...db.data[cat].events[index], t, city, d, cbc, est, open };
+        saveDB(); renderAdminEvents(); fecharModal('modal-edit'); toast("SALVO!");
+    }
+
+    function addResultado() {
+        const cat = document.getElementById('adm-cat-select').value;
+        const type = document.getElementById('adm-rank-type').value;
+        const name = document.getElementById('adm-rank-name').value.trim().toUpperCase();
+        let val = document.getElementById('adm-rank-val').value.trim();
+        if(!name || !val) return toast("PREENCHA TUDO");
+        db.data[cat][type].push({ name, val });
+        if(type === 'tempos') db.data[cat][type].sort((a, b) => a.val.localeCompare(b.val));
+        else db.data[cat][type].sort((a, b) => parseInt(b.val) - parseInt(a.val));
+        saveDB(); toast("LANÇADO!");
+        document.getElementById('adm-rank-name').value = ''; document.getElementById('adm-rank-val').value = '';
+    }
+
+    function delEvent(cat, idx) { if(confirm("APAGAR?")) { db.data[cat].events.splice(idx, 1); saveDB(); renderAdminEvents(); } }
+    function limparRanking() { const c=document.getElementById('adm-cat-select').value; const t=document.getElementById('adm-rank-type').value; if(confirm("LIMPAR?")) { db.data[c][t]=[]; saveDB(); toast("LIMPO!"); } }
+    function salvarConfig() {
+        const cat = document.getElementById('adm-cat-select').value;
+        db.config.pixKey = document.getElementById('adm-conf-pix').value.trim().toUpperCase();
+        db.config.pixVal = document.getElementById('adm-conf-val').value.trim().toUpperCase();
+        const pass = document.getElementById('adm-conf-pass').value.trim().toUpperCase();
+        if(pass) db.config.adminPass = pass;
+        db.data[cat].info = document.getElementById('adm-conf-info').value.trim().toUpperCase();
+        saveDB(); toast("SALVO!");
+    }
+
+    // --- CADASTRO ---
+    function calcCat(data) {
+        if(!data) return;
+        const idade = 2026 - new Date(data).getFullYear();
+        let c = "AMADOR";
+        if(idade <= 11) c = "KIDS";
+        else if(idade >= 12 && idade <= 14) c = "INFANTO-JUVENIL";
+        else if(idade >= 15 && idade <= 16) c = "JUVENIL";
+        else if(idade >= 17 && idade <= 18) c = "JUNIOR";
+        else if(idade >= 19 && idade <= 22) c = "SUB-23 / ELITE";
+        else if(idade >= 23 && idade <= 29) c = "SUB-30 / ELITE";
+        else if(idade >= 30 && idade <= 34) c = "MASTER A1";
+        else if(idade >= 35 && idade <= 39) c = "MASTER A2";
+        else if(idade >= 40 && idade <= 44) c = "MASTER B1";
+        else if(idade >= 45 && idade <= 49) c = "MASTER B2";
+        else if(idade >= 50 && idade <= 54) c = "MASTER C1";
+        else if(idade >= 55 && idade <= 59) c = "MASTER C2";
+        else if(idade >= 60) c = "MASTER D";
+        document.getElementById('cad-cat').value = `${c} (${idade} ANOS)`;
+    }
+
+    function cadastrar() {
+        const u = {
+            nome: document.getElementById('cad-nome').value.trim().toUpperCase(),
+            cpf: document.getElementById('cad-cpf').value,
+            pass: document.getElementById('cad-pass').value.trim(),
+            cat: document.getElementById('cad-cat').value,
+            resp: document.getElementById('cad-resp').value.trim().toUpperCase(),
+            inscricoes: []
+        };
+        if(!u.nome || !u.cpf || !u.pass || !u.cat) return toast("PREENCHA TUDO");
+        db.users.push(u); saveDB(); toast("CADASTRADO!"); trocarTela('login');
+    }
+
+    // --- APP USER ---
+    function fazerLogin() {
+        const cpf = document.getElementById('login-cpf').value;
+        const pass = document.getElementById('login-pass').value;
+        const u = db.users.find(x => x.cpf === cpf && x.pass === pass);
+        if(u) { localStorage.setItem(SESS_KEY, JSON.stringify(u)); initApp(); } else toast("INVÁLIDO");
+    }
+
+    function initApp() {
+        const u = getUser();
+        document.getElementById('app-name').innerText = u.nome.split(' ')[0];
+        document.getElementById('user-img').src = u.photo || 'logo-fp.jpg';
+        trocarTela('app');
+    }
+
+    function openCat(cat) { currCat = cat; document.getElementById('main-menu').style.display='none'; document.getElementById('cat-view').style.display='block'; document.getElementById('cat-title').innerText = cat; tab('calendar'); }
+    function closeCat() { document.getElementById('cat-view').style.display='none'; document.getElementById('main-menu').style.display='grid'; }
+
+    function tab(t) {
+        document.querySelectorAll('.tab-item').forEach(e=>e.classList.remove('active'));
+        document.getElementById('t-'+t).classList.add('active');
+        document.querySelectorAll('.c-sec').forEach(e=>e.style.display='none');
+        document.getElementById('cont-'+t).style.display='block';
+        renderContent(t);
+    }
+
+    function renderContent(t) {
+        const d = db.data[currCat];
+        const div = document.getElementById('cont-'+t);
+        if(t === 'info') { div.innerHTML = `<div style="background:white;padding:15px;border-radius:10px;font-size:13px;color:#555">${d.info.replace(/\n/g, '<br>')}</div>`; return; }
+        if(t === 'calendar') {
+            const u = getUser();
+            div.innerHTML = d.events.map(e => {
+                const inscrito = u.inscricoes.includes(currCat+e.id);
+                return `<div class="event-card">
+                    <div style="flex:1">
+                        <div class="event-header">
+                            <span class="event-date">${e.d}</span>
+                            <div class="badge-box">
+                                ${e.est?'<span class="badge b-est">RANKING PE</span>':''}
+                                ${e.cbc?'<span class="badge b-cbc">RANKING CBC</span>':''}
+                            </div>
+                        </div>
+                        <div style="font-size:13px;font-weight:bold;color:#132047">${e.t}</div>
+                        <div class="event-city"><i class="fas fa-map-marker-alt"></i> ${e.city}</div>
                     </div>
-                ` + html;
-            }
-
-            container.innerHTML = html;
-            mudarTela('pg-submenu');
+                    <div style="width:35%">${e.open?`<button class="btn-insc ${inscrito?'inscrito':''}" onclick="${inscrito?'':'preInsc(\''+e.id+'\')'}">${inscrito?'INSCRITO':'INSCREVER'}</button>`:`<button class="btn-insc pendente">ENCERRADO</button>`}</div>
+                </div>`;
+            }).join('') || '<p style="text-align:center;font-size:12px;color:#999;margin-top:20px">NENHUM EVENTO.</p>';
         }
-
-        function abrirCalendario() {
-            const container = document.getElementById('events-container');
-            container.innerHTML = "";
-            eventsDB.forEach(ev => {
-                container.innerHTML += `
-                    <div class="event-card ${ev.status==='Futuro'?'future':''}" onclick="detalheEvento(${ev.id})">
-                        <span class="status-badge" style="background:${ev.status==='Futuro'?'#fdd000':'#009640'}; color:${ev.status==='Futuro'?'#000':'#fff'};">${ev.status}</span>
-                        <h3>${ev.local}</h3>
-                        <p>${ev.data}</p>
-                    </div>
-                `;
-            });
-            mudarTela('pg-events-list');
+        if(t === 'tempos' || t === 'ranking') {
+            const list = d[t];
+            if(!list.length) { div.innerHTML = '<p style="text-align:center;font-size:12px;color:#999;margin-top:20px">INDISPONÍVEL.</p>'; return; }
+            div.innerHTML = `<div class="rank-header"><span>POS</span><span style="flex:1;margin-left:10px">${t==='ranking'?'PILOTO (PTS)':'PILOTO (TEMPO)'}</span><span>${t==='ranking'?'ESTADUAL (AZUL)':'CRONÔMETRO'}</span></div>` + 
+            list.map((r, i) => `<div class="rank-row"><div class="rank-pos">${i+1}º</div><div class="rank-name">${r.name}</div><div class="rank-val">${r.val}</div></div>`).join('');
         }
+    }
 
-        function detalheEvento(id) {
-            const ev = eventsDB.find(e => e.id === id);
-            document.getElementById('detail-title').innerText = ev.local.toUpperCase();
-            document.getElementById('detail-local').innerText = ev.local;
-            document.getElementById('detail-data').innerText = ev.data;
-            switchTab('tab-info');
-            mudarTela('pg-event-detail');
-        }
+    function preInsc(evtId) { currEvtId=evtId; document.getElementById('pix-key-display').innerText=db.config.pixKey; document.getElementById('pix-valor').innerText="R$ "+db.config.pixVal; document.getElementById('modal-pix').style.display='flex'; }
+    function copiarPix(){ navigator.clipboard.writeText(db.config.pixKey); toast("COPIADO!"); }
+    function confirmarInscricao(){ const u=getUser(); u.inscricoes.push(currCat+currEvtId); localStorage.setItem(SESS_KEY,JSON.stringify(u)); const idx=db.users.findIndex(x=>x.cpf===u.cpf); if(idx>-1)db.users[idx].inscricoes=u.inscricoes; saveDB(); fecharModal('modal-pix'); renderContent('calendar'); toast("INSCRIÇÃO ENVIADA!"); }
+    function fecharModal(id){ document.getElementById(id).style.display='none'; }
+    function fazerLogout(){ localStorage.removeItem(SESS_KEY); trocarTela('login'); }
+    function trocarTela(id){ document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active')); document.getElementById('screen-'+id).classList.add('active'); }
+    function mascaraCPF(i){ i.value=i.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2"); }
+    function upFoto(i){ if(i.files&&i.files[0]){const r=new FileReader();r.onload=function(e){const u=getUser();u.photo=e.target.result;localStorage.setItem(SESS_KEY,JSON.stringify(u));document.getElementById('user-img').src=u.photo;const idx=db.users.findIndex(x=>x.cpf===u.cpf);db.users[idx].photo=u.photo;saveDB();};r.readAsDataURL(i.files[0]);}}
 
-        function abrirCategorias() {
-            const list = document.getElementById('cbc-list');
-            list.innerHTML = `
-                <p><b>Categorias ${currentMod} 2026:</b></p><br>
-                <p>Junior: Até 18 anos</p>
-                <p>Sub-30: 19 a 29 anos</p>
-                <p>Master A: 30 a 39 anos</p>
-                <p>Master B: 40 a 49 anos</p>
-                <p>Master C: 50 a 59 anos</p>
-                <p>Master D: 60+ anos</p>
-            `;
-            if(currentMod === 'Downhill') mudarTela('pg-event-detail');
-            else mudarTela('pg-event-detail'); // No Speed/MTB cai no detail mas sem calendario
-        }
-
-        function switchTab(id) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.getElementById('btn-' + id.split('-')[1]).classList.add('active');
-        }
-
-        function login() {
-            const cpf = document.getElementById('login-cpf').value;
-            const db = JSON.parse(localStorage.getItem('fpc_banco_oficial')) || [];
-            const user = db.find(u => u.cpf === cpf);
-            if(user) {
-                document.getElementById('user-name').innerText = user.nome.split(' ')[0];
-                mudarTela('pg-dash');
-            } else alert('Usuário não encontrado');
-        }
-
-        function registrar() {
-            const nome = document.getElementById('reg-nome').value;
-            const cpf = document.getElementById('reg-cpf').value;
-            const db = JSON.parse(localStorage.getItem('fpc_banco_oficial')) || [];
-            db.push({nome, cpf});
-            localStorage.setItem('fpc_banco_oficial', JSON.stringify(db));
-            alert('Sucesso!'); mudarTela('pg-login');
-        }
-
-        function maskCPF(i){i.value=i.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");}
-    </script>
+    const s = getUser(); if(s) initApp();
+</script>
 </body>
 </html>
